@@ -1,3 +1,5 @@
+package entities;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -9,7 +11,7 @@ import java.util.LinkedList;
  */
 abstract class Entity {
     // The fields.
-    protected HashMap<String, String> entityInfo = new HashMap<>();
+    protected HashMap<Data, String> entityData = new HashMap<>();
     protected LinkedList<String> orderHistory = new LinkedList<>(); // TODO: set a proper type
     
     /**
@@ -18,25 +20,25 @@ abstract class Entity {
     public abstract void addNewOrder();
     
     /**
-     * Update entity info.
+     * Update entity data.
      */
-    public void update(String key, String value) {
-        entityInfo.replace(key, value);
-        System.out.println(entityInfo);
-        System.out.println("New info: " + entityInfo);
+    public void update(Data key, String value) {
+        entityData.replace(key, value);
+        System.out.println(entityData);
+        System.out.println("New data: " + entityData);
     }
     
     /**
-     * Get all entity info.
+     * Get all entity data.
      */
-    public HashMap<String, String> getAllInfo() {
-        return entityInfo;
+    public HashMap<Data, String> getAllData() {
+        return entityData;
     }
     
     /**
      * Getters
      */
     public String getName() {
-        return entityInfo.get("name");
+        return entityData.get(Data.NAME);
     }
 }

@@ -1,3 +1,5 @@
+package entities;
+
  /**
   * An interface to implement add() method for User.
   *

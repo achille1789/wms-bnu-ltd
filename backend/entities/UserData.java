@@ -1,3 +1,5 @@
+package entities;
+
  /**
   * A class to specify needed data for a User.
   *

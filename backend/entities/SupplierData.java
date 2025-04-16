@@ -1,3 +1,5 @@
+package entities;
+
  /**
   * A class to specify needed data for a Supplier.
   *
@@ -8,12 +10,14 @@ class SupplierData extends EntityData {
     // The fields.
     private String crn;
     private String bankAccount;
+    private String sortCode;
     
     // TODO: implement input validity checks
-    public SupplierData(String name, String crn, String email, String address, String bankAccount) {
+    public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         super(name, email, address);
         this.crn = crn;
         this.bankAccount = bankAccount;
+        this.sortCode = sortCode;
     }
     
     /**
@@ -25,5 +29,9 @@ class SupplierData extends EntityData {
     
     public String getBankAccount() {
         return this.bankAccount;
+    }
+    
+    public String getSortCode() {
+        return this.sortCode;
     }
 }

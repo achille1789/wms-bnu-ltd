@@ -1,10 +1,12 @@
+package entities;
+
  /**
   * A class to specify needed data for a generic Entity.
   *
   * @author Vanni Gallo
   * @version 1.0.0
   */
-class EntityData {
+abstract class EntityData {
     // The fields.
     protected String name;
     protected String email;
