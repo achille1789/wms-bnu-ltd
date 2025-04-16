@@ -1,7 +1,8 @@
 package entities;
 
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * An abstract class that has some methods to handle Users and Suppliers.
@@ -12,7 +13,7 @@ import java.util.LinkedList;
 abstract class Entity {
     // The fields.
     protected HashMap<Data, String> entityData = new HashMap<>();
-    protected LinkedList<String> orderHistory = new LinkedList<>(); // TODO: set a proper type
+    protected List<String> orderHistory = new ArrayList<>(); // TODO: set a proper type
     
     /**
      * Add a new order.
@@ -24,8 +25,6 @@ abstract class Entity {
      */
     public void update(Data key, String value) {
         entityData.replace(key, value);
-        System.out.println(entityData);
-        System.out.println("New data: " + entityData);
     }
     
     /**

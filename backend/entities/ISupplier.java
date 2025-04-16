@@ -8,7 +8,7 @@ package entities;
   */
  interface ISupplier {
     /**
-     * Add a new entity.
+     * Add a new entity Supplier.
      */
-    public abstract void add(SupplierData supplier);
+    public Supplier add(SupplierData supplier);
  }

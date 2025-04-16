@@ -6,13 +6,16 @@ package entities;
   * @author Vanni Gallo
   * @version 1.0.0
   */
-class SupplierData extends EntityData {
+public class SupplierData extends EntityData {
     // The fields.
     private String crn;
     private String bankAccount;
     private String sortCode;
     
     // TODO: implement input validity checks
+    /**
+     * Add a new entity Supplier data.
+     */
     public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         super(name, email, address);
         this.crn = crn;

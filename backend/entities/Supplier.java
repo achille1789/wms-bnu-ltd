@@ -6,18 +6,25 @@ package entities;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-class Supplier extends Entity implements ISupplier {
+public class Supplier extends Entity implements ISupplier {
     
-    public void add(SupplierData supplier) {
+    /**
+     * Add a new entity Supplier.
+     */
+    public Supplier add(SupplierData supplier) {
         entityData.put(Data.NAME, supplier.getName());
         entityData.put(Data.CRN, supplier.getCRN());
         entityData.put(Data.EMAIL, supplier.getEmail());
         entityData.put(Data.ADDRESS, supplier.getAddress());
         entityData.put(Data.BANK_ACCOUNT, supplier.getBankAccount());
-        System.out.println("Supplier data: " + entityData);
+        entityData.put(Data.SORT_CODE, supplier.getSortCode());
+        return this;
     }
     
+    /**
+     * Add a new Supplier order.
+     */
     public void addNewOrder() {
-        System.out.println("new order placed");
+        System.out.println("new order placed"); // TODO: remove log
     }
 }

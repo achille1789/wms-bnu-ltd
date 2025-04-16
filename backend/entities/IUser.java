@@ -8,7 +8,7 @@ package entities;
   */
  interface IUser {
     /**
-     * Add a new entity.
+     * Add a new entity User.
      */
-    public abstract void add(UserData user);
+    public User add(UserData user);
  }
