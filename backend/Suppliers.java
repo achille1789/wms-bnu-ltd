@@ -25,6 +25,13 @@ import entities.Data;
 //         Logger.info("Added 2 suppliers for debugging");
 //     }
     
+    /**
+     * Establish name matching.
+     */
+    private boolean isNameMatching(String name, int itemIndex) {
+        return name.toLowerCase().equals(suppliersList.get(itemIndex).getName().toLowerCase());
+    }
+    
     // TODO: handle wrong input data
     /**
      * Set all the supplier data to create a new supplier.
@@ -34,7 +41,7 @@ import entities.Data;
         SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
         boolean exists = false;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (name.equals(suppliersList.get(i).getName())) {
+            if (isNameMatching(name, i)) {
                 Logger.error("Supplier already exists, aborted");
                 exists = true;
                 break;
@@ -70,9 +77,13 @@ import entities.Data;
     public HashMap<Data, String> getSupplierData(String name) {
         HashMap<Data, String> supplierData = null;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (name.equals(suppliersList.get(i).getName())) {
+            if (isNameMatching(name, i)) {
                 supplierData = suppliersList.get(i).getAllData();
+                break;
             }
+        }
+        if (supplierData == null) {
+            Logger.error("Supplier not found");
         }
         return supplierData;
     }
@@ -83,10 +94,11 @@ import entities.Data;
     public void updateSupplierData(String name, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (name.equals(suppliersList.get(i).getName())) {
+            if (isNameMatching(name, i)) {
                 suppliersList.get(i).update(key, value);
                 Logger.info("Supplier data updated: " + suppliersList.get(i).getAllData().toString());
                 found = true;
+                break;
             }
         }
         if (!found) {
@@ -100,10 +112,11 @@ import entities.Data;
     public void deleteSupplier(String name) {
         boolean found = false;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (name.equals(suppliersList.get(i).getName())) {
+            if (isNameMatching(name, i)) {
                 suppliersList.remove(i);
                 Logger.info("Supplier deleted");
                 found = true;
+                break;
             }
         }
         if (!found) {

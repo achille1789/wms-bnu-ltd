@@ -25,6 +25,14 @@ import entities.Data;
 //         Logger.info("Added 2 customers for debugging");
 //     }
     
+    /**
+     * Establish name matching.
+     */
+    private boolean areDetailsMatching(String name, String surname, int itemIndex) {
+        return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
+            surname.toLowerCase().equals(customersList.get(itemIndex).getSurname().toLowerCase());
+    }
+    
     // TODO: handle wrong input data
     /**
      * Set all the customer data to create a new customer.
@@ -34,7 +42,7 @@ import entities.Data;
         CustomerData data = new CustomerData(name, surname, email, address, creditCard);
         boolean exists = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 Logger.error("Customer already exists, aborted");
                 exists = true;
                 break;
@@ -49,7 +57,7 @@ import entities.Data;
     /**
      * Get the number of customers in the list.
      */
-    public int getTotalcustomers() {
+    public int getTotalCustomers() {
         return customersList.size();
     }
     
@@ -67,12 +75,16 @@ import entities.Data;
     /**
      * Get data of the passed Customer.
      */
-    public HashMap<Data, String> getCustomerData(String name) {
+    public HashMap<Data, String> getCustomerData(String name, String surname) {
         HashMap<Data, String> customerData = null;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customerData = customersList.get(i).getAllData();
+                break;
             }
+        }
+        if (customerData == null) {
+            Logger.error("Customer not found");
         }
         return customerData;
     }
@@ -80,13 +92,14 @@ import entities.Data;
     /**
      * Update data of the passed Customer.
      */
-    public void updateCustomerData(String name, Data key, String value) {
+    public void updateCustomerData(String name, String surname, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customersList.get(i).update(key, value);
                 Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
                 found = true;
+                break;
             }
         }
         if (!found) {
@@ -97,13 +110,14 @@ import entities.Data;
     /**
      * Delete passed Customer.
      */
-    public void deleteCustomer(String name) {
+    public void deleteCustomer(String name, String surname) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customersList.remove(i);
                 Logger.info("Customer deleted");
                 found = true;
+                break;
             }
         }
         if (!found) {
