@@ -11,4 +11,9 @@ package entities;
      * Add a new entity User.
      */
     public User add(UserData user);
+    
+    /**
+     * User's getters.
+     */
+     public String getSurname();
  }

@@ -16,6 +16,15 @@ import entities.Data;
     // The fields.
     private List<User> usersList = new LinkedList<>();
     
+    // Constructor should be uncommented only for debugging
+//     public Users() {
+//         UserData data1 = new UserData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
+//         UserData data2 = new UserData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
+//         usersList.add(new User().add(data1));
+//         usersList.add(new User().add(data2));
+//         Logger.info("Added 2 users for debugging");
+//     }
+    
     // TODO: handle wrong input data
     /**
      * Set all the user data to create a new user.
@@ -25,7 +34,7 @@ import entities.Data;
         UserData data = new UserData(name, surname, email, address, creditCard);
         boolean exists = false;
         for (int i = 0; i < usersList.size(); i++) {
-            if (name.equals(usersList.get(i).getName())) {
+            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
                 Logger.error("User already exists, aborted");
                 exists = true;
                 break;
@@ -61,7 +70,7 @@ import entities.Data;
     public HashMap<Data, String> getUserData(String name) {
         HashMap<Data, String> userData = null;
         for (int i = 0; i < usersList.size(); i++) {
-            if (name.equals(usersList.get(i).getName())) {
+            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
                 userData = usersList.get(i).getAllData();
             }
         }
@@ -74,7 +83,7 @@ import entities.Data;
     public void updateUserData(String name, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < usersList.size(); i++) {
-            if (name.equals(usersList.get(i).getName())) {
+            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
                 usersList.get(i).update(key, value);
                 Logger.info("User data updated: " + usersList.get(i).getAllData().toString());
                 found = true;
@@ -91,7 +100,7 @@ import entities.Data;
     public void deleteUser(String name) {
         boolean found = false;
         for (int i = 0; i < usersList.size(); i++) {
-            if (name.equals(usersList.get(i).getName())) {
+            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
                 usersList.remove(i);
                 Logger.info("User deleted");
                 found = true;

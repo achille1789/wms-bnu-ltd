@@ -26,4 +26,11 @@ public class User extends Entity implements IUser {
     public void addNewOrder() {
         System.out.println("new order placed"); // TODO: remove log
     }
+    
+    /**
+     * Getters
+     */
+    public String getSurname() {
+        return entityData.get(Data.SURNAME);
+    }
 }
