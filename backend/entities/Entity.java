@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * An abstract class that has some methods to handle Users and Suppliers.
+ * An abstract class that has some methods to handle Customers and Suppliers.
  *
  * @author Vanni Gallo
  * @version 1.0.0

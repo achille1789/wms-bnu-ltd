@@ -1,7 +1,7 @@
 package entities;
 
  /**
-  * An interface to implement add() method for User.
+  * An interface to implement add() method for Customer.
   *
   * @author Vanni Gallo
   * @version 1.0.0
