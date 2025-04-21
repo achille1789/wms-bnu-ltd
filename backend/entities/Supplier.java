@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
 /**
  * A class to create Supplier objects.

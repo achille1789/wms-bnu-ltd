@@ -1,3 +1,5 @@
+package backend;
+
  /**
  * A class that handles all the logs.
  *

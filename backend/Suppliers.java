@@ -1,10 +1,12 @@
+package backend;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-import entities.Supplier;
-import entities.SupplierData;
-import entities.Data;
+import backend.entities.Supplier;
+import backend.entities.SupplierData;
+import backend.entities.Data;
 
 /**
  * A class that handles the list of Suppliers.
@@ -12,7 +14,7 @@ import entities.Data;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- class Suppliers {
+ public class Suppliers {
     // The fields.
     private List<Supplier> suppliersList = new LinkedList<>();
     

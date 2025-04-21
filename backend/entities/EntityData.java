@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
  /**
   * An abstract class to specify needed data for a generic Entity.

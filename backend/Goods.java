@@ -1,9 +1,11 @@
+package backend;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-import goods.Good;
-import goods.Data;
+import backend.goods.*;
+import backend.Logger;
 
 /**
  * A class that handles the list of warehouse Goods.
@@ -11,7 +13,7 @@ import goods.Data;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- class Goods {
+ public class Goods {
     // The fields.
     private List<Good> goodsList = new LinkedList<>();
     

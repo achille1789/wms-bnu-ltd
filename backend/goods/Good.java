@@ -1,4 +1,4 @@
-package goods;
+package backend.goods;
 
 import java.util.HashMap;
 

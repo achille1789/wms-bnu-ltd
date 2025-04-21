@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
  /**
   * An interface to implement add() method for Customer.

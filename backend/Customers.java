@@ -1,10 +1,12 @@
+package backend;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-import entities.Customer;
-import entities.CustomerData;
-import entities.Data;
+import backend.entities.Customer;
+import backend.entities.CustomerData;
+import backend.entities.Data;
 
 /**
  * A class that handles the list of Customers.
@@ -12,7 +14,7 @@ import entities.Data;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- class Customers {
+ public class Customers {
     // The fields.
     private List<Customer> customersList = new LinkedList<>();
     

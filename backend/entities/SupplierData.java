@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
  /**
   * A class to specify needed data for a Supplier.

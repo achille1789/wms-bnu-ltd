@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
 /**
  * Enam with all the possible entity details
