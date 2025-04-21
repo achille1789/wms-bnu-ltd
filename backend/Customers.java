@@ -25,16 +25,33 @@ import entities.Data;
 //         Logger.info("Added 2 customers for debugging");
 //     }
     
+    /**
+     * Establish name matching.
+     * @param name the name to match
+     * @param surname the surname to match
+     * @param itemIndex the index of the customer in the list
+     * @return true if the name and surname match the customer data
+     */
+    private boolean areDetailsMatching(String name, String surname, int itemIndex) {
+        return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
+            surname.toLowerCase().equals(customersList.get(itemIndex).getSurname().toLowerCase());
+    }
+    
     // TODO: handle wrong input data
     /**
      * Set all the customer data to create a new customer.
      * If data is invalid print an error message.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @param email the email of the customer
+     * @param address the address of the customer
+     * @param creditCard the credit card of the customer
      */
     public void addCustomer(String name, String surname, String email, String address, String creditCard) {
         CustomerData data = new CustomerData(name, surname, email, address, creditCard);
         boolean exists = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 Logger.error("Customer already exists, aborted");
                 exists = true;
                 break;
@@ -48,13 +65,15 @@ import entities.Data;
     
     /**
      * Get the number of customers in the list.
+     * @return the number of customers in the list
      */
-    public int getTotalcustomers() {
+    public int getTotalCustomers() {
         return customersList.size();
     }
     
     /**
      * Get the name of all customers in the list.
+     * @return an array of customer names
      */
     public String[] getCustomerNames() {
         String[] names = new String[customersList.size()];
@@ -66,27 +85,39 @@ import entities.Data;
     
     /**
      * Get data of the passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @return a HashMap with all the customer data
      */
-    public HashMap<Data, String> getCustomerData(String name) {
+    public HashMap<Data, String> getCustomerData(String name, String surname) {
         HashMap<Data, String> customerData = null;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customerData = customersList.get(i).getAllData();
+                break;
             }
+        }
+        if (customerData == null) {
+            Logger.error("Customer not found");
         }
         return customerData;
     }
     
     /**
      * Update data of the passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @param key the key of the data to update
+     * @param value the new value of the data
      */
-    public void updateCustomerData(String name, Data key, String value) {
+    public void updateCustomerData(String name, String surname, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customersList.get(i).update(key, value);
                 Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
                 found = true;
+                break;
             }
         }
         if (!found) {
@@ -96,14 +127,17 @@ import entities.Data;
     
     /**
      * Delete passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
      */
-    public void deleteCustomer(String name) {
+    public void deleteCustomer(String name, String surname) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
+            if (areDetailsMatching(name, surname, i)) {
                 customersList.remove(i);
                 Logger.info("Customer deleted");
                 found = true;
+                break;
             }
         }
         if (!found) {

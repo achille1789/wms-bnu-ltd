@@ -15,6 +15,9 @@ abstract class EntityData {
     // TODO: implement input validity checks
     /**
      * Set the default data for all entities.
+     * @param name the name of the entity
+     * @param email the email of the entity
+     * @param address the address of the entity
      */
     protected EntityData(String name, String email, String address) {
         this.name = name;

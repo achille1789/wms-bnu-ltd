@@ -10,6 +10,8 @@ public class Supplier extends Entity implements ISupplier {
     
     /**
      * Add a new entity Supplier.
+     * @param supplier the SupplierData object containing the supplier's data
+     * @return the Supplier object
      */
     public Supplier add(SupplierData supplier) {
         entityData.put(Data.NAME, supplier.getName());

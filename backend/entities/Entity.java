@@ -22,6 +22,8 @@ abstract class Entity {
     
     /**
      * Update entity data.
+     * @param key the key of the data to update
+     * @param value the new value of the data
      */
     public void update(Data key, String value) {
         entityData.replace(key, value);
@@ -29,6 +31,9 @@ abstract class Entity {
     
     /**
      * Get all entity data.
+     * The keys are the Data enum values.
+     * The values are the entity data.
+     * @return a HashMap with all the entity data.
      */
     public HashMap<Data, String> getAllData() {
         return entityData;

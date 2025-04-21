@@ -9,6 +9,8 @@ package entities;
  interface ISupplier {
     /**
      * Add a new entity Supplier.
+     * Info needed are: name, crn, email, address, bank account and sort code.
+     * @param supplier the SupplierData object with all the data
      */
     public Supplier add(SupplierData supplier);
  }
