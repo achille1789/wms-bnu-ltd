@@ -27,6 +27,9 @@ import entities.Data;
     
     /**
      * Establish name matching.
+     * @param name the name to match
+     * @param itemIndex the index of the supplier in the list
+     * @return true if the name matches the supplier data
      */
     private boolean isNameMatching(String name, int itemIndex) {
         return name.toLowerCase().equals(suppliersList.get(itemIndex).getName().toLowerCase());
@@ -36,6 +39,12 @@ import entities.Data;
     /**
      * Set all the supplier data to create a new supplier.
      * If data is invalid print an error message.
+     * @param name the name of the supplier
+     * @param crn the company registration number of the supplier
+     * @param email the email of the supplier
+     * @param address the address of the supplier
+     * @param bankAccount the bank account of the supplier
+     * @param sortCode the sort code of the supplier
      */
     public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
@@ -55,6 +64,7 @@ import entities.Data;
     
     /**
      * Get the number of suppliers in the list.
+     * @return the number of suppliers in the list
      */
     public int getTotalSuppliers() {
         return suppliersList.size();
@@ -62,6 +72,7 @@ import entities.Data;
     
     /**
      * Get the name of all suppliers in the list.
+     * @return the name of all suppliers in the list
      */
     public String[] getSupplierNames() {
         String[] names = new String[suppliersList.size()];
@@ -73,6 +84,8 @@ import entities.Data;
     
     /**
      * Get data of the passed Supplier.
+     * @param name the name of the supplier
+     * @return a HashMap with all the Supplier data
      */
     public HashMap<Data, String> getSupplierData(String name) {
         HashMap<Data, String> supplierData = null;
@@ -90,6 +103,9 @@ import entities.Data;
     
     /**
      * Update data of the passed Supplier.
+     * @param name the name of the supplier
+     * @param key the key of the data to update
+     * @param value the new value of the data
      */
     public void updateSupplierData(String name, Data key, String value) {
         boolean found = false;
@@ -108,6 +124,7 @@ import entities.Data;
     
     /**
      * Delete passed Supplier.
+     * @param name the name of the supplier
      */
     public void deleteSupplier(String name) {
         boolean found = false;

@@ -15,6 +15,12 @@ public class SupplierData extends EntityData {
     // TODO: implement input validity checks
     /**
      * Add a new entity Supplier data.
+     * @param name the name of the supplier
+     * @param crn the company registration number of the supplier
+     * @param email the email of the supplier
+     * @param address the address of the supplier
+     * @param bankAccount the bank account of the supplier
+     * @param sortCode the sort code of the supplier
      */
     public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         super(name, email, address);

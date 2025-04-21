@@ -19,6 +19,7 @@ class Logger {
 
     /**
      * Printing "info" messages.
+     * @param message the message to print
      */
     public static void info(String message) {
         System.out.println("[INFO] " + message);
@@ -26,6 +27,7 @@ class Logger {
 
     /**
      * Printing "warning" messages.
+     * @param message the message to print
      */
     public static void warn(String message) {
 //         System.out.println(YELLOW + "[WARN] " + message + RESET);
@@ -34,6 +36,7 @@ class Logger {
 
     /**
      * Printing "error" messages.
+     * @param message the message to print
      */
     public static void error(String message) {
 //         System.out.println(RED + "[ERROR] " + message + RESET);
@@ -42,6 +45,7 @@ class Logger {
 
     /**
      * Printing "debug" messages.
+     * @param message the message to print
      */
     public static void debug(String message) {
 //         System.out.println(BLUE + "[DEBUG] " + message + RESET);

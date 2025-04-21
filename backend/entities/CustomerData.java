@@ -14,6 +14,11 @@ public class CustomerData extends EntityData {
     // TODO: implement input validity checks
     /**
      * Add a new entity Customer data.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @param email the email of the customer
+     * @param address the address of the customer
+     * @param creditCard the credit card of the customer
      */
     public CustomerData(String name, String surname, String email, String address, String creditCard) {
         super(name, email, address);

@@ -28,6 +28,9 @@ public class Good {
     
     /**
      * Get a HashMap with all the good data.
+     * The keys are the Data enum values.
+     * The values are the good data.
+     * @return a HashMap with all the Good data.
      */
     public HashMap<Data, String> getAllData() {
         HashMap<Data, String> goodData = new HashMap<>();

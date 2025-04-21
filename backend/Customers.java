@@ -27,6 +27,10 @@ import entities.Data;
     
     /**
      * Establish name matching.
+     * @param name the name to match
+     * @param surname the surname to match
+     * @param itemIndex the index of the customer in the list
+     * @return true if the name and surname match the customer data
      */
     private boolean areDetailsMatching(String name, String surname, int itemIndex) {
         return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
@@ -37,6 +41,11 @@ import entities.Data;
     /**
      * Set all the customer data to create a new customer.
      * If data is invalid print an error message.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @param email the email of the customer
+     * @param address the address of the customer
+     * @param creditCard the credit card of the customer
      */
     public void addCustomer(String name, String surname, String email, String address, String creditCard) {
         CustomerData data = new CustomerData(name, surname, email, address, creditCard);
@@ -56,6 +65,7 @@ import entities.Data;
     
     /**
      * Get the number of customers in the list.
+     * @return the number of customers in the list
      */
     public int getTotalCustomers() {
         return customersList.size();
@@ -63,6 +73,7 @@ import entities.Data;
     
     /**
      * Get the name of all customers in the list.
+     * @return an array of customer names
      */
     public String[] getCustomerNames() {
         String[] names = new String[customersList.size()];
@@ -74,6 +85,9 @@ import entities.Data;
     
     /**
      * Get data of the passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @return a HashMap with all the customer data
      */
     public HashMap<Data, String> getCustomerData(String name, String surname) {
         HashMap<Data, String> customerData = null;
@@ -91,6 +105,10 @@ import entities.Data;
     
     /**
      * Update data of the passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
+     * @param key the key of the data to update
+     * @param value the new value of the data
      */
     public void updateCustomerData(String name, String surname, Data key, String value) {
         boolean found = false;
@@ -109,6 +127,8 @@ import entities.Data;
     
     /**
      * Delete passed Customer.
+     * @param name the name of the customer
+     * @param surname the surname of the customer
      */
     public void deleteCustomer(String name, String surname) {
         boolean found = false;

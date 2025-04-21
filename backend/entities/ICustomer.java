@@ -9,6 +9,8 @@ package entities;
  interface ICustomer {
     /**
      * Add a new entity Customer.
+     * Info needed are: name, surname, email, address and credit card.
+     * @param customer the CustomerData object with all the data
      */
     public Customer add(CustomerData customer);
     

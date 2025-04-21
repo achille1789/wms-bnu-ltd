@@ -26,6 +26,9 @@ import goods.Data;
     
     /**
      * Establish name matching.
+     * @param name the name to match
+     * @param itemIndex the index of the good in the list
+     * @return true if the name matches the good data
      */
     private boolean isNameMatching(String name, int itemIndex) {
         return name.toLowerCase().equals(goodsList.get(itemIndex).getName().toLowerCase());
@@ -35,6 +38,10 @@ import goods.Data;
     /**
      * Set all the good details to create a new Good.
      * If data is invalid print an error message.
+     * @param name the name of the good
+     * @param description the description of the good
+     * @param quantity the available quantity of the good
+     * @param supplier the name of the supplier
      */
     public void addGood(String name, String description, int quantity, String supplier) {
         Good good = new Good(name, description, quantity, supplier);
@@ -54,6 +61,7 @@ import goods.Data;
     
     /**
      * Get the number of goods in the list.
+     * @return the number of goods in the list
      */
     public int getTotalGoods() {
         return goodsList.size();
@@ -61,6 +69,7 @@ import goods.Data;
     
     /**
      * Get the name of all goods in the list.
+     * @return an array of good names
      */
     public String[] getGoodNames() {
         String[] names = new String[goodsList.size()];
@@ -72,6 +81,8 @@ import goods.Data;
     
     /**
      * Get data of the passed Good.
+     * @param name the name of the good
+     * @return a HashMap with all the Good data
      */
     public HashMap<Data, String> getGoodData(String name) {
         HashMap<Data, String> goodData = null;
@@ -89,6 +100,8 @@ import goods.Data;
     
     /**
      * Get Good quantity
+     * @param name the name of the good
+     * @return the quantity of the good
      */
     public int getGoodQuantity(String name) {
         int quantity = -1;
@@ -107,6 +120,8 @@ import goods.Data;
     
     /**
      * Update available quantity of the passed Good.
+     * @param name the name of the good
+     * @param quantity the new quantity of the good
      */
     public void updateGoodQuantity(String name, int quantity) {
         boolean found = false;
