@@ -18,14 +18,18 @@ import backend.entities.Data;
     // The fields.
     private List<Supplier> suppliersList = new LinkedList<>();
     
-    // Constructor should be uncommented only for debugging
-//     public Suppliers() {
-//         SupplierData data1 = new SupplierData("Vanni ltd", "12345678", "vanni-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
-//         SupplierData data2 = new SupplierData("Mark ltd", "19283746", "mark-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
-//         suppliersList.add(new Supplier().add(data1));
-//         suppliersList.add(new Supplier().add(data2));
-//         Logger.info("Added 2 suppliers for debugging");
-//     }
+    /**
+     * @param prepopulated to instantiate the class with 2 suppliers for debugging
+     */
+    public Suppliers(boolean prepopulated) {
+        if (prepopulated) {
+            SupplierData data1 = new SupplierData("Vanni&Sons ltd", "12345678", "vanni-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
+            SupplierData data2 = new SupplierData("Mark&Friends ltd", "19283746", "mark-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
+            suppliersList.add(new Supplier().add(data1));
+            suppliersList.add(new Supplier().add(data2));
+            Logger.info("Added 2 suppliers for debugging");
+        }
+    }
     
     /**
      * Establish name matching.

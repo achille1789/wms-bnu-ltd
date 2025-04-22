@@ -13,10 +13,16 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // Create a new MainUI object to start the application.
+        boolean prepopulated = false;
+        if (args.length > 0) {
+            if (args[0].equals("prepopulated")) {
+                prepopulated = true;
+            }
+        }
+        
         MainUI mainUI = new MainUI();
-        Customers customers = new Customers();
-        Suppliers suppliers = new Suppliers();
-        Goods goods = new Goods();
+        Customers customers = new Customers(prepopulated);
+        Suppliers suppliers = new Suppliers(prepopulated);
+        Goods goods = new Goods(prepopulated);
     }
 }

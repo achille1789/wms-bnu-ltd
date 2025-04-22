@@ -17,14 +17,18 @@ import backend.Logger;
     // The fields.
     private List<Good> goodsList = new LinkedList<>();
     
-    // Constructor should be uncommented only for debugging
-//     public Goods() {
-//         Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni ltd");
-//         Good good2 = new Good("Cement", "Construction cement", 50, "Mark ltd");
-//         goodsList.add(good1);
-//         goodsList.add(good2);
-//         Logger.info("Added 2 warehouse goods for debugging");
-//     }
+    /**
+     * @param prepopulated to instantiate the class with 2 warehouse goods for debugging
+     */
+    public Goods(boolean prepopulated) {
+        if (prepopulated) {
+            Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni&Sons ltd", 5);
+            Good good2 = new Good("Cement", "Construction cement", 50, "Mark&Friends ltd", 15);
+            goodsList.add(good1);
+            goodsList.add(good2);
+            Logger.info("Added 2 warehouse goods for debugging");
+        }
+    }
     
     /**
      * Establish name matching.
@@ -45,8 +49,8 @@ import backend.Logger;
      * @param quantity the available quantity of the good
      * @param supplier the name of the supplier
      */
-    public void addGood(String name, String description, int quantity, String supplier) {
-        Good good = new Good(name, description, quantity, supplier);
+    public void addGood(String name, String description, int quantity, String supplier, int price) {
+        Good good = new Good(name, description, quantity, supplier, price);
         boolean exists = false;
         for (int i = 0; i < goodsList.size(); i++) {
             if (isNameMatching(name, i)) {

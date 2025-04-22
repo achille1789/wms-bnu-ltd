@@ -18,14 +18,18 @@ import backend.entities.Data;
     // The fields.
     private List<Customer> customersList = new LinkedList<>();
     
-    // Constructor should be uncommented only for debugging
-//     public Customers() {
-//         CustomerData data1 = new CustomerData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
-//         CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
-//         customersList.add(new Customer().add(data1));
-//         customersList.add(new Customer().add(data2));
-//         Logger.info("Added 2 customers for debugging");
-//     }
+    /**
+     * @param prepopulated to instantiate the class with 2 customers for debugging
+     */
+    public Customers(boolean prepopulated) {
+        if (prepopulated) {
+            CustomerData data1 = new CustomerData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
+            CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
+            customersList.add(new Customer().add(data1));
+            customersList.add(new Customer().add(data2));
+            Logger.info("Added 2 customers for debugging");
+        }
+    }
     
     /**
      * Establish name matching.

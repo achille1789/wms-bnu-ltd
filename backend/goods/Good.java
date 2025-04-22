@@ -14,16 +14,18 @@ public class Good {
     public String description;
     public int quantity;
     public String supplier;
+    public int price;
     
     /**
      * Add a new warehouse good.
      * Info needed are: name, description, available quantity and supplier name.
      */
-    public Good(String name, String description, int quantity, String supplier) {
+    public Good(String name, String description, int quantity, String supplier, int price) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.supplier = supplier;
+        this.price = price;
     }
     
     /**
@@ -38,6 +40,7 @@ public class Good {
         goodData.put(Data.DESCRIPTION, this.description);
         goodData.put(Data.QUANTITY, String.valueOf(this.quantity));
         goodData.put(Data.SUPPLIER, this.supplier);
+        goodData.put(Data.PRICE, String.valueOf(this.price));
         return goodData;
     }
     
@@ -57,5 +60,9 @@ public class Good {
     
     public int getQuantity() {
         return this.quantity;
+    }
+    
+    public int getPrice() {
+        return this.price;
     }
 }
