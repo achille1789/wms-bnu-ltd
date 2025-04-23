@@ -23,22 +23,13 @@ import backend.entities.Data;
      */
     public Suppliers(boolean prepopulated) {
         if (prepopulated) {
-            SupplierData data1 = new SupplierData("Vanni&Sons ltd", "12345678", "vanni-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
-            SupplierData data2 = new SupplierData("Mark&Friends ltd", "19283746", "mark-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
+            SupplierData data1 = new SupplierData("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
+            SupplierData data2 = new SupplierData("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
             suppliersList.add(new Supplier().add(data1));
             suppliersList.add(new Supplier().add(data2));
-            Logger.info("Added 2 suppliers for debugging");
+            Logger.info("Added 2 suppliers for debugging" + suppliersList.get(0).getAllData().toString());
+            Logger.info("Added 2 suppliers for debugging" + suppliersList.get(1).getAllData().toString());
         }
-    }
-    
-    /**
-     * Establish name matching.
-     * @param name the name to match
-     * @param itemIndex the index of the supplier in the list
-     * @return true if the name matches the supplier data
-     */
-    private boolean isNameMatching(String name, int itemIndex) {
-        return name.toLowerCase().equals(suppliersList.get(itemIndex).getName().toLowerCase());
     }
     
     // TODO: handle wrong input data
@@ -54,18 +45,8 @@ import backend.entities.Data;
      */
     public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
-        boolean exists = false;
-        for (int i = 0; i < suppliersList.size(); i++) {
-            if (isNameMatching(name, i)) {
-                Logger.error("Supplier already exists, aborted");
-                exists = true;
-                break;
-            }
-        }
-        if (!exists) {
-            suppliersList.add(new Supplier().add(data));
-            Logger.info("Supplier added, data: " + suppliersList.getLast().getAllData().toString());
-        }
+        suppliersList.add(new Supplier().add(data));
+        Logger.info("Supplier added, data: " + suppliersList.getLast().getAllData().toString());
     }
     
     /**
@@ -93,10 +74,10 @@ import backend.entities.Data;
      * @param name the name of the supplier
      * @return a HashMap with all the Supplier data
      */
-    public HashMap<Data, String> getSupplierData(String name) {
+    public HashMap<Data, String> getSupplierData(String id) {
         HashMap<Data, String> supplierData = null;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(suppliersList.get(i).getId())) {
                 supplierData = suppliersList.get(i).getAllData();
                 break;
             }
@@ -113,10 +94,10 @@ import backend.entities.Data;
      * @param key the key of the data to update
      * @param value the new value of the data
      */
-    public void updateSupplierData(String name, Data key, String value) {
+    public void updateSupplierData(String id, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(suppliersList.get(i).getId())) {
                 suppliersList.get(i).update(key, value);
                 Logger.info("Supplier data updated: " + suppliersList.get(i).getAllData().toString());
                 found = true;
@@ -132,10 +113,10 @@ import backend.entities.Data;
      * Delete passed Supplier.
      * @param name the name of the supplier
      */
-    public void deleteSupplier(String name) {
+    public void deleteSupplier(String id) {
         boolean found = false;
         for (int i = 0; i < suppliersList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(suppliersList.get(i).getId())) {
                 suppliersList.remove(i);
                 Logger.info("Supplier deleted");
                 found = true;

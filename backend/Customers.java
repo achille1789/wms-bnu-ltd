@@ -27,20 +27,9 @@ import backend.entities.Data;
             CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
             customersList.add(new Customer().add(data1));
             customersList.add(new Customer().add(data2));
-            Logger.info("Added 2 customers for debugging");
+            Logger.info("Added 2 customers for debugging" + customersList.get(0).getAllData().toString());
+            Logger.info("Added 2 customers for debugging" + customersList.get(1).getAllData().toString());
         }
-    }
-    
-    /**
-     * Establish name matching.
-     * @param name the name to match
-     * @param surname the surname to match
-     * @param itemIndex the index of the customer in the list
-     * @return true if the name and surname match the customer data
-     */
-    private boolean areDetailsMatching(String name, String surname, int itemIndex) {
-        return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
-            surname.toLowerCase().equals(customersList.get(itemIndex).getSurname().toLowerCase());
     }
     
     // TODO: handle wrong input data
@@ -55,18 +44,8 @@ import backend.entities.Data;
      */
     public void addCustomer(String name, String surname, String email, String address, String creditCard) {
         CustomerData data = new CustomerData(name, surname, email, address, creditCard);
-        boolean exists = false;
-        for (int i = 0; i < customersList.size(); i++) {
-            if (areDetailsMatching(name, surname, i)) {
-                Logger.error("Customer already exists, aborted");
-                exists = true;
-                break;
-            }
-        }
-        if (!exists) {
-            customersList.add(new Customer().add(data));
-            Logger.info("Customer added, data: " + customersList.getLast().getAllData().toString());
-        }
+        customersList.add(new Customer().add(data));
+        Logger.info("Customer added, data: " + customersList.getLast().getAllData().toString());
     }
     
     /**
@@ -95,10 +74,10 @@ import backend.entities.Data;
      * @param surname the surname of the customer
      * @return a HashMap with all the customer data
      */
-    public HashMap<Data, String> getCustomerData(String name, String surname) {
+    public HashMap<Data, String> getCustomerData(String id) {
         HashMap<Data, String> customerData = null;
         for (int i = 0; i < customersList.size(); i++) {
-            if (areDetailsMatching(name, surname, i)) {
+            if (id.equals(customersList.get(i).getId())) {
                 customerData = customersList.get(i).getAllData();
                 break;
             }
@@ -116,10 +95,10 @@ import backend.entities.Data;
      * @param key the key of the data to update
      * @param value the new value of the data
      */
-    public void updateCustomerData(String name, String surname, Data key, String value) {
+    public void updateCustomerData(String id, Data key, String value) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (areDetailsMatching(name, surname, i)) {
+            if (id.equals(customersList.get(i).getId())) {
                 customersList.get(i).update(key, value);
                 Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
                 found = true;
@@ -136,10 +115,10 @@ import backend.entities.Data;
      * @param name the name of the customer
      * @param surname the surname of the customer
      */
-    public void deleteCustomer(String name, String surname) {
+    public void deleteCustomer(String id) {
         boolean found = false;
         for (int i = 0; i < customersList.size(); i++) {
-            if (areDetailsMatching(name, surname, i)) {
+            if (id.equals(customersList.get(i).getId())) {
                 customersList.remove(i);
                 Logger.info("Customer deleted");
                 found = true;

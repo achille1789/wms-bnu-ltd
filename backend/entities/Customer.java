@@ -14,6 +14,7 @@ public class Customer extends Entity implements ICustomer {
      * @param customer the CustomerData object with all the data
      */
     public Customer add(CustomerData customer) {
+        entityData.put(Data.ID, customer.getId());
         entityData.put(Data.NAME, customer.getName());
         entityData.put(Data.SURNAME, customer.getSurname());
         entityData.put(Data.EMAIL, customer.getEmail());

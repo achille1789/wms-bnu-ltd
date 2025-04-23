@@ -4,6 +4,7 @@ package backend.entities;
  * Enam with all the possible entity details
  */
 public enum Data {
+    ID,
     NAME,
     SURNAME,
     ADDRESS,

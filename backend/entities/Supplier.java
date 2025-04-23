@@ -14,6 +14,7 @@ public class Supplier extends Entity implements ISupplier {
      * @return the Supplier object
      */
     public Supplier add(SupplierData supplier) {
+        entityData.put(Data.ID, supplier.getId());
         entityData.put(Data.NAME, supplier.getName());
         entityData.put(Data.CRN, supplier.getCRN());
         entityData.put(Data.EMAIL, supplier.getEmail());

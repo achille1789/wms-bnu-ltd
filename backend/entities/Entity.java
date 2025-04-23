@@ -45,4 +45,8 @@ abstract class Entity {
     public String getName() {
         return entityData.get(Data.NAME);
     }
+    
+    public String getId() {
+        return entityData.get(Data.ID);
+    }
 }
