@@ -30,16 +30,6 @@ import backend.Logger;
         }
     }
     
-    /**
-     * Establish name matching.
-     * @param name the name to match
-     * @param itemIndex the index of the good in the list
-     * @return true if the name matches the good data
-     */
-    private boolean isNameMatching(String name, int itemIndex) {
-        return name.toLowerCase().equals(goodsList.get(itemIndex).getName().toLowerCase());
-    }
-    
     // TODO: handle wrong input data
     /**
      * Set all the good details to create a new Good.
@@ -51,18 +41,8 @@ import backend.Logger;
      */
     public void addGood(String name, String description, int quantity, String supplier, int price) {
         Good good = new Good(name, description, quantity, supplier, price);
-        boolean exists = false;
-        for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
-                Logger.error("Good already exists, aborted");
-                exists = true;
-                break;
-            }
-        }
-        if (!exists) {
-            goodsList.add(good);
-            Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
-        }
+        goodsList.add(good);
+        Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
     }
     
     /**
@@ -90,10 +70,10 @@ import backend.Logger;
      * @param name the name of the good
      * @return a HashMap with all the Good data
      */
-    public HashMap<Data, String> getGoodData(String name) {
+    public HashMap<Data, String> getGoodData(String id) {
         HashMap<Data, String> goodData = null;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 goodData = goodsList.get(i).getAllData();
                 break;
             }
@@ -109,10 +89,10 @@ import backend.Logger;
      * @param name the name of the good
      * @return the quantity of the good
      */
-    public int getGoodQuantity(String name) {
+    public int getGoodQuantity(String id) {
         int quantity = -1;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 quantity = goodsList.get(i).getQuantity();
                 break;
             }
@@ -129,10 +109,10 @@ import backend.Logger;
      * @param name the name of the good
      * @param quantity the new quantity of the good
      */
-    public void updateGoodQuantity(String name, int quantity) {
+    public void updateGoodQuantity(String id, int quantity) {
         boolean found = false;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 goodsList.get(i).setQuantity(quantity);
                 Logger.info("Good quantity updated: " + goodsList.get(i).getQuantity());
                 found = true;

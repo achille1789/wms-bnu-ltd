@@ -27,8 +27,7 @@ import backend.entities.Data;
             SupplierData data2 = new SupplierData("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
             suppliersList.add(new Supplier().add(data1));
             suppliersList.add(new Supplier().add(data2));
-            Logger.info("Added 2 suppliers for debugging" + suppliersList.get(0).getAllData().toString());
-            Logger.info("Added 2 suppliers for debugging" + suppliersList.get(1).getAllData().toString());
+            Logger.info("Added 2 suppliers for debugging");
         }
     }
     

@@ -1,6 +1,7 @@
 package backend.goods;
 
 import java.util.HashMap;
+import java.time.Instant;
 
 /**
  * A class that defines a warehouse Good.
@@ -15,6 +16,7 @@ public class Good {
     public int quantity;
     public String supplier;
     public int price;
+    public String id;
     
     /**
      * Add a new warehouse good.
@@ -26,6 +28,8 @@ public class Good {
         this.quantity = quantity;
         this.supplier = supplier;
         this.price = price;
+        String rand = String.valueOf((int)(Math.random() * 1000));
+        this.id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
     }
     
     /**
@@ -36,6 +40,7 @@ public class Good {
      */
     public HashMap<Data, String> getAllData() {
         HashMap<Data, String> goodData = new HashMap<>();
+        goodData.put(Data.ID, this.id);
         goodData.put(Data.NAME, this.name);
         goodData.put(Data.DESCRIPTION, this.description);
         goodData.put(Data.QUANTITY, String.valueOf(this.quantity));
@@ -64,5 +69,9 @@ public class Good {
     
     public int getPrice() {
         return this.price;
+    }
+    
+    public String getId() {
+        return this.id;
     }
 }

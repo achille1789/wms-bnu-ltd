@@ -27,8 +27,7 @@ import backend.entities.Data;
             CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
             customersList.add(new Customer().add(data1));
             customersList.add(new Customer().add(data2));
-            Logger.info("Added 2 customers for debugging" + customersList.get(0).getAllData().toString());
-            Logger.info("Added 2 customers for debugging" + customersList.get(1).getAllData().toString());
+            Logger.info("Added 2 customers for debugging");
         }
     }
     
