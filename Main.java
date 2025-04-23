@@ -20,9 +20,6 @@ public class Main {
             }
         }
         
-        MainUI mainUI = new MainUI();
-        Customers customers = new Customers(prepopulated);
-        Suppliers suppliers = new Suppliers(prepopulated);
-        Goods goods = new Goods(prepopulated);
+        new MainUI(new Customers(prepopulated), new Goods(prepopulated), new Suppliers(prepopulated));
     }
 }

@@ -48,11 +48,11 @@ import backend.entities.Data;
     }
     
     /**
-     * Get the number of customers in the list.
-     * @return the number of customers in the list
+     * Get the list of customers.
+     * @return the list of customers.
      */
-    public int getTotalCustomers() {
-        return customersList.size();
+    public List<Customer> getCustomersList() {
+        return customersList;
     }
     
     /**

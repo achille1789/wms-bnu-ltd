@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 import ui.components.*;
+import backend.*;
 
 /**
  * MainUI is the main class used to build the User Interface. It builds and
@@ -17,11 +18,17 @@ import ui.components.*;
 public class MainUI {
     // fields
     private JFrame frame;
+    private Customers customers;
+    private Goods goods;
+    private Suppliers suppliers;
     
     /**
      * Create an MainUI and display its GUI on screen.
      */
-    public MainUI() {
+    public MainUI(Customers customers, Goods goods, Suppliers suppliers) {
+        this.customers = customers;
+        this.goods = goods;
+        this.suppliers = suppliers;
         makeFrame();
     }
     
@@ -45,23 +52,13 @@ public class MainUI {
         // Specify the layout manager with nice spacing
         contentPane.setLayout(new BorderLayout(6, 6));
         
-        new CustomersPanel(contentPane);
+        new CustomersPanel(contentPane, this.customers);
         new GoodsPanel(contentPane);
         new SuppliersPanel(contentPane);
         
         // Create a label at the bottom for status message
         String versionText = NavBar.VERSION;
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
-        
-//         // Create the toolbar with the buttons
-//         JPanel toolbar = new JPanel();
-//         toolbar.setLayout(new GridLayout(0, 1));
-// 
-//         // Add toolbar into panel with flow layout for spacing
-//         JPanel flow = new JPanel();
-//         flow.add(toolbar);
-//         
-//         contentPane.add(flow, BorderLayout.WEST);
         
         // building is done - arrange the components     
         frame.pack();
