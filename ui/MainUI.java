@@ -18,14 +18,14 @@ import backend.*;
 public class MainUI {
     // fields
     private JFrame frame;
-    private Customers customers;
+    private CustomersList customers;
     private Goods goods;
-    private Suppliers suppliers;
+    private SuppliersList suppliers;
     
     /**
      * Create an MainUI and display its GUI on screen.
      */
-    public MainUI(Customers customers, Goods goods, Suppliers suppliers) {
+    public MainUI(CustomersList customers, Goods goods, SuppliersList suppliers) {
         this.customers = customers;
         this.goods = goods;
         this.suppliers = suppliers;

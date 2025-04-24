@@ -1,12 +1,14 @@
-package backend.entities;
+package backend;
+
+import backend.entities.Supplier;
 
  /**
-  * An interface to implement add() method for Supplier.
+  * An interface to implement addSupplier() method for SuppliersList.
   *
   * @author Vanni Gallo
   * @version 1.0.0
   */
- interface ISupplier {
+public interface ISuppliersList {
     /**
      * Add a new entity Supplier.
      * Info needed are: name, crn, email, address, bank account and sort code.
@@ -17,5 +19,6 @@ package backend.entities;
      * @param bankAccount of the supplier
      * @param sortCode of the supplier
      */
-    public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode);
- }
+    public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode);
+}
+ 

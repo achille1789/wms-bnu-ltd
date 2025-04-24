@@ -20,6 +20,6 @@ public class Main {
             }
         }
         
-        new MainUI(new Customers(prepopulated), new Goods(prepopulated), new Suppliers(prepopulated));
+        new MainUI(new CustomersList(prepopulated), new Goods(prepopulated), new SuppliersList(prepopulated));
     }
 }

@@ -1,14 +1,16 @@
-package backend.entities;
+package backend;
+
+import backend.entities.Customer;
 
  /**
-  * An interface to implement add() method for Customer.
+  * An interface to implement addCustomer() method for CustomersList.
   *
   * @author Vanni Gallo
   * @version 1.0.0
   */
- interface ICustomer {
+public interface ICustomersList {
     /**
-     * Add a new entity Customer.
+     * Add a new Customer on the list.
      * Info needed are: name, surname, email, address and credit card.
      * @param name of the customer
      * @param surname of the customer
@@ -16,10 +18,6 @@ package backend.entities;
      * @param address of the customer
      * @param creditCard of the customer
      */
-    public Customer add(String name, String surname, String email, String address, String creditCard);
-    
-    /**
-     * Customer's getters.
-     */
-     public String getSurname();
- }
+    public void addCustomer(String name, String surname, String email, String address, String creditCard);
+}
+ 

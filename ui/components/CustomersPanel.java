@@ -16,7 +16,7 @@ import backend.entities.Data;
  */
 public class CustomersPanel {
     // fields
-    private Customers customers;
+    private CustomersList customers;
     private JPanel customersPanel;
     private JLabel totalCustomersLabel;
     
@@ -24,23 +24,23 @@ public class CustomersPanel {
      * Create the Customers panel.
      * 
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param customers The instance of the Customers class.
+     * @param customers The instance of the CustomersList class.
      */
-    public CustomersPanel(JPanel mainUIContentPane, Customers customers) {
+    public CustomersPanel(JPanel mainUIContentPane, CustomersList customers) {
         this.customers = customers;
         this.customersPanel = new JPanel();
         this.customersPanel.setBackground(Color.DARK_GRAY);       
         this.customersPanel.setLayout(new BoxLayout(this.customersPanel, BoxLayout.Y_AXIS));   
         this.customersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        this.totalCustomersLabel = new JLabel("Total Customers: " + this.customers.getCustomersList().size());
+        this.totalCustomersLabel = new JLabel("Total Customers: " + this.customers.getEntitiesList().size());
         this.totalCustomersLabel.setForeground(Color.WHITE);
         this.customersPanel.add(this.totalCustomersLabel);
         JButton add = new JButton("Add Customer");
         add.addActionListener(e -> System.out.println("Button clicked add!"));
         this.customersPanel.add(add);
         this.customersPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-        for (int i = 0; i < this.customers.getCustomersList().size(); i++) {
-            Customer customer = this.customers.getCustomersList().get(i);
+        for (int i = 0; i < this.customers.getEntitiesList().size(); i++) {
+            Customer customer = (Customer)this.customers.getEntitiesList().get(i);
             String id = customer.getId();
             String name = customer.getName() + " " + customer.getSurname();
             setCustomersPanelDetails(id, name);
@@ -75,10 +75,10 @@ public class CustomersPanel {
         panel.add(update);
         JButton delete = new JButton("Delete Customer");
         delete.addActionListener(e -> {
-            customers.deleteCustomer(id);
+            customers.deleteEntity(id);
             this.customersPanel.remove(panel);
             refreshCustomersPanel(this.customersPanel);
-            this.totalCustomersLabel.setText("Total Customers: " + this.customers.getCustomersList().size());
+            this.totalCustomersLabel.setText("Total Customers: " + this.customers.getEntitiesList().size());
         });
         panel.add(delete);
         
@@ -100,7 +100,7 @@ public class CustomersPanel {
      * @param id The Customer id.
      */
     private void createUpdatePanel(JLabel label, String id) {
-        HashMap<Data, String> customerData = this.customers.getCustomerData(id);
+        HashMap<Data, String> customerData = this.customers.getEntityData(id);
         JFrame frame = new JFrame("Update Customer");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 200);
@@ -124,12 +124,12 @@ public class CustomersPanel {
         JButton updateBtn = new JButton("Update");
         updateBtn.setForeground(new Color(0, 153, 0));
         updateBtn.addActionListener(e -> {
-            this.customers.updateCustomerData(id, Data.NAME, nameField.getText());
-            this.customers.updateCustomerData(id, Data.SURNAME, surnameField.getText());
-            this.customers.updateCustomerData(id, Data.EMAIL, emailField.getText());
-            this.customers.updateCustomerData(id, Data.ADDRESS, addressField.getText());
-            this.customers.updateCustomerData(id, Data.CREDIT_CARD, creditCardField.getText());
-            HashMap<Data, String> updatedCustomerData = this.customers.getCustomerData(id);
+            this.customers.updateEntityData(id, Data.NAME, nameField.getText());
+            this.customers.updateEntityData(id, Data.SURNAME, surnameField.getText());
+            this.customers.updateEntityData(id, Data.EMAIL, emailField.getText());
+            this.customers.updateEntityData(id, Data.ADDRESS, addressField.getText());
+            this.customers.updateEntityData(id, Data.CREDIT_CARD, creditCardField.getText());
+            HashMap<Data, String> updatedCustomerData = this.customers.getEntityData(id);
             label.setText(updatedCustomerData.get(Data.NAME) + " " + updatedCustomerData.get(Data.SURNAME));
             frame.dispose();
         });
