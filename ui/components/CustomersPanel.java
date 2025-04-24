@@ -31,12 +31,12 @@ public class CustomersPanel {
         this.customersPanel = new JPanel();
         this.customersPanel.setBackground(Color.DARK_GRAY);       
         this.customersPanel.setLayout(new BoxLayout(this.customersPanel, BoxLayout.Y_AXIS));   
-        this.customersPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        this.customersPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalCustomersLabel = new JLabel("Total Customers: " + this.customers.getEntitiesList().size());
         this.totalCustomersLabel.setForeground(Color.WHITE);
         this.customersPanel.add(this.totalCustomersLabel);
         JButton add = new JButton("Add Customer");
-        add.addActionListener(e -> System.out.println("Button clicked add!"));
+        add.addActionListener(e -> createAddFrame());
         this.customersPanel.add(add);
         this.customersPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         for (int i = 0; i < this.customers.getEntitiesList().size(); i++) {
@@ -47,7 +47,13 @@ public class CustomersPanel {
             this.customersPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
         
-        mainUIContentPane.add(this.customersPanel, BorderLayout.WEST);
+        JScrollPane scrollPane = new JScrollPane(this.customersPanel);
+        
+        // Optional: control when scrollbars appear
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        mainUIContentPane.add(scrollPane, BorderLayout.WEST);
     }
     
     /**
@@ -71,7 +77,7 @@ public class CustomersPanel {
         history.addActionListener(e -> System.out.println("Button clicked!" + id));
         panel.add(history);
         JButton update = new JButton("Update Customer");
-        update.addActionListener(e -> createUpdatePanel(labelName, id));
+        update.addActionListener(e -> createUpdateFrame(labelName, id));
         panel.add(update);
         JButton delete = new JButton("Delete Customer");
         delete.addActionListener(e -> {
@@ -99,14 +105,13 @@ public class CustomersPanel {
      * @param label The Label of the Customer panel to update the name showed.
      * @param id The Customer id.
      */
-    private void createUpdatePanel(JLabel label, String id) {
+    private void createUpdateFrame(JLabel label, String id) {
         HashMap<Data, String> customerData = this.customers.getEntityData(id);
         JFrame frame = new JFrame("Update Customer");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(700, 200);
     
         // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(3, 2, 5, 5)); // 3 rows, 2 cols, spacing
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
         updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
     
         // Input components
@@ -148,12 +153,82 @@ public class CustomersPanel {
         updatePanel.add(addressField);
         updatePanel.add(creditCardLabel);
         updatePanel.add(creditCardField);
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
         updatePanel.add(updateBtn);
         updatePanel.add(cancelBtn);
     
         // Add updatePanel to frame
         frame.add(updatePanel);
         
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Create a new frame panel to update customer data.
+     * 
+     * @param label The Label of the Customer panel to update the name showed.
+     * @param id The Customer id.
+     */
+    private void createAddFrame() {
+        JFrame frame = new JFrame("Add Customer");
+        frame.setSize(700, 200);
+
+        // Create a panel and use GridLayout for label + field pairs
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Input components
+        JLabel nameLabel = new JLabel("Name:");
+        JTextField nameField = new JTextField("", 15);
+        JLabel surnameLabel = new JLabel("Surname:");
+        JTextField surnameField = new JTextField("", 15);
+        JLabel emailLabel = new JLabel("Email:");
+        JTextField emailField = new JTextField("", 15);
+        JLabel addressLabel = new JLabel("Address:");
+        JTextField addressField = new JTextField("", 15);
+        JLabel creditCardLabel = new JLabel("Credit Card:");
+        JTextField creditCardField = new JTextField("", 15);
+
+        JButton addBtn = new JButton("Add");
+        addBtn.setForeground(new Color(0, 153, 0));
+        addBtn.addActionListener(e -> {
+            this.customers.addCustomer(nameField.getText(), surnameField.getText(), emailField.getText(), addressField.getText(), creditCardField.getText());
+            this.totalCustomersLabel.setText("Total Customers: " + this.customers.getEntitiesList().size());
+            Customer customer = (Customer)this.customers.getEntitiesList().getLast();
+            String id = customer.getId();
+            String name = customer.getName() + " " + customer.getSurname();
+            setCustomersPanelDetails(id, name);
+            this.customersPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            frame.dispose();
+        });
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setForeground(new Color(255, 153, 0));
+        cancelBtn.addActionListener(e -> frame.dispose());
+
+        // Add components to the updatePanel
+        updatePanel.add(nameLabel);
+        updatePanel.add(nameField);
+        updatePanel.add(surnameLabel);
+        updatePanel.add(surnameField);
+        updatePanel.add(emailLabel);
+        updatePanel.add(emailField);
+        updatePanel.add(addressLabel);
+        updatePanel.add(addressField);
+        updatePanel.add(creditCardLabel);
+        updatePanel.add(creditCardField);
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(addBtn);
+        updatePanel.add(cancelBtn);
+
+        // Add updatePanel to frame
+        frame.add(updatePanel);
+
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
         frame.setVisible(true);
