@@ -15,14 +15,14 @@ public class Good {
     public String description;
     public int quantity;
     public String supplier;
-    public int price;
+    public float price;
     public String id;
     
     /**
      * Add a new warehouse good.
      * Info needed are: name, description, available quantity and supplier name.
      */
-    public Good(String name, String description, int quantity, String supplier, int price) {
+    public Good(String name, String description, int quantity, String supplier, float price) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
@@ -67,11 +67,15 @@ public class Good {
         return this.quantity;
     }
     
-    public int getPrice() {
+    public float getPrice() {
         return this.price;
     }
     
     public String getId() {
         return this.id;
+    }
+    
+    public String getDescription() {
+        return this.description;
     }
 }
