@@ -35,6 +35,7 @@ abstract class EntitiesPanel {
     private EntitiesList entities;
     private JPanel entitiesPanel;
     private JLabel totalEntitiesLabel;
+    private int padding = 0;
     
     /**
      * Create the Entities panel.
@@ -42,7 +43,7 @@ abstract class EntitiesPanel {
      * @param mainUIContentPane The contentPane that is created in MainUI.
      * @param entities The instance of the EntitiesList class.
      */
-    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities) {
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, String region) {
         this.entities = entities;
         this.entitiesPanel = new JPanel();
         this.entitiesPanel.setBackground(Color.DARK_GRAY);       
@@ -66,7 +67,7 @@ abstract class EntitiesPanel {
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        mainUIContentPane.add(scrollPane, BorderLayout.WEST);
+        mainUIContentPane.add(scrollPane, region);
     }
     
     /**
@@ -109,6 +110,13 @@ abstract class EntitiesPanel {
      }     
      protected JPanel getEntitiesPanel() {
         return this.entitiesPanel;
+     }
+     
+     /**
+     * Setters.
+     */
+     protected void setInputsPadding(int padding) {
+        this.padding = padding;
      }
      
      /**
@@ -204,9 +212,9 @@ abstract class EntitiesPanel {
             updatePanel.add(field.getLabel()); // JLabel
             updatePanel.add(field.getTextField()); // JTextField
         }
-        updatePanel.add(new JLabel(""));
-        updatePanel.add(new JLabel(""));
-        updatePanel.add(new JLabel(""));
+        for (int i = 0; i < this.padding; i++) {
+            updatePanel.add(new JLabel("")); // Empty labels for padding
+        }
         updatePanel.add(confirmBtn);
         updatePanel.add(cancelBtn);
 

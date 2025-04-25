@@ -18,8 +18,9 @@ public class CustomersPanel extends EntitiesPanel {
     /**
      * Constructor for the CustomersPanel.
      */
-     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers) {
-         createEntitiesPanel(mainUIContentPane, customers);
+     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, String region) {
+         setInputsPadding(3);
+         createEntitiesPanel(mainUIContentPane, customers, region);
      }
     
     /**

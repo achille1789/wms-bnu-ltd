@@ -53,9 +53,9 @@ public class MainUI {
         // Specify the layout manager with nice spacing
         contentPane.setLayout(new BorderLayout(6, 6));
         
-        new CustomersPanel(contentPane, this.customers);
+        new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
         new GoodsPanel(contentPane);
-        new SuppliersPanel(contentPane);
+        new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
         
         // Create a label at the bottom for status message
         String versionText = NavBar.VERSION;
