@@ -1,4 +1,4 @@
-package entities;
+package backend.entities;
 
 import java.util.HashMap;
 import java.util.ArrayList;
@@ -10,7 +10,7 @@ import java.util.List;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-abstract class Entity {
+public abstract class Entity {
     // The fields.
     protected HashMap<Data, String> entityData = new HashMap<>();
     protected List<String> orderHistory = new ArrayList<>(); // TODO: set a proper type
@@ -44,5 +44,9 @@ abstract class Entity {
      */
     public String getName() {
         return entityData.get(Data.NAME);
+    }
+    
+    public String getId() {
+        return entityData.get(Data.ID);
     }
 }

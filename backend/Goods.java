@@ -1,9 +1,11 @@
+package backend;
+
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashMap;
 
-import goods.Good;
-import goods.Data;
+import backend.goods.*;
+import backend.Logger;
 
 /**
  * A class that handles the list of warehouse Goods.
@@ -11,27 +13,21 @@ import goods.Data;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- class Goods {
+ public class Goods {
     // The fields.
     private List<Good> goodsList = new LinkedList<>();
     
-    // Constructor should be uncommented only for debugging
-//     public Goods() {
-//         Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni ltd");
-//         Good good2 = new Good("Cement", "Construction cement", 50, "Mark ltd");
-//         goodsList.add(good1);
-//         goodsList.add(good2);
-//         Logger.info("Added 2 warehouse goods for debugging");
-//     }
-    
     /**
-     * Establish name matching.
-     * @param name the name to match
-     * @param itemIndex the index of the good in the list
-     * @return true if the name matches the good data
+     * @param prepopulated to instantiate the class with 2 warehouse goods for debugging
      */
-    private boolean isNameMatching(String name, int itemIndex) {
-        return name.toLowerCase().equals(goodsList.get(itemIndex).getName().toLowerCase());
+    public Goods(boolean prepopulated) {
+        if (prepopulated) {
+            Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni&Sons ltd", 5);
+            Good good2 = new Good("Cement", "Construction cement", 50, "Mark&Friends ltd", 15);
+            goodsList.add(good1);
+            goodsList.add(good2);
+            Logger.info("Added 2 warehouse goods for debugging");
+        }
     }
     
     // TODO: handle wrong input data
@@ -43,20 +39,10 @@ import goods.Data;
      * @param quantity the available quantity of the good
      * @param supplier the name of the supplier
      */
-    public void addGood(String name, String description, int quantity, String supplier) {
-        Good good = new Good(name, description, quantity, supplier);
-        boolean exists = false;
-        for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
-                Logger.error("Good already exists, aborted");
-                exists = true;
-                break;
-            }
-        }
-        if (!exists) {
-            goodsList.add(good);
-            Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
-        }
+    public void addGood(String name, String description, int quantity, String supplier, int price) {
+        Good good = new Good(name, description, quantity, supplier, price);
+        goodsList.add(good);
+        Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
     }
     
     /**
@@ -84,10 +70,10 @@ import goods.Data;
      * @param name the name of the good
      * @return a HashMap with all the Good data
      */
-    public HashMap<Data, String> getGoodData(String name) {
+    public HashMap<Data, String> getGoodData(String id) {
         HashMap<Data, String> goodData = null;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 goodData = goodsList.get(i).getAllData();
                 break;
             }
@@ -103,10 +89,10 @@ import goods.Data;
      * @param name the name of the good
      * @return the quantity of the good
      */
-    public int getGoodQuantity(String name) {
+    public int getGoodQuantity(String id) {
         int quantity = -1;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 quantity = goodsList.get(i).getQuantity();
                 break;
             }
@@ -123,10 +109,10 @@ import goods.Data;
      * @param name the name of the good
      * @param quantity the new quantity of the good
      */
-    public void updateGoodQuantity(String name, int quantity) {
+    public void updateGoodQuantity(String id, int quantity) {
         boolean found = false;
         for (int i = 0; i < goodsList.size(); i++) {
-            if (isNameMatching(name, i)) {
+            if (id.equals(goodsList.get(i).getId())) {
                 goodsList.get(i).setQuantity(quantity);
                 Logger.info("Good quantity updated: " + goodsList.get(i).getQuantity());
                 found = true;
