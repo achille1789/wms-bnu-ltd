@@ -18,7 +18,8 @@ public class SuppliersPanel {
     public SuppliersPanel(JPanel mainUIContentPane) {        
         JPanel panel = new JPanel();
         panel.setBackground(Color.darkGray);
-        panel.setSize(300,300);
+        panel.setPreferredSize(new Dimension(250, 100));
+//         panel.setSize(300,300);
         FlowLayout layout = new FlowLayout();
         layout.setHgap(10);
         layout.setVgap(10);

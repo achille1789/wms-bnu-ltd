@@ -1,5 +1,4 @@
 import ui.MainUI;
-import backend.*;
 
 /**
  * Main is the starting class that will launch that whole project.
@@ -20,6 +19,6 @@ public class Main {
             }
         }
         
-        new MainUI(new CustomersList(prepopulated), new Goods(prepopulated), new SuppliersList(prepopulated));
+        new MainUI(prepopulated);
     }
 }

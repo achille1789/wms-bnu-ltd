@@ -33,6 +33,7 @@ public class CustomersPanel {
         this.customersPanel.setLayout(new BoxLayout(this.customersPanel, BoxLayout.Y_AXIS));   
         this.customersPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalCustomersLabel = new JLabel("Total Customers: " + this.customers.getEntitiesList().size());
+        this.totalCustomersLabel.setPreferredSize(new Dimension(160, 50));
         this.totalCustomersLabel.setForeground(Color.WHITE);
         this.customersPanel.add(this.totalCustomersLabel);
         JButton add = new JButton("Add Customer");
@@ -47,9 +48,8 @@ public class CustomersPanel {
             this.customersPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         }
         
-        JScrollPane scrollPane = new JScrollPane(this.customersPanel);
-        
         // Optional: control when scrollbars appear
+        JScrollPane scrollPane = new JScrollPane(this.customersPanel);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         

@@ -25,10 +25,10 @@ public class MainUI {
     /**
      * Create an MainUI and display its GUI on screen.
      */
-    public MainUI(CustomersList customers, Goods goods, SuppliersList suppliers) {
-        this.customers = customers;
-        this.goods = goods;
-        this.suppliers = suppliers;
+    public MainUI(boolean prepopulated) {
+        this.customers = new CustomersList(prepopulated);
+        this.goods = new Goods(prepopulated);
+        this.suppliers = new SuppliersList(prepopulated);
         makeFrame();
     }
     
@@ -37,6 +37,7 @@ public class MainUI {
      */
     private void makeFrame() {
         frame = new JFrame("MainUI");
+        frame.setSize(800, 700);
         
         frame.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent windowEvent) {
@@ -61,7 +62,7 @@ public class MainUI {
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
         
         // building is done - arrange the components     
-        frame.pack();
+//         frame.pack();
         
         // place the frame at the center of the screen and show
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();

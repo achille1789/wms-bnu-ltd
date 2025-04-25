@@ -18,7 +18,7 @@ public class GoodsPanel {
     public GoodsPanel(JPanel mainUIContentPane) {        
         JPanel panel = new JPanel();
         panel.setBackground(Color.darkGray);
-        panel.setSize(300,300);
+//         panel.setSize(300,300);
         FlowLayout layout = new FlowLayout();
         layout.setHgap(10);
         layout.setVgap(10);

@@ -13,7 +13,7 @@ import backend.entities.Data;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-abstract class EntitiesList {
+public abstract class EntitiesList {
     // The fields.
     protected List<Entity> entitiesList = new LinkedList<>();
     
@@ -22,7 +22,9 @@ abstract class EntitiesList {
      * @param type of log.
      * @param message to log.
      */
-    protected abstract void printlog(LogType type, String message);
+    protected void printlog(LogType type, String message) {
+        Logger.debug(message);
+    }
 
     /**
      * Get the list of entities.
