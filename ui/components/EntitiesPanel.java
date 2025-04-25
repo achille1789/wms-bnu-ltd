@@ -1,0 +1,239 @@
+package ui.components;
+
+import java.awt.*;
+import javax.swing.*;
+import java.util.HashMap;
+
+import backend.*;
+import backend.entities.*;
+
+enum Labels {
+    TOTAL_ENTITIES_LABEL,
+    UPDATE_ENTITY_FRAME_LABEL,
+    ADD_ENTITY_FRAME_LABEL,
+    ADD_ENTITY_BTN,
+    UPDATE_ENTITY_BTN,
+    DELETE_ENTITY_BTN,
+    UPDATE_ENTITY_FRAME_BTN,
+    ADD_ENTITY_FRAME_BTN,
+}
+
+enum Action {
+    ADD,
+    UPDATE,
+}
+
+/**
+ * EntitiesPanel is the class that generates the Entities Panel.
+ * It is an abstract class that is used to create the Customers and Suppliers panel.
+ * 
+ * @author Vanni Gallo
+ * @version 1.0
+ */
+abstract class EntitiesPanel {
+    // fields
+    private EntitiesList entities;
+    private JPanel entitiesPanel;
+    private JLabel totalEntitiesLabel;
+    
+    /**
+     * Create the Entities panel.
+     * 
+     * @param mainUIContentPane The contentPane that is created in MainUI.
+     * @param entities The instance of the EntitiesList class.
+     */
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities) {
+        this.entities = entities;
+        this.entitiesPanel = new JPanel();
+        this.entitiesPanel.setBackground(Color.DARK_GRAY);       
+        this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   
+        this.entitiesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.totalEntitiesLabel = new JLabel(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
+        this.totalEntitiesLabel.setPreferredSize(new Dimension(160, 50));
+        this.totalEntitiesLabel.setForeground(Color.WHITE);
+        this.entitiesPanel.add(this.totalEntitiesLabel);
+        JButton add = new JButton(getLabelsText(Labels.ADD_ENTITY_BTN));
+        add.addActionListener(e -> createEntityFieldsFrame(Action.ADD, null, ""));
+        this.entitiesPanel.add(add);
+        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        for (int i = 0; i < this.entities.getEntitiesList().size(); i++) {
+            Entity entity = this.entities.getEntitiesList().get(i);
+            createEntityPanel(entity);
+        }
+        
+        // set vertical scrollbars
+        JScrollPane scrollPane = new JScrollPane(this.entitiesPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        mainUIContentPane.add(scrollPane, BorderLayout.WEST);
+    }
+    
+    /**
+     * Get expected text for each label.
+     * 
+     * @param label the label name.
+     * @return the label text.
+     */
+    protected String getLabelsText(Labels label) {
+        switch (label) {
+        case Labels.TOTAL_ENTITIES_LABEL:
+            return "Total Entities: ";
+        case Labels.UPDATE_ENTITY_FRAME_LABEL:
+            return "Update Entity";
+        case Labels.ADD_ENTITY_FRAME_LABEL:
+            return "Add Entity";
+        case Labels.ADD_ENTITY_BTN:
+            return "Add Entity";
+        case Labels.UPDATE_ENTITY_BTN:
+            return "Update Entity";
+        case Labels.DELETE_ENTITY_BTN:
+            return "Delete Entity";
+        case Labels.UPDATE_ENTITY_FRAME_BTN:
+            return "Update Entity";
+        case Labels.ADD_ENTITY_FRAME_BTN:
+            return "Add Entity";
+        default:
+            return "";
+        }
+    }
+    
+    /**
+     * Getters.
+     */
+     protected EntitiesList getEntities() {
+        return this.entities;
+     }     
+     protected JLabel getTotalEntitiesLabel() {
+        return this.totalEntitiesLabel;
+     }     
+     protected JPanel getEntitiesPanel() {
+        return this.entitiesPanel;
+     }
+    
+    /**
+     * Create a panel for an Entity.
+     */
+    private void createEntityPanel(Entity entity) {
+        String id = entity.getId();
+        String name = getEntityName(entity);
+        setEntitiesPanelDetails(id, name);
+        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+    
+    /**
+     * Create a panel for each entities.
+     * 
+     * @param id The Entity id.
+     * @param name The Entity name and surname chained in one string.
+     */
+    protected void setEntitiesPanelDetails(String id, String name) {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.LIGHT_GRAY);       
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        JLabel labelName = new JLabel(name);
+        panel.add(labelName);
+        panel.add(Box.createRigidArea(new Dimension(5, 10)));
+        
+        JButton order = new JButton("Order");
+        order.addActionListener(e -> System.out.println("Button clicked!" + id));
+        panel.add(order);
+        JButton history = new JButton("Order History");
+        history.addActionListener(e -> System.out.println("Button clicked!" + id));
+        panel.add(history);
+        JButton update = new JButton(getLabelsText(Labels.UPDATE_ENTITY_BTN));
+        update.addActionListener(e -> createEntityFieldsFrame(Action.UPDATE,labelName, id));
+        panel.add(update);
+        JButton delete = new JButton(getLabelsText(Labels.DELETE_ENTITY_BTN));
+        delete.addActionListener(e -> deleteEntityPanel(panel, id));
+        panel.add(delete);
+        
+        this.entitiesPanel.add(panel);
+    }
+    
+    /**
+     * Delete the panel of the selected Entity.
+     */
+    private void deleteEntityPanel(JPanel panel, String id) {
+        this.entities.deleteEntity(id);
+        this.entitiesPanel.remove(panel);
+        this.entitiesPanel.revalidate();
+        this.entitiesPanel.repaint();
+        this.totalEntitiesLabel.setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
+    }
+    
+    /**
+     * Create a new frame panel to update entitie data.
+     * 
+     * @param label The Label of the Entity panel to update the name showed.
+     * @param id The Entity id.
+     */
+    private void createEntityFieldsFrame(Action action, JLabel label, String id) {
+        JFrame frame = new JFrame(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_LABEL : Labels.ADD_ENTITY_FRAME_LABEL));
+        frame.setSize(700, 200);
+
+        // Create a panel and use GridLayout for label + field pairs
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Input components
+        HashMap<Data, InputPair> entityFields = getEntityFields(id);
+
+        JButton confirmBtn = new JButton(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_BTN : Labels.ADD_ENTITY_FRAME_BTN));
+        confirmBtn.setForeground(new Color(0, 153, 0));
+        confirmBtn.addActionListener(e -> {
+            if (label == null) {
+                addEntityPanel(frame, entityFields);
+            } else {
+                updateEntityPanel(frame, label, id, entityFields);
+            }
+        });
+        JButton cancelBtn = new JButton("Cancel");
+        cancelBtn.setForeground(new Color(255, 153, 0));
+        cancelBtn.addActionListener(e -> frame.dispose());
+
+        // Add components to the updatePanel
+        for (InputPair field : entityFields.values()) {
+            updatePanel.add(field.getLabel()); // JLabel
+            updatePanel.add(field.getTextField()); // JTextField
+        }
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(new JLabel(""));
+        updatePanel.add(confirmBtn);
+        updatePanel.add(cancelBtn);
+
+        // Add updatePanel to frame
+        frame.add(updatePanel);
+
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Get the Entity name.
+     */
+    private String getEntityName(Entity entity) {
+        if (entity instanceof Customer) {
+            Customer customer = (Customer) entity;
+            return customer.getName() + " " + customer.getSurname();
+        }
+        return entity.getName();
+    }
+    
+    /**
+     * Get the Entity fields.
+     */
+    protected abstract HashMap<Data, InputPair> getEntityFields(String id);
+    
+    /**
+     * Update the panel of the selected Entity.
+     */
+    protected abstract void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields);
+
+    /**
+     * Add the panel of the new Entity.
+     */
+    protected abstract void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields);
+}
