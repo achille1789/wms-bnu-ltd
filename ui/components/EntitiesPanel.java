@@ -78,21 +78,21 @@ abstract class EntitiesPanel {
     protected String getLabelsText(Labels label) {
         switch (label) {
         case Labels.TOTAL_ENTITIES_LABEL:
-            return "Total Entities: ";
+            return "Total " + getEntityType(true) + ": ";
         case Labels.UPDATE_ENTITY_FRAME_LABEL:
-            return "Update Entity";
+            return "Update " + getEntityType(false);
         case Labels.ADD_ENTITY_FRAME_LABEL:
-            return "Add Entity";
+            return "Add " + getEntityType(false);
         case Labels.ADD_ENTITY_BTN:
-            return "Add Entity";
+            return "Add " + getEntityType(false);
         case Labels.UPDATE_ENTITY_BTN:
-            return "Update Entity";
+            return "Update " + getEntityType(false);
         case Labels.DELETE_ENTITY_BTN:
-            return "Delete Entity";
+            return "Delete " + getEntityType(false);
         case Labels.UPDATE_ENTITY_FRAME_BTN:
-            return "Update Entity";
+            return "Update " + getEntityType(false);
         case Labels.ADD_ENTITY_FRAME_BTN:
-            return "Add Entity";
+            return "Add " + getEntityType(false);
         default:
             return "";
         }
@@ -110,16 +110,13 @@ abstract class EntitiesPanel {
      protected JPanel getEntitiesPanel() {
         return this.entitiesPanel;
      }
-    
-    /**
-     * Create a panel for an Entity.
-     */
-    private void createEntityPanel(Entity entity) {
-        String id = entity.getId();
-        String name = getEntityName(entity);
-        setEntitiesPanelDetails(id, name);
-        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
-    }
+     
+     /**
+      * Get the Entity type to populate the labels.
+      */
+     protected String getEntityType(boolean plural) {
+         return plural ? "Entities" : "Entity";
+     }
     
     /**
      * Create a panel for each entities.
@@ -151,6 +148,16 @@ abstract class EntitiesPanel {
         this.entitiesPanel.add(panel);
     }
     
+    /**
+     * Create a panel for an Entity.
+     */
+    private void createEntityPanel(Entity entity) {
+        String id = entity.getId();
+        String name = getEntityName(entity);
+        setEntitiesPanelDetails(id, name);
+        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+        
     /**
      * Delete the panel of the selected Entity.
      */

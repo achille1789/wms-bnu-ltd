@@ -23,34 +23,11 @@ public class CustomersPanel extends EntitiesPanel {
      }
     
     /**
-     * Get expected text for each label.
-     * Override method of EntitiesPanel.
-     * 
-     * @param label the label name.
-     * @return the label text.
-     */
+    * Get the Entity type to populate the labels.
+    */
     @Override
-    protected String getLabelsText(Labels label) {
-        switch (label) {
-        case Labels.TOTAL_ENTITIES_LABEL:
-            return "Total Customers: ";
-        case Labels.UPDATE_ENTITY_FRAME_LABEL:
-            return "Update Customer";
-        case Labels.ADD_ENTITY_FRAME_LABEL:
-            return "Add Customer";
-        case Labels.ADD_ENTITY_BTN:
-            return "Add Customer";
-        case Labels.UPDATE_ENTITY_BTN:
-            return "Update Customer";
-        case Labels.DELETE_ENTITY_BTN:
-            return "Delete Customer";
-        case Labels.UPDATE_ENTITY_FRAME_BTN:
-            return "Update Customer";
-        case Labels.ADD_ENTITY_FRAME_BTN:
-            return "Add Customer";
-        default:
-            return "";
-        }
+    protected String getEntityType(boolean plural) {
+        return plural ? "Customers" : "Customer";
     }
     
     /**
