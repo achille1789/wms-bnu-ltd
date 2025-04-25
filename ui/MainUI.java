@@ -24,6 +24,8 @@ public class MainUI {
     
     /**
      * Create an MainUI and display its GUI on screen.
+     *
+     * @param prepopulated If true, the UI will be prepopulated with some data.
      */
     public MainUI(boolean prepopulated) {
         this.customers = new CustomersList(prepopulated);
@@ -36,7 +38,7 @@ public class MainUI {
      * Create the Swing frame and its content.
      */
     private void makeFrame() {
-        frame = new JFrame("MainUI");
+        frame = new JFrame("BNU Industry Solutions Ltd.");
         frame.setSize(800, 700);
         
         frame.addWindowListener(new WindowAdapter() {
@@ -47,22 +49,14 @@ public class MainUI {
         
         JPanel contentPane = (JPanel)frame.getContentPane();
         contentPane.setBorder(new EmptyBorder(12, 12, 12, 12));
-
         new NavBar(frame);
-        
-        // Specify the layout manager with nice spacing
-        contentPane.setLayout(new BorderLayout(6, 6));
-        
+        contentPane.setLayout(new BorderLayout(6, 6));        
         new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
         new GoodsPanel(contentPane);
         new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
         
-        // Create a label at the bottom for status message
         String versionText = NavBar.VERSION;
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
-        
-        // building is done - arrange the components     
-//         frame.pack();
         
         // place the frame at the center of the screen and show
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();

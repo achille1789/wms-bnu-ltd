@@ -12,6 +12,12 @@ public class InputPair {
     private JLabel label;
     private JTextField textField;
 
+    /**
+     * Constructor to create a new InputPair.
+     * 
+     * @param label The label of the input.
+     * @param textField The text field of the input.
+     */
     public InputPair(JLabel label, JTextField textField) {
         this.label = label;
         this.textField = textField;

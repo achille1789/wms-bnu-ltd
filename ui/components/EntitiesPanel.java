@@ -7,6 +7,9 @@ import java.util.HashMap;
 import backend.*;
 import backend.entities.*;
 
+/**
+ * Enum to define the labels used in the EntitiesPanel.
+ */
 enum Labels {
     TOTAL_ENTITIES_LABEL,
     UPDATE_ENTITY_FRAME_LABEL,
@@ -18,6 +21,9 @@ enum Labels {
     ADD_ENTITY_FRAME_BTN,
 }
 
+/**
+ * Enum to define the actions of the entity panel.
+ */
 enum Action {
     ADD,
     UPDATE,
@@ -42,6 +48,7 @@ abstract class EntitiesPanel {
      * 
      * @param mainUIContentPane The contentPane that is created in MainUI.
      * @param entities The instance of the EntitiesList class.
+     * @param region of the UI where display the panel.
      */
     protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, String region) {
         this.entities = entities;
@@ -121,13 +128,15 @@ abstract class EntitiesPanel {
      
      /**
       * Get the Entity type to populate the labels.
+      * @param plural true if the label is plural, false otherwise.
+      * @return the entity type as string.
       */
      protected String getEntityType(boolean plural) {
          return plural ? "Entities" : "Entity";
      }
     
     /**
-     * Create a panel for each entities.
+     * Set entity details into the panel.
      * 
      * @param id The Entity id.
      * @param name The Entity name and surname chained in one string.
@@ -178,8 +187,9 @@ abstract class EntitiesPanel {
     }
     
     /**
-     * Create a new frame panel to update entitie data.
+     * Create a new frame panel to update entity data.
      * 
+     * @param action type: update or add.
      * @param label The Label of the Entity panel to update the name showed.
      * @param id The Entity id.
      */
@@ -228,6 +238,8 @@ abstract class EntitiesPanel {
     
     /**
      * Get the Entity name.
+     * @param entity The Entity to get the name from.
+     * @return the name of the Entity.
      */
     private String getEntityName(Entity entity) {
         if (entity instanceof Customer) {
@@ -239,16 +251,24 @@ abstract class EntitiesPanel {
     
     /**
      * Get the Entity fields.
+     * @param id of the Entity.
+     * @return the fields of the Entity.
      */
     protected abstract HashMap<Data, InputPair> getEntityFields(String id);
     
     /**
      * Update the panel of the selected Entity.
+     * @param frame where to display the update entity panel.
+     * @param label to give to the update panel.
+     * @param id of the Entity.
+     * @param entityFields the data of the entity.
      */
     protected abstract void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields);
 
     /**
      * Add the panel of the new Entity.
+     * @param frame where to display the add entity panel.
+     * @param entityFields the data needed by the entity.
      */
     protected abstract void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields);
 }

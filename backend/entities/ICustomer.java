@@ -20,6 +20,7 @@ package backend.entities;
     
     /**
      * Customer's getters.
+     * @return the surname of the customer
      */
      public String getSurname();
  }

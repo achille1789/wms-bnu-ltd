@@ -15,25 +15,43 @@ import backend.entities.Data;
  */
 public abstract class EntitiesList {
     // The fields.
-    protected List<Entity> entitiesList = new LinkedList<>();
+    private List<Entity> entitiesList = new LinkedList<>();
+    private String logEntityType = "Entity";
     
     /**
      * Get the list of entities.
      * @param type of log.
      * @param message to log.
      */
-    protected void printlog(LogType type, String message) {
-        Logger.debug(message);
+    private void printlog(LogType type, String message) {
+        switch (type) {
+            case LogType.ERROR:
+                Logger.error(message);
+                break;
+            case LogType.WARN:
+                Logger.warn(message);
+                break;
+            case LogType.INFO:
+            default:
+                Logger.info(message);
+        }
     }
+    
+    
+    /**
+     * Setters.
+     */
+     protected void setLogEntityType(String logEntityType) {
+        this.logEntityType = logEntityType;
+     }
 
     /**
-     * Get the list of entities.
-     * @return the list of entities.
+     * Getters.
      */
-    public List<Entity> getEntitiesList() {
-        return entitiesList;
-    }
-
+     public List<Entity> getEntitiesList() {
+        return this.entitiesList;
+     }
+     
     /**
      * Get data of the passed Entities.
      * @param name the name of the entity
@@ -49,7 +67,7 @@ public abstract class EntitiesList {
             }
         }
         if (entityData == null) {
-            printlog(LogType.ERROR, "Entity not found");
+            printlog(LogType.ERROR, this.logEntityType + " not found");
         }
         return entityData;
     }
@@ -65,13 +83,13 @@ public abstract class EntitiesList {
         for (int i = 0; i < entitiesList.size(); i++) {
             if (id.equals(entitiesList.get(i).getId())) {
                 entitiesList.get(i).update(key, value);
-                printlog(LogType.INFO, "Entity data updated: " + entitiesList.get(i).getAllData().toString());
+                printlog(LogType.INFO, this.logEntityType + " data updated: " + entitiesList.get(i).getAllData().toString());
                 found = true;
                 break;
             }
         }
         if (!found) {
-            printlog(LogType.ERROR, "Entity not found, data not updated");
+            printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
         }
     }
 
@@ -84,13 +102,13 @@ public abstract class EntitiesList {
         for (int i = 0; i < entitiesList.size(); i++) {
             if (id.equals(entitiesList.get(i).getId())) {
                 entitiesList.remove(i);
-                printlog(LogType.INFO, "Entity deleted");
+                printlog(LogType.INFO, this.logEntityType + " deleted");
                 found = true;
                 break;
             }
         }
         if (!found) {
-            printlog(LogType.ERROR, "Entity not found, data not updated");
+            printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
         }
     }
  }

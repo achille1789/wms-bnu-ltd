@@ -18,9 +18,10 @@ public class SuppliersList extends EntitiesList implements ISuppliersList {
      * @param prepopulated to instantiate the class with 2 suppliers for debugging
      */
     public SuppliersList(boolean prepopulated) {
+        setLogEntityType("Supplier");
         if (prepopulated) {
-            entitiesList.add(new Supplier().add("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30"));
-            entitiesList.add(new Supplier().add("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60"));
+            getEntitiesList().add(new Supplier().add("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30"));
+            getEntitiesList().add(new Supplier().add("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60"));
             Logger.info("Added 2 suppliers for debugging");
         }
     }
@@ -37,28 +38,7 @@ public class SuppliersList extends EntitiesList implements ISuppliersList {
      * @param sortCode the sort code of the supplier
      */
     public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
-        entitiesList.add(new Supplier().add(name, crn, email, address, bankAccount, sortCode));
-        Logger.info("Supplier added, data: " + entitiesList.getLast().getAllData().toString());
-    }
-    
-    /**
-     * Get the list of entities.
-     * @param type of log.
-     * @param message to log.
-     */
-    @Override
-    protected void printlog(LogType type, String message) {
-        message = message.replace("Entity", "Supplier");
-        switch (type) {
-            case LogType.ERROR:
-                Logger.error(message);
-                break;
-            case LogType.WARN:
-                Logger.warn(message);
-                break;
-            case LogType.INFO:
-            default:
-                Logger.info(message);
-        }
+        getEntitiesList().add(new Supplier().add(name, crn, email, address, bankAccount, sortCode));
+        Logger.info("Supplier added, data: " + getEntitiesList().getLast().getAllData().toString());
     }
 }

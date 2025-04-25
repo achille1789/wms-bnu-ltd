@@ -17,6 +17,9 @@ public class SuppliersPanel extends EntitiesPanel {
 
     /**
      * Constructor for the SuppliersPanel.
+     * @param mainUIContentPane The contentPane that is created in MainUI.
+     * @param customers The instance of the SuppliersList class.
+     * @param region of the UI where display the panel.
      */
      public SuppliersPanel(JPanel mainUIContentPane, SuppliersList suppliers, String region) {
          setInputsPadding(1);
@@ -25,6 +28,8 @@ public class SuppliersPanel extends EntitiesPanel {
     
     /**
     * Get the Entity type to populate the labels.
+    * @param plural true if the label is plural, false otherwise.
+    * @return the entity type as string.
     */
     @Override
     protected String getEntityType(boolean plural) {
@@ -34,6 +39,9 @@ public class SuppliersPanel extends EntitiesPanel {
     /**
      * Create a panel for an Supplier.
      * Override abstract method of EntitiesPanel.
+     *
+     * @param id of the supplier.
+     * @return a HashMap of Data and InputPair.
      */
     @Override
     protected HashMap<Data, InputPair> getEntityFields(String id) {
@@ -60,6 +68,11 @@ public class SuppliersPanel extends EntitiesPanel {
     /**
      * Update the panel of the selected Entity.
      * Override abstract method of EntitiesPanel.
+     *
+     * @param frame the JFrame of the panel.
+     * @param label the JLabel of the panel.
+     * @param id the id of the entity.
+     * @param entityFields the fields of the entity.
      */
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
@@ -77,7 +90,8 @@ public class SuppliersPanel extends EntitiesPanel {
 
     /**
      * Add the panel of the new Entity.
-     * Override abstract method of EntitiesPanel.
+     * @param frame where to display the add entity panel.
+     * @param entityFields the data needed by the entity.
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
