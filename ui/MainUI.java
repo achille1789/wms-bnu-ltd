@@ -19,7 +19,7 @@ public class MainUI {
     // fields
     private JFrame frame;
     private CustomersList customers;
-    private GoodsList goods;
+    private ItemsList items;
     private SuppliersList suppliers;
     
     /**
@@ -29,7 +29,7 @@ public class MainUI {
      */
     public MainUI(boolean prepopulated) {
         this.customers = new CustomersList(prepopulated);
-        this.goods = new GoodsList(prepopulated);
+        this.items = new ItemsList(prepopulated);
         this.suppliers = new SuppliersList(prepopulated);
         makeFrame();
     }
@@ -52,7 +52,7 @@ public class MainUI {
         new NavBar(frame);
         contentPane.setLayout(new BorderLayout(6, 6));        
         new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
-        new GoodsPanel(contentPane, this.goods);
+        new ItemsPanel(contentPane, this.items);
         new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
         
         String versionText = NavBar.VERSION;

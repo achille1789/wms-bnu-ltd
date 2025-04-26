@@ -1,4 +1,4 @@
-package backend.goods;
+package backend.items;
 
 /**
  * Enam with all the possible entity details
