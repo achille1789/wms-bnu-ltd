@@ -15,18 +15,26 @@ public class Item {
     public String description;
     public int quantity;
     public String supplier;
+    public String supplierId;
     public float price;
     public String id;
     
     /**
      * Add a new warehouse item.
-     * Info needed are: name, description, available quantity and supplier name.
+     * Info needed are: name, description, available quantity, supplier name and price.
+     *
+     * @param name the name of the item
+     * @param description the description of the item
+     * @param quantity the available quantity of the item
+     * @param supplier the supplier of the item
+     * @param price the price of the item
      */
-    public Item(String name, String description, int quantity, String supplier, float price) {
+    public Item(String name, String description, int quantity, String supplier, String supplierId, float price) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.supplier = supplier;
+        this.supplierId = supplierId;
         this.price = price;
         String rand = String.valueOf((int)(Math.random() * 1000));
         this.id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
@@ -45,6 +53,7 @@ public class Item {
         itemData.put(Data.DESCRIPTION, this.description);
         itemData.put(Data.QUANTITY, String.valueOf(this.quantity));
         itemData.put(Data.SUPPLIER, this.supplier);
+        itemData.put(Data.SUPPLIER_ID, this.supplierId);
         itemData.put(Data.PRICE, String.valueOf(this.price));
         return itemData;
     }
@@ -77,5 +86,9 @@ public class Item {
     
     public String getDescription() {
         return this.description;
+    }
+    
+    public String getSupplierId() {
+        return this.supplierId;
     }
 }

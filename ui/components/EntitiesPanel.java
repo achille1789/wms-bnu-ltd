@@ -42,6 +42,7 @@ abstract class EntitiesPanel {
     private JPanel entitiesPanel;
     private JLabel totalEntitiesLabel;
     private int padding = 0;
+    private OrdersList orders;
     
     /**
      * Create the Entities panel.
@@ -50,8 +51,9 @@ abstract class EntitiesPanel {
      * @param entities The instance of the EntitiesList class.
      * @param region of the UI where display the panel.
      */
-    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, String region) {
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, OrdersList orders, String region) {
         this.entities = entities;
+        this.orders = orders;
         this.entitiesPanel = new JPanel();
         this.entitiesPanel.setBackground(Color.DARK_GRAY);       
         this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   

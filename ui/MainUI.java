@@ -21,6 +21,8 @@ public class MainUI {
     private CustomersList customers;
     private ItemsList items;
     private SuppliersList suppliers;
+    private OrdersList suppliersOrders;
+    private OrdersList customersOrders;
     
     /**
      * Create an MainUI and display its GUI on screen.
@@ -31,6 +33,8 @@ public class MainUI {
         this.customers = new CustomersList(prepopulated);
         this.items = new ItemsList(prepopulated);
         this.suppliers = new SuppliersList(prepopulated);
+        this.suppliersOrders = new OrdersList();
+        this.customersOrders = new OrdersList();
         makeFrame();
     }
     
@@ -52,9 +56,9 @@ public class MainUI {
         new NavBar(frame);
         contentPane.setLayout(new BorderLayout(6, 6));        
         
-        new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
+        new CustomersPanel(contentPane, this.customers, this.customersOrders, BorderLayout.WEST);
         new ItemsPanel(contentPane, this.items, this.suppliers);
-        new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
+        new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, BorderLayout.EAST);
         
         String versionText = NavBar.VERSION;
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);

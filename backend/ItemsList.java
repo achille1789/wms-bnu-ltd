@@ -2,6 +2,7 @@ package backend;
 
 import java.util.List;
 import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import backend.items.*;
@@ -22,8 +23,8 @@ import backend.Logger;
      */
     public ItemsList(boolean prepopulated) {
         if (prepopulated) {
-            Item item1 = new Item("Brick", "Construction bricks", 100, "Vanni&Sons ltd", 5);
-            Item item2 = new Item("Cement", "Construction cement", 50, "Mark&Friends ltd", 15);
+            Item item1 = new Item("Brick", "Construction bricks", 100, "Hello&Sons ltd", "random-id1", 5);
+            Item item2 = new Item("Cement", "Construction cement", 50, "Bye&Friends ltd", "random-id2", 15);
             this.itemsList.add(item1);
             this.itemsList.add(item2);
             Logger.info("Added 2 warehouse items for debugging");
@@ -39,8 +40,8 @@ import backend.Logger;
      * @param quantity the available quantity of the item
      * @param supplier the name of the supplier
      */
-    public void addItem(String name, String description, int quantity, String supplier, float price) {
-        Item item = new Item(name, description, quantity, supplier, price);
+    public void addItem(String name, String description, int quantity, String supplier, String supplierId, float price) {
+        Item item = new Item(name, description, quantity, supplier, supplierId, price);
         this.itemsList.add(item);
         Logger.info("Item added in warehouse, data: " + this.itemsList.getLast().getAllData().toString());
     }
@@ -129,5 +130,20 @@ import backend.Logger;
         if (!found) {
             Logger.error("Item not found, data not updated");
         }
+    }
+    
+    /**
+     * Get Supplier List Items
+     * @param supplierId the id of the supplier
+     * @return the quantity of the item
+     */
+    public List<Item> getSupplierItems(String supplierId) {
+        List<Item> supplierItems = new ArrayList<>();
+        for (int i = 0; i < this.itemsList.size(); i++) {
+            if (supplierId.equals(this.itemsList.get(i).getSupplierId())) {
+                supplierItems.add(this.itemsList.get(i));
+            }
+        }
+        return supplierItems;
     }
  }

@@ -55,4 +55,24 @@ public class SuppliersList extends EntitiesList implements ISuppliersList {
         }
         return names;
     }
+    
+    /**
+     * Get a list of all the suppliers.
+     * @param name the name of the supplier
+     * @return the id of the supplier
+     */
+    public String getSupplierIdByName(String name) {
+        String id = null;
+        List<Entity> entitiesList = getEntitiesList();
+        for (int i = 0; i < entitiesList.size(); i++) {
+            if (name.equals(entitiesList.get(i).getName())) {
+                id = entitiesList.get(i).getId();
+                break;
+            }
+        }
+        if (id == null) {
+            Logger.error("Supplier id not found");
+        }
+        return id;
+    }
 }

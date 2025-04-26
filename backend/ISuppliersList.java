@@ -26,5 +26,12 @@ public interface ISuppliersList {
      * @return an array of all the suppliers
      */
     public String[] getSuppliersName();
+    
+    /**
+     * Get a list of all the suppliers.
+     * @param name the name of the supplier
+     * @return the id of the supplier
+     */
+    public String getSupplierIdByName(String name);
 }
  

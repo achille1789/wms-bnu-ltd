@@ -127,7 +127,8 @@ public class ItemsPanel {
             int quantity = Integer.parseInt(itemFields.get(Data.QUANTITY).getTextFieldString());
             String supplier = itemFields.get(Data.SUPPLIER).getDropListSelected();
             float price = Float.parseFloat(itemFields.get(Data.PRICE).getTextFieldString());
-            this.items.addItem(name, description, quantity, supplier, price);
+            String supplierId = this.suppliers.getSupplierIdByName(supplier);
+            this.items.addItem(name, description, quantity, supplier, supplierId, price);
             this.totalItemsLabel.setText(this.items.getItemsList().size() + " warehouse items in catalog");
             Item item = this.items.getItemsList().getLast();
             createItemsPanel(item);

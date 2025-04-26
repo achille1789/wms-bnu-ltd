@@ -9,5 +9,6 @@ public enum Data {
     DESCRIPTION,
     QUANTITY,
     SUPPLIER,
+    SUPPLIER_ID,
     PRICE,
 }
