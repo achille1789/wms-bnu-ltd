@@ -11,6 +11,7 @@ import javax.swing.*;
 public class InputPair {
     private JLabel label;
     private JTextField textField;
+    private JComboBox<String> dropList;
 
     /**
      * Constructor to create a new InputPair.
@@ -24,18 +25,35 @@ public class InputPair {
     }
     
     /**
+     * Constructor to create a new InputPair.
+     * 
+     * @param label The label of the input.
+     * @param dropList The droplist of string.
+     */
+    public InputPair(JLabel label, JComboBox<String> dropList) {
+        this.label = label;
+        this.dropList = dropList;
+    }
+    
+    /**
     * getters
     */    
     public JLabel getLabel() {
-        return label;
+        return this.label;
     }    
     public JTextField getTextField() {
-        return textField;
-    }    
+        return this.textField;
+    }   
+    public JComboBox<String> getDropList() {
+        return this.dropList;
+    }   
     public String getLabelString() {
-        return label.getText();
+        return this.label.getText();
     }        
     public String getTextFieldString() {
-        return textField.getText();
+        return this.textField.getText();
+    }
+    public String getDropListSelected() {
+        return (String) this.dropList.getSelectedItem();
     }
 }

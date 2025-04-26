@@ -51,8 +51,9 @@ public class MainUI {
         contentPane.setBorder(new EmptyBorder(12, 12, 12, 12));
         new NavBar(frame);
         contentPane.setLayout(new BorderLayout(6, 6));        
+        
         new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
-        new ItemsPanel(contentPane, this.items);
+        new ItemsPanel(contentPane, this.items, this.suppliers);
         new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
         
         String versionText = NavBar.VERSION;

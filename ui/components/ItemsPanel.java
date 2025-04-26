@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.util.HashMap;
 
 import backend.ItemsList;
+import backend.SuppliersList;
 import backend.items.*;
 
 /**
@@ -16,6 +17,7 @@ import backend.items.*;
 public class ItemsPanel {
     // fields
     private ItemsList items;
+    private SuppliersList suppliers;
     private JPanel itemsPanel;
     private JLabel totalItemsLabel;
 
@@ -25,8 +27,9 @@ public class ItemsPanel {
      * @param mainUIContentPane The contentPane that is created in MainUI.
      * @param items The instance of the ItemsList class.
      */
-    public ItemsPanel(JPanel mainUIContentPane, ItemsList items) {        
+    public ItemsPanel(JPanel mainUIContentPane, ItemsList items, SuppliersList suppliers) {
         this.items = items;
+        this.suppliers = suppliers;
         this.itemsPanel = new JPanel();
         this.itemsPanel.setBackground(Color.DARK_GRAY);       
         this.itemsPanel.setLayout(new BoxLayout(this.itemsPanel, BoxLayout.Y_AXIS));   
@@ -75,6 +78,8 @@ public class ItemsPanel {
         panel.add(labelName);
         JLabel labelDescription = new JLabel(" Description: " + item.getDescription() + " ");
         panel.add(labelDescription);
+        JLabel labelPrice = new JLabel(" Price: £" + item.getPrice() + " ");
+        panel.add(labelPrice);
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
         
         JButton delete = new JButton("Delete Item");
@@ -110,7 +115,8 @@ public class ItemsPanel {
         itemFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
         itemFields.put(Data.DESCRIPTION, new InputPair(new JLabel("Description:"), new JTextField("", 15)));
         itemFields.put(Data.QUANTITY, new InputPair(new JLabel("Quantity:"), new JTextField("", 15)));
-        itemFields.put(Data.SUPPLIER, new InputPair(new JLabel("Supplier:"), new JTextField("", 15))); // TODO: add list of suppliers
+        JComboBox<String> comboBox = new JComboBox<>(this.suppliers.getSuppliersName());
+        itemFields.put(Data.SUPPLIER, new InputPair(new JLabel("Supplier:"), comboBox)); // TODO: add list of suppliers
         itemFields.put(Data.PRICE, new InputPair(new JLabel("Price:"), new JTextField("", 15)));
 
         JButton confirmBtn = new JButton("Add Item");
@@ -119,7 +125,7 @@ public class ItemsPanel {
             String name = itemFields.get(Data.NAME).getTextFieldString();
             String description = itemFields.get(Data.DESCRIPTION).getTextFieldString();
             int quantity = Integer.parseInt(itemFields.get(Data.QUANTITY).getTextFieldString());
-            String supplier = itemFields.get(Data.SUPPLIER).getTextFieldString();
+            String supplier = itemFields.get(Data.SUPPLIER).getDropListSelected();
             float price = Float.parseFloat(itemFields.get(Data.PRICE).getTextFieldString());
             this.items.addItem(name, description, quantity, supplier, price);
             this.totalItemsLabel.setText(this.items.getItemsList().size() + " warehouse items in catalog");
@@ -131,10 +137,14 @@ public class ItemsPanel {
         cancelBtn.setForeground(new Color(255, 153, 0));
         cancelBtn.addActionListener(e -> frame.dispose());
 
-        // Add components to the updatePanel
+        // Add components to the Add Item Panel
         for (InputPair field : itemFields.values()) {
             updatePanel.add(field.getLabel()); // JLabel
-            updatePanel.add(field.getTextField()); // JTextField
+            if (field.getLabelString().toUpperCase().equals(Data.SUPPLIER.name() + ":")) {
+                updatePanel.add(field.getDropList()); // JComboBox<String>
+            } else {
+                updatePanel.add(field.getTextField()); // JTextField
+            }
         }
         updatePanel.add(new JLabel(""));
         updatePanel.add(new JLabel(""));
