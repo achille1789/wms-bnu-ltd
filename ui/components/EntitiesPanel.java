@@ -43,6 +43,7 @@ abstract class EntitiesPanel {
     private JLabel totalEntitiesLabel;
     private int padding = 0;
     private OrdersList orders;
+    private ItemsList items;
     
     /**
      * Create the Entities panel.
@@ -51,9 +52,10 @@ abstract class EntitiesPanel {
      * @param entities The instance of the EntitiesList class.
      * @param region of the UI where display the panel.
      */
-    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, OrdersList orders, String region) {
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, OrdersList orders, ItemsList items, String region) {
         this.entities = entities;
         this.orders = orders;
+        this.items = items;
         this.entitiesPanel = new JPanel();
         this.entitiesPanel.setBackground(Color.DARK_GRAY);       
         this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   
@@ -152,7 +154,7 @@ abstract class EntitiesPanel {
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
         
         JButton order = new JButton("Order");
-        order.addActionListener(e -> System.out.println("Button clicked!" + id));
+        order.addActionListener(e -> createOrderFrame(id));
         panel.add(order);
         JButton history = new JButton("Order History");
         history.addActionListener(e -> System.out.println("Button clicked!" + id));
@@ -229,6 +231,53 @@ abstract class EntitiesPanel {
         }
         updatePanel.add(confirmBtn);
         updatePanel.add(cancelBtn);
+
+        // Add updatePanel to frame
+        frame.add(updatePanel);
+
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
+        frame.setVisible(true);
+    }
+    
+    /**
+     * Create a new frame panel to submit an order.
+     * 
+     * @param action type: update or add.
+     * @param label The Label of the Entity panel to update the name showed.
+     * @param id The Entity id.
+     */
+    private void createOrderFrame(String id) {
+        JFrame frame = new JFrame("Create Order");
+        frame.setSize(600, 500);
+
+        // Create a panel and use GridLayout for label + field pairs
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        // Input components
+        HashMap<String, InputPair> itemsAvailable = new HashMap<String, InputPair>();
+        for (int i = 0; i < this.items.getItemsList().size(); i++) {
+            String index = String.valueOf(i);
+            JButton orderItem = new JButton("Order Item");
+            String itemId = this.items.getItemsList().get(i).getId();
+            orderItem.addActionListener(e -> System.out.println("Button clicked!" + itemId));
+            itemsAvailable.put("INFO-" + index, new InputPair(new JLabel(this.items.getItemsList().get(i).getOrderInfo()), orderItem));
+        }
+        
+
+        JButton closeBtn = new JButton("Close");
+        closeBtn.setForeground(new Color(255, 153, 0));
+        closeBtn.addActionListener(e -> frame.dispose());
+
+        // Add components to the updatePanel
+        for (InputPair field : itemsAvailable.values()) {
+            updatePanel.add(field.getLabel()); // JLabel
+            updatePanel.add(field.getButton()); // JButton
+        }
+        updatePanel.add(new JLabel("")); // Empty labels for padding
+//         updatePanel.add(confirmBtn);
+        updatePanel.add(closeBtn);
 
         // Add updatePanel to frame
         frame.add(updatePanel);

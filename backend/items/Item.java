@@ -59,6 +59,16 @@ public class Item {
     }
     
     /**
+     * Get Order Info.
+     * The keys are the Data enum values.
+     * The values are the item data.
+     * @return a HashMap with all the Item data.
+     */
+    public String getOrderInfo() {
+        return "<html>Name: " + this.name + "<br>" + "Description: " + this.description + "<br>" + "Price: £" + this.price + "</html>";
+    }
+    
+    /**
      * Setters
      */
     public void setQuantity(int quantity) {

@@ -4,8 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
 
-import backend.SuppliersList;
-import backend.OrdersList;
+import backend.*;
 import backend.entities.*;
 
 /**
@@ -22,9 +21,9 @@ public class SuppliersPanel extends EntitiesPanel {
      * @param customers The instance of the SuppliersList class.
      * @param region of the UI where display the panel.
      */
-     public SuppliersPanel(JPanel mainUIContentPane, SuppliersList suppliers, OrdersList suppliersOrders, String region) {
+     public SuppliersPanel(JPanel mainUIContentPane, SuppliersList suppliers, OrdersList suppliersOrders, ItemsList items, String region) {
          setInputsPadding(1);
-         createEntitiesPanel(mainUIContentPane, suppliers, suppliersOrders, region);
+         createEntitiesPanel(mainUIContentPane, suppliers, suppliersOrders, items, region);
      }
     
     /**

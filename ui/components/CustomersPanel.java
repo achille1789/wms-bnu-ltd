@@ -4,8 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
 
-import backend.CustomersList;
-import backend.OrdersList;
+import backend.*;
 import backend.entities.*;
 
 /**
@@ -22,9 +21,9 @@ public class CustomersPanel extends EntitiesPanel {
      * @param customers The instance of the CustomersList class.
      * @param region of the UI where display the panel.
      */
-     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, OrdersList customersOrders, String region) {
+     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, OrdersList customersOrders, ItemsList items, String region) {
          setInputsPadding(3);
-         createEntitiesPanel(mainUIContentPane, customers, customersOrders, region);
+         createEntitiesPanel(mainUIContentPane, customers, customersOrders, items, region);
      }
     
     /**

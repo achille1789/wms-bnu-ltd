@@ -12,6 +12,7 @@ public class InputPair {
     private JLabel label;
     private JTextField textField;
     private JComboBox<String> dropList;
+    private JButton button;
 
     /**
      * Constructor to create a new InputPair.
@@ -36,6 +37,17 @@ public class InputPair {
     }
     
     /**
+     * Constructor to create a new InputPair.
+     * 
+     * @param label The label of the input.
+     * @param button The button to trigger an action.
+     */
+    public InputPair(JLabel label, JButton button) {
+        this.label = label;
+        this.button = button;
+    }
+    
+    /**
     * getters
     */    
     public JLabel getLabel() {
@@ -47,6 +59,9 @@ public class InputPair {
     public JComboBox<String> getDropList() {
         return this.dropList;
     }   
+    public JButton getButton() {
+        return this.button;
+    }  
     public String getLabelString() {
         return this.label.getText();
     }        

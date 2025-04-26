@@ -56,9 +56,9 @@ public class MainUI {
         new NavBar(frame);
         contentPane.setLayout(new BorderLayout(6, 6));        
         
-        new CustomersPanel(contentPane, this.customers, this.customersOrders, BorderLayout.WEST);
+        new CustomersPanel(contentPane, this.customers, this.customersOrders, this.items, BorderLayout.WEST);
         new ItemsPanel(contentPane, this.items, this.suppliers);
-        new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, BorderLayout.EAST);
+        new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, this.items, BorderLayout.EAST);
         
         String versionText = NavBar.VERSION;
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
