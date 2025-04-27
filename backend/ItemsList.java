@@ -40,8 +40,8 @@ import backend.Logger;
      * @param quantity the available quantity of the item
      * @param supplier the name of the supplier
      */
-    public void addItem(String name, String description, int quantity, String supplier, String supplierId, float price) {
-        Item item = new Item(name, description, quantity, supplier, supplierId, price);
+    public void addItem(String name, String description, int quantity, String supplier, String supplierId, float supplierPrice) {
+        Item item = new Item(name, description, quantity, supplier, supplierId, supplierPrice);
         this.itemsList.add(item);
         Logger.info("Item added in warehouse, data: " + this.itemsList.getLast().getAllData().toString());
     }
@@ -55,12 +55,12 @@ import backend.Logger;
     }
     
     /**
-     * Get data of the passed Item.
-     * @param name the name of the item
+     * Get data of the passed id Item.
+     * @param id of the item
      * @return a HashMap with all the Item data
      */
-    public HashMap<Data, String> getItemData(String id) {
-        HashMap<Data, String> itemData = null;
+    public HashMap<ItemData, String> getItemData(String id) {
+        HashMap<ItemData, String> itemData = null;
         for (int i = 0; i < this.itemsList.size(); i++) {
             if (id.equals(this.itemsList.get(i).getId())) {
                 itemData = this.itemsList.get(i).getAllData();

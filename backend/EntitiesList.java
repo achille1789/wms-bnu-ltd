@@ -53,9 +53,8 @@ public abstract class EntitiesList {
      }
      
     /**
-     * Get data of the passed Entities.
-     * @param name the name of the entity
-     * @param surname the surname of the entity
+     * Get data of the passed id Entity.
+     * @param id of the entity
      * @return a HashMap with all the entity data
      */
     public HashMap<Data, String> getEntityData(String id) {

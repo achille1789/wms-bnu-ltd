@@ -16,26 +16,28 @@ public class Item {
     public int quantity;
     public String supplier;
     public String supplierId;
-    public float price;
+    public float supplierPrice;
+    public float customerPrice;
     public String id;
     
     /**
      * Add a new warehouse item.
-     * Info needed are: name, description, available quantity, supplier name and price.
+     * Info needed are: name, description, available quantity, supplier name and supplierPrice.
      *
      * @param name the name of the item
      * @param description the description of the item
      * @param quantity the available quantity of the item
      * @param supplier the supplier of the item
-     * @param price the price of the item
+     * @param supplierPrice the supplierPrice of the item
      */
-    public Item(String name, String description, int quantity, String supplier, String supplierId, float price) {
+    public Item(String name, String description, int quantity, String supplier, String supplierId, float supplierPrice) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
         this.supplier = supplier;
         this.supplierId = supplierId;
-        this.price = price;
+        this.supplierPrice = supplierPrice;
+        this.customerPrice = getCustomerPrice(supplierPrice);
         String rand = String.valueOf((int)(Math.random() * 1000));
         this.id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
     }
@@ -46,26 +48,17 @@ public class Item {
      * The values are the item data.
      * @return a HashMap with all the Item data.
      */
-    public HashMap<Data, String> getAllData() {
-        HashMap<Data, String> itemData = new HashMap<>();
-        itemData.put(Data.ID, this.id);
-        itemData.put(Data.NAME, this.name);
-        itemData.put(Data.DESCRIPTION, this.description);
-        itemData.put(Data.QUANTITY, String.valueOf(this.quantity));
-        itemData.put(Data.SUPPLIER, this.supplier);
-        itemData.put(Data.SUPPLIER_ID, this.supplierId);
-        itemData.put(Data.PRICE, String.valueOf(this.price));
+    public HashMap<ItemData, String> getAllData() {
+        HashMap<ItemData, String> itemData = new HashMap<>();
+        itemData.put(ItemData.ID, this.id);
+        itemData.put(ItemData.NAME, this.name);
+        itemData.put(ItemData.DESCRIPTION, this.description);
+        itemData.put(ItemData.QUANTITY, String.valueOf(this.quantity));
+        itemData.put(ItemData.SUPPLIER, this.supplier);
+        itemData.put(ItemData.SUPPLIER_ID, this.supplierId);
+        itemData.put(ItemData.SUPPLIER_PRICE, String.valueOf(this.supplierPrice));
+        itemData.put(ItemData.CUSTOMER_PRICE, String.valueOf(this.customerPrice));
         return itemData;
-    }
-    
-    /**
-     * Get Order Info.
-     * The keys are the Data enum values.
-     * The values are the item data.
-     * @return a HashMap with all the Item data.
-     */
-    public String getOrderInfo() {
-        return "<html>Name: " + this.name + "<br>" + "Description: " + this.description + "<br>" + "Price: £" + this.price + "</html>";
     }
     
     /**
@@ -86,8 +79,12 @@ public class Item {
         return this.quantity;
     }
     
-    public float getPrice() {
-        return this.price;
+    public float getSupplierPrice() {
+        return this.supplierPrice;
+    }
+    
+    public float getCustomerPrice() {
+        return this.customerPrice;
     }
     
     public String getId() {
@@ -100,5 +97,15 @@ public class Item {
     
     public String getSupplierId() {
         return this.supplierId;
+    }
+    
+    /**
+     * Set the customer price.
+     * The customer price is 40% more than the supplier price.
+     * @param supplierPrice the supplier price
+     * @return the customer price
+     */
+    private float getCustomerPrice(float supplierPrice) {
+        return supplierPrice * 1.4f;
     }
 }

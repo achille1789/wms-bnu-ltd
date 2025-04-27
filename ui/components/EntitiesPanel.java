@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import backend.*;
 import backend.entities.*;
+import backend.items.ItemData;
 
 /**
  * Enum to define the labels used in the EntitiesPanel.
@@ -261,8 +262,10 @@ abstract class EntitiesPanel {
             String index = String.valueOf(i);
             JButton orderItem = new JButton("Order Item");
             String itemId = this.items.getItemsList().get(i).getId();
+            HashMap<ItemData, String> itemData = this.items.getItemsList().get(i).getAllData();
+            String itemInfo = "<html>Name: " + itemData.get(ItemData.NAME) + "<br>" + "Description: " + itemData.get(ItemData.DESCRIPTION) + "<br>" + "Price: £" + itemData.get(ItemData.CUSTOMER_PRICE) + "</html>";
             orderItem.addActionListener(e -> System.out.println("Button clicked!" + itemId));
-            itemsAvailable.put("INFO-" + index, new InputPair(new JLabel(this.items.getItemsList().get(i).getOrderInfo()), orderItem));
+            itemsAvailable.put("INFO-" + index, new InputPair(new JLabel(itemInfo), orderItem));
         }
         
 
