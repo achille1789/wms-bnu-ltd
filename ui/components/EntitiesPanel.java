@@ -3,10 +3,13 @@ package ui.components;
 import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
+import java.util.List;
+import java.util.LinkedList;
 
 import backend.*;
 import backend.entities.*;
 import backend.items.ItemData;
+import backend.orders.*;
 
 /**
  * Enum to define the labels used in the EntitiesPanel.
@@ -45,6 +48,9 @@ abstract class EntitiesPanel {
     private int padding = 0;
     private OrdersList orders;
     private ItemsList items;
+    private List<OrderItem> basketItems = new LinkedList<>();
+    private JLabel basketLabel;
+    private JPanel basketPanel;
     
     /**
      * Create the Entities panel.
@@ -248,46 +254,191 @@ abstract class EntitiesPanel {
      * @param label The Label of the Entity panel to update the name showed.
      * @param id The Entity id.
      */
-    private void createOrderFrame(String id) {
+    private void createOrderFrame(String entityId) {
         JFrame frame = new JFrame("Create Order");
         frame.setSize(600, 500);
 
-        // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
-        updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        // Input components
-        HashMap<String, InputPair> itemsAvailable = new HashMap<String, InputPair>();
-        for (int i = 0; i < this.items.getItemsList().size(); i++) {
-            String index = String.valueOf(i);
-            JButton orderItem = new JButton("Order Item");
-            String itemId = this.items.getItemsList().get(i).getId();
-            HashMap<ItemData, String> itemData = this.items.getItemsList().get(i).getAllData();
-            String itemInfo = "<html>Name: " + itemData.get(ItemData.NAME) + "<br>" + "Description: " + itemData.get(ItemData.DESCRIPTION) + "<br>" + "Price: £" + itemData.get(ItemData.CUSTOMER_PRICE) + "</html>";
-            orderItem.addActionListener(e -> System.out.println("Button clicked!" + itemId));
-            itemsAvailable.put("INFO-" + index, new InputPair(new JLabel(itemInfo), orderItem));
-        }
+        createOrderItemsSidePanel(frame);
+        createBasketSidePanel(frame, entityId);
         
-
-        JButton closeBtn = new JButton("Close");
-        closeBtn.setForeground(new Color(255, 153, 0));
-        closeBtn.addActionListener(e -> frame.dispose());
-
-        // Add components to the updatePanel
-        for (InputPair field : itemsAvailable.values()) {
-            updatePanel.add(field.getLabel()); // JLabel
-            updatePanel.add(field.getButton()); // JButton
-        }
-        updatePanel.add(new JLabel("")); // Empty labels for padding
-//         updatePanel.add(confirmBtn);
-        updatePanel.add(closeBtn);
-
-        // Add updatePanel to frame
-        frame.add(updatePanel);
-
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
         frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
         frame.setVisible(true);
+    }
+    
+    /**
+     * Create Order Items left panel.
+     * 
+     * @param frame the order frame.
+     */
+    private void createOrderItemsSidePanel(JFrame frame) {
+        JPanel orderPanel = new JPanel();
+        orderPanel.setBackground(Color.DARK_GRAY);       
+        orderPanel.setLayout(new BoxLayout(orderPanel, BoxLayout.Y_AXIS));   
+        orderPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JLabel totalItemsLabel = new JLabel("Catalogue has " + this.items.getItemsList().size() + " items");
+        totalItemsLabel.setForeground(Color.WHITE);
+        orderPanel.add(totalItemsLabel);
+        orderPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+
+        for (int i = 0; i < this.items.getItemsList().size(); i++) {
+            HashMap<ItemData, String> itemData = this.items.getItemsList().get(i).getAllData();
+            setOrderItemsPanelDetails(orderPanel, itemData);
+        }
+        
+        JButton closeBtn = new JButton("Close");
+        closeBtn.setForeground(new Color(255, 153, 0));
+        closeBtn.addActionListener(e -> frame.dispose());
+        orderPanel.add(closeBtn);
+        
+        // set vertical scrollbars
+        JScrollPane scrollPane = new JScrollPane(orderPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        // Add orderPanel to frame
+        frame.add(scrollPane, BorderLayout.WEST);
+    }
+    
+    /**
+     * Set items details into the panel.
+     * 
+     * @param itemPanel the scrollable panel.
+     * @param itemDetails the details of the item.
+     */
+    private void setOrderItemsPanelDetails(JPanel itemPanel, HashMap<ItemData, String> itemDetails) {
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.LIGHT_GRAY);       
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+        String itemInfo = "<html>Name: " + itemDetails.get(ItemData.NAME) + "<br>Description: " + itemDetails.get(ItemData.DESCRIPTION);              
+        itemInfo += "<br>Price: £" + itemDetails.get(ItemData.CUSTOMER_PRICE) + "<br>Items available: " + itemDetails.get(ItemData.QUANTITY) + "</html>";
+        JLabel labelInfo = new JLabel(itemInfo);
+        panel.add(labelInfo);
+        panel.add(Box.createRigidArea(new Dimension(5, 10)));
+        
+        if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0) {
+            // Create a sub-panel for label + input field
+            JPanel linePanel = new JPanel();
+            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
+            linePanel.setMaximumSize(new Dimension(200, 30)); // fix height of the line
+            linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            linePanel.setBackground(Color.LIGHT_GRAY); 
+            JLabel label = new JLabel("Quantity to order:");
+            JTextField quantityField = new JTextField(10); // 10 columns width
+            linePanel.add(label);
+            linePanel.add(quantityField);
+            panel.add(linePanel);
+            
+            JButton orderButton = new JButton("Order");        
+            orderButton.addActionListener(e -> {
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), Integer.parseInt(quantityField.getText()), itemDetails.get(ItemData.SUPPLIER_ID), Integer.parseInt(quantityField.getText()) * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
+                setBasketItem(orderItem);
+            });
+            panel.add(orderButton);
+        } else {           
+            JLabel label = new JLabel("Item not available");
+            label.setForeground(Color.RED);
+            panel.add(label);
+        }
+        
+        itemPanel.add(panel);
+        itemPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+    
+    /**
+     * Create Order Items left panel.
+     * 
+     * @param frame the order frame.
+     * @param entityId the id of the Entity that created the order.
+     */
+    private void createBasketSidePanel(JFrame frame, String entityId) {
+        this.basketPanel = new JPanel();
+        this.basketPanel.setBackground(Color.DARK_GRAY);       
+        this.basketPanel.setLayout(new BoxLayout(this.basketPanel, BoxLayout.Y_AXIS));   
+        this.basketPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        this.basketLabel = new JLabel("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
+        this.basketLabel.setForeground(Color.WHITE);
+        this.basketPanel.add(this.basketLabel);
+        this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        JButton purchaseBtn = new JButton("Purchase");
+        purchaseBtn.setForeground(new Color(255, 153, 0));
+        purchaseBtn.addActionListener(e -> {
+            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems);
+            frame.dispose();
+            this.basketItems.clear();
+        });
+        this.basketPanel.add(purchaseBtn);
+        
+        // set vertical scrollbars
+        JScrollPane scrollPane = new JScrollPane(this.basketPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+        // Add basketPanel to frame
+        frame.add(scrollPane, BorderLayout.EAST);
+    }
+    
+    /**
+     * Set basket item into the panel.
+     * 
+     * @param itemPanel the scrollable panel.
+     * @param itemDetails the details of the item.
+     */
+    private void setBasketItem(OrderItem orderItem) {
+        this.basketItems.add(orderItem);
+        HashMap<OrderItemData, String> orderItemData = orderItem.getAllData();
+        
+        JPanel panel = new JPanel();
+        panel.setBackground(Color.LIGHT_GRAY);       
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        
+        this.basketLabel.setText("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
+        
+        String itemInfo = "<html>Name: " + orderItemData.get(OrderItemData.NAME) + "<br>Quantity: " + orderItemData.get(OrderItemData.QUANTITY);              
+        itemInfo += "<br>Total price: £" + orderItemData.get(OrderItemData.COST) + "</html>";
+        JLabel labelInfo = new JLabel(itemInfo);
+        panel.add(labelInfo);
+        panel.add(Box.createRigidArea(new Dimension(5, 10)));
+        
+        JButton removeButton = new JButton("Remove");
+        removeButton.addActionListener(e -> {
+            deleteBasketItem(orderItemData.get(OrderItemData.NAME));
+            this.basketPanel.remove(panel);
+            this.basketPanel.revalidate();
+            this.basketPanel.repaint();
+            this.basketLabel.setText("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
+        });
+        panel.add(removeButton);
+        
+        this.basketPanel.add(panel);
+        this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+    
+    /**
+     * Delete item from basket.
+     * @param itemId find and delete the item with the passed it.
+     */
+    private void deleteBasketItem(String itemName) {
+        for (int i = 0; i < this.basketItems.size(); i++) {
+            if (this.basketItems.get(i).getName().equals(itemName)) {
+                this.basketItems.remove(i);
+                break;
+            }
+        }
+    }
+    
+    /**
+     * Calculate total purchase cost.
+     * @return the total cost of the purchase.
+     */
+    private float getTotalPurchaseCost() {
+        float totalCost = 0;
+        for (int i = 0; i < this.basketItems.size(); i++) {
+            totalCost += this.basketItems.get(i).getCost();
+        }
+        return totalCost;
     }
     
     /**

@@ -3,7 +3,8 @@ package backend.orders;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.Instant;
 
 /**
@@ -16,7 +17,8 @@ public class Order {
     // The fields.
     public String orderId;
     public String entityId;
-    public LocalDate date;
+    public String date;
+    public float totalCost;
     public List<OrderItem> orderItems = new ArrayList<>();
     
     /**
@@ -26,10 +28,12 @@ public class Order {
      * @param entityId the entity that created the order
      * @param orderItems the list of order items
      */
-    public Order(String entityId, List<OrderItem> orderItems) {
+    public Order(String entityId, float totalCost, List<OrderItem> orderItems) {
         this.entityId = entityId;
         this.orderItems = orderItems;
-        this.date = LocalDate.now();
+        this.totalCost = totalCost;
+        LocalDateTime now = LocalDateTime.now();
+        this.date = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"));
         String rand = String.valueOf((int)(Math.random() * 1000));
         this.orderId = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
     }
@@ -45,7 +49,12 @@ public class Order {
         orderData.put(OrderData.ORDER_ID, this.orderId);
         orderData.put(OrderData.ENTITY_ID, this.entityId);
         orderData.put(OrderData.DATE, this.date.toString());
-        orderData.put(OrderData.ORDER_ITEMS, this.orderItems.toString());
+        orderData.put(OrderData.TOTAL_COST, String.valueOf(this.totalCost));
+        String items = "";
+        for (int i = 0; i < this.orderItems.size(); i++) {
+            items += this.orderItems.get(i).getAllData().toString();
+        }
+        orderData.put(OrderData.ORDER_ITEMS, items);
         return orderData;
     }
     
@@ -60,8 +69,12 @@ public class Order {
         return this.entityId;
     }
     
-    public LocalDate getDate() {
+    public String getDate() {
         return this.date;
+    }
+    
+    public float getTotalCost() {
+        return this.totalCost;
     }
     
     public List<OrderItem> getOrderItems() {

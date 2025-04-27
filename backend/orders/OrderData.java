@@ -8,4 +8,5 @@ public enum OrderData {
     ENTITY_ID,
     DATE,
     ORDER_ITEMS,
+    TOTAL_COST,
 }

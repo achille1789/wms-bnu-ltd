@@ -23,8 +23,8 @@ import backend.Logger;
      * @param entityId the id of the entity that created the order
      * @param orderItems the list of order items
      */
-    public void addOrder(String entityId, List<OrderItem> orderItems) {
-        Order order = new Order(entityId, orderItems);
+    public void addOrder(String entityId, float totalCost, List<OrderItem> orderItems) {
+        Order order = new Order(entityId, totalCost, orderItems);
         this.ordersList.add(order);
         Logger.info("Order added, data: " + this.ordersList.getLast().getAllData().toString());
     }
