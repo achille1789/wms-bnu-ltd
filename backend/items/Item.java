@@ -11,14 +11,14 @@ import java.time.Instant;
  */
 public class Item {
     // The fields.
-    public String name;
-    public String description;
-    public int quantity;
-    public String supplier;
-    public String supplierId;
-    public float supplierPrice;
-    public float customerPrice;
-    public String id;
+    private String name;
+    private String description;
+    private int quantity;
+    private String supplier;
+    private String supplierId;
+    private float supplierPrice;
+    private float customerPrice;
+    private String id;
     
     /**
      * Add a new warehouse item.

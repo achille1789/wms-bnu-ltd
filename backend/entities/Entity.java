@@ -12,8 +12,7 @@ import java.util.List;
  */
 public abstract class Entity {
     // The fields.
-    protected HashMap<Data, String> entityData = new HashMap<>();
-    protected List<String> orderHistory = new ArrayList<>(); // TODO: set a proper type
+    private HashMap<Data, String> entityData = new HashMap<>();
     
     /**
      * Add a new order.
@@ -26,7 +25,7 @@ public abstract class Entity {
      * @param value the new value of the data
      */
     public void update(Data key, String value) {
-        entityData.replace(key, value);
+        this.entityData.replace(key, value);
     }
     
     /**
@@ -36,17 +35,21 @@ public abstract class Entity {
      * @return a HashMap with all the entity data.
      */
     public HashMap<Data, String> getAllData() {
-        return entityData;
+        return this.entityData;
     }
     
     /**
      * Getters
      */
     public String getName() {
-        return entityData.get(Data.NAME);
+        return this.entityData.get(Data.NAME);
     }
     
     public String getId() {
-        return entityData.get(Data.ID);
+        return this.entityData.get(Data.ID);
+    }
+    
+    public HashMap<Data, String> getEntityData() {
+        return this.entityData;
     }
 }

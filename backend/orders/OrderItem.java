@@ -10,10 +10,10 @@ import java.util.HashMap;
  */
 public class OrderItem {
     // The fields.
-    public String name;
-    public int quantity;
-    public String supplierId;
-    public float cost;
+    private String name;
+    private int quantity;
+    private String supplierId;
+    private float cost;
     
     /**
      * Add a new order item.

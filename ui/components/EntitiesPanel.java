@@ -288,7 +288,10 @@ abstract class EntitiesPanel {
         
         JButton closeBtn = new JButton("Close");
         closeBtn.setForeground(new Color(255, 153, 0));
-        closeBtn.addActionListener(e -> frame.dispose());
+        closeBtn.addActionListener(e -> {
+            this.basketItems.clear();
+            frame.dispose();
+        });
         orderPanel.add(closeBtn);
         
         // set vertical scrollbars
@@ -332,8 +335,12 @@ abstract class EntitiesPanel {
             
             JButton orderButton = new JButton("Order");        
             orderButton.addActionListener(e -> {
-                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), Integer.parseInt(quantityField.getText()), itemDetails.get(ItemData.SUPPLIER_ID), Integer.parseInt(quantityField.getText()) * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
-                setBasketItem(orderItem);
+                int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
+                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable ? quantityAvailable : Integer.parseInt(quantityField.getText());
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.SUPPLIER_ID), quantity * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
+                quantityField.setEnabled(false);
+                orderButton.setEnabled(false);
+                setBasketItem(orderItem, quantityField, orderButton);
             });
             panel.add(orderButton);
         } else {           
@@ -365,7 +372,7 @@ abstract class EntitiesPanel {
         JButton purchaseBtn = new JButton("Purchase");
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
-            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems);
+            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems, OrderStatus.COMPLETED);
             frame.dispose();
             this.basketItems.clear();
         });
@@ -386,7 +393,7 @@ abstract class EntitiesPanel {
      * @param itemPanel the scrollable panel.
      * @param itemDetails the details of the item.
      */
-    private void setBasketItem(OrderItem orderItem) {
+    private void setBasketItem(OrderItem orderItem, JTextField quantityField, JButton orderButton) {
         this.basketItems.add(orderItem);
         HashMap<OrderItemData, String> orderItemData = orderItem.getAllData();
         
@@ -404,6 +411,8 @@ abstract class EntitiesPanel {
         
         JButton removeButton = new JButton("Remove");
         removeButton.addActionListener(e -> {
+            quantityField.setEnabled(true);
+            orderButton.setEnabled(true);
             deleteBasketItem(orderItemData.get(OrderItemData.NAME));
             this.basketPanel.remove(panel);
             this.basketPanel.revalidate();

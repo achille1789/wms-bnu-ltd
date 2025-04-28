@@ -1,6 +1,7 @@
 package backend.entities;
 
 import java.time.Instant;
+import java.util.HashMap;
 
 /**
  * A class to create Supplier objects.
@@ -23,6 +24,7 @@ public class Supplier extends Entity implements ISupplier {
     public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         String rand = String.valueOf((int)(Math.random() * 1000));
         String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
+        HashMap<Data, String> entityData = getEntityData();
         entityData.put(Data.ID, id);
         entityData.put(Data.NAME, name);
         entityData.put(Data.CRN, crn);

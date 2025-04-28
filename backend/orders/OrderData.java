@@ -9,4 +9,5 @@ public enum OrderData {
     DATE,
     ORDER_ITEMS,
     TOTAL_COST,
+    STATUS,
 }

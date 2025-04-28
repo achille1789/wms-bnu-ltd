@@ -15,11 +15,12 @@ import java.time.Instant;
  */
 public class Order {
     // The fields.
-    public String orderId;
-    public String entityId;
-    public String date;
-    public float totalCost;
-    public List<OrderItem> orderItems = new ArrayList<>();
+    private String orderId;
+    private String entityId;
+    private String date;
+    private float totalCost;
+    private OrderStatus status;
+    private List<OrderItem> orderItems = new ArrayList<>();
     
     /**
      * Add a new warehouse item.
@@ -28,10 +29,11 @@ public class Order {
      * @param entityId the entity that created the order
      * @param orderItems the list of order items
      */
-    public Order(String entityId, float totalCost, List<OrderItem> orderItems) {
+    public Order(String entityId, float totalCost, List<OrderItem> orderItems, OrderStatus status) {
         this.entityId = entityId;
         this.orderItems = orderItems;
         this.totalCost = totalCost;
+        this.status = status;
         LocalDateTime now = LocalDateTime.now();
         this.date = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"));
         String rand = String.valueOf((int)(Math.random() * 1000));
@@ -50,6 +52,7 @@ public class Order {
         orderData.put(OrderData.ENTITY_ID, this.entityId);
         orderData.put(OrderData.DATE, this.date.toString());
         orderData.put(OrderData.TOTAL_COST, String.valueOf(this.totalCost));
+        orderData.put(OrderData.STATUS, this.status.name());
         String items = "";
         for (int i = 0; i < this.orderItems.size(); i++) {
             items += this.orderItems.get(i).getAllData().toString();
@@ -79,5 +82,9 @@ public class Order {
     
     public List<OrderItem> getOrderItems() {
         return this.orderItems;
+    }
+    
+    public OrderStatus getStatus() {
+        return this.status;
     }
 }
