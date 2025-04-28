@@ -1,6 +1,7 @@
 package backend.entities;
 
 import java.time.Instant;
+import java.util.HashMap;
 
 /**
  * A class to create Customer objects.
@@ -9,6 +10,8 @@ import java.time.Instant;
  * @version 1.0.0
  */
 public class Customer extends Entity implements ICustomer {
+    // The fields.
+    HashMap<Data, String> entityData;
     
     /**
      * Add a new entity Customer.
@@ -22,12 +25,13 @@ public class Customer extends Entity implements ICustomer {
     public Customer add(String name, String surname, String email, String address, String creditCard) {
         String rand = String.valueOf((int)(Math.random() * 1000));
         String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
-        entityData.put(Data.ID, id);
-        entityData.put(Data.NAME, name);
-        entityData.put(Data.SURNAME, surname);
-        entityData.put(Data.EMAIL, email);
-        entityData.put(Data.ADDRESS, address);
-        entityData.put(Data.CREDIT_CARD, creditCard);
+        this.entityData = getEntityData();
+        this.entityData.put(Data.ID, id);
+        this.entityData.put(Data.NAME, name);
+        this.entityData.put(Data.SURNAME, surname);
+        this.entityData.put(Data.EMAIL, email);
+        this.entityData.put(Data.ADDRESS, address);
+        this.entityData.put(Data.CREDIT_CARD, creditCard);
         return this;
     }
     
@@ -43,6 +47,6 @@ public class Customer extends Entity implements ICustomer {
      * Getters
      */
     public String getSurname() {
-        return entityData.get(Data.SURNAME);
+        return this.entityData.get(Data.SURNAME);
     }
 }

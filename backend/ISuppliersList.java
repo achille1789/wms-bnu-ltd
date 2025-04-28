@@ -20,5 +20,18 @@ public interface ISuppliersList {
      * @param sortCode of the supplier
      */
     public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode);
+    
+    /**
+     * Get a list of all the suppliers.
+     * @return an array of all the suppliers
+     */
+    public String[] getSuppliersName();
+    
+    /**
+     * Get a list of all the suppliers.
+     * @param name the name of the supplier
+     * @return the id of the supplier
+     */
+    public String getSupplierIdByName(String name);
 }
  

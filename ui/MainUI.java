@@ -19,8 +19,10 @@ public class MainUI {
     // fields
     private JFrame frame;
     private CustomersList customers;
-    private Goods goods;
+    private ItemsList items;
     private SuppliersList suppliers;
+    private OrdersList suppliersOrders;
+    private OrdersList customersOrders;
     
     /**
      * Create an MainUI and display its GUI on screen.
@@ -29,8 +31,10 @@ public class MainUI {
      */
     public MainUI(boolean prepopulated) {
         this.customers = new CustomersList(prepopulated);
-        this.goods = new Goods(prepopulated);
+        this.items = new ItemsList(prepopulated);
         this.suppliers = new SuppliersList(prepopulated);
+        this.suppliersOrders = new OrdersList();
+        this.customersOrders = new OrdersList();
         makeFrame();
     }
     
@@ -51,9 +55,10 @@ public class MainUI {
         contentPane.setBorder(new EmptyBorder(12, 12, 12, 12));
         new NavBar(frame);
         contentPane.setLayout(new BorderLayout(6, 6));        
-        new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
-        new GoodsPanel(contentPane);
-        new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
+        
+        new CustomersPanel(contentPane, this.customers, this.customersOrders, this.items, BorderLayout.WEST);
+        new ItemsPanel(contentPane, this.items, this.suppliers);
+        new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, this.items, BorderLayout.EAST);
         
         String versionText = NavBar.VERSION;
         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);

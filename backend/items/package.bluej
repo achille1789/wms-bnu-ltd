@@ -1,5 +1,5 @@
 #BlueJ package file
-dependency1.from=Good
+dependency1.from=Item
 dependency1.to=Data
 dependency1.type=UsesDependency
 objectbench.height=100
@@ -29,7 +29,7 @@ target1.width=120
 target1.x=10
 target1.y=110
 target2.height=70
-target2.name=Good
+target2.name=Item
 target2.showInterface=false
 target2.type=ClassTarget
 target2.width=120

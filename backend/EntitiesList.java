@@ -53,16 +53,15 @@ public abstract class EntitiesList {
      }
      
     /**
-     * Get data of the passed Entities.
-     * @param name the name of the entity
-     * @param surname the surname of the entity
+     * Get data of the passed id Entity.
+     * @param id of the entity
      * @return a HashMap with all the entity data
      */
     public HashMap<Data, String> getEntityData(String id) {
         HashMap<Data, String> entityData = null;
-        for (int i = 0; i < entitiesList.size(); i++) {
-            if (id.equals(entitiesList.get(i).getId())) {
-                entityData = entitiesList.get(i).getAllData();
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                entityData = this.entitiesList.get(i).getAllData();
                 break;
             }
         }
@@ -80,10 +79,10 @@ public abstract class EntitiesList {
      */
     public void updateEntityData(String id, Data key, String value) {
         boolean found = false;
-        for (int i = 0; i < entitiesList.size(); i++) {
-            if (id.equals(entitiesList.get(i).getId())) {
-                entitiesList.get(i).update(key, value);
-                printlog(LogType.INFO, this.logEntityType + " data updated: " + entitiesList.get(i).getAllData().toString());
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                this.entitiesList.get(i).update(key, value);
+                printlog(LogType.INFO, this.logEntityType + " data updated: " + this.entitiesList.get(i).getAllData().toString());
                 found = true;
                 break;
             }
@@ -99,9 +98,9 @@ public abstract class EntitiesList {
      */
     public void deleteEntity(String id) {
         boolean found = false;
-        for (int i = 0; i < entitiesList.size(); i++) {
-            if (id.equals(entitiesList.get(i).getId())) {
-                entitiesList.remove(i);
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                this.entitiesList.remove(i);
                 printlog(LogType.INFO, this.logEntityType + " deleted");
                 found = true;
                 break;
