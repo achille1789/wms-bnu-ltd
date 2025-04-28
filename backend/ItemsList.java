@@ -135,7 +135,7 @@ import backend.Logger;
     /**
      * Get Supplier List Items
      * @param supplierId the id of the supplier
-     * @return the quantity of the item
+     * @return the list of the items
      */
     public List<Item> getSupplierItems(String supplierId) {
         List<Item> supplierItems = new ArrayList<>();
