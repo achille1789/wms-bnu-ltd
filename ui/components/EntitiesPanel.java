@@ -372,7 +372,8 @@ abstract class EntitiesPanel {
         JButton purchaseBtn = new JButton("Purchase");
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
-            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems, OrderStatus.COMPLETED);
+            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems, OrderStatus.SHIPPED);
+            this.updateStockLevelAfterPurchase();
             frame.dispose();
             this.basketItems.clear();
         });
@@ -448,6 +449,17 @@ abstract class EntitiesPanel {
             totalCost += this.basketItems.get(i).getCost();
         }
         return totalCost;
+    }
+    
+    /**
+     * Update stock level after purchase.
+     */
+    private void updateStockLevelAfterPurchase() {
+        for (int i = 0; i < this.basketItems.size(); i++) {
+            String basketItemId = this.basketItems.get(i).getItemId();
+            int newQuantity = this.items.getItemQuantity(basketItemId) - this.basketItems.get(i).getQuantity();
+            this.items.updateItemQuantity(basketItemId, newQuantity);
+        }
     }
     
     /**

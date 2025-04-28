@@ -58,4 +58,7 @@ public class OrderItem {
     public String getItemId() {
         return this.itemId;
     }
+    public int getQuantity() {
+        return this.quantity;
+    }
 }

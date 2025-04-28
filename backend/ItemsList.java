@@ -89,7 +89,7 @@ import backend.Logger;
         if (quantity == -1) {
             Logger.error("Item not found, quantity not updated");
         }
-        Logger.info("Item quantity: " + quantity);
+        Logger.info("Current Item quantity: " + quantity);
         return quantity;
     }
     
