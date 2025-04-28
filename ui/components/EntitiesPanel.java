@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.LinkedList;
+import java.awt.event.*;
 
 import backend.*;
 import backend.entities.*;
@@ -257,8 +258,9 @@ abstract class EntitiesPanel {
     private void createOrderFrame(String entityId) {
         JFrame frame = new JFrame("Create Order");
         frame.setSize(600, 500);
+        this.basketItems.clear();
 
-        createOrderItemsSidePanel(frame);
+        createOrderItemsSidePanel(frame, entityId);
         createBasketSidePanel(frame, entityId);
         
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
@@ -271,7 +273,7 @@ abstract class EntitiesPanel {
      * 
      * @param frame the order frame.
      */
-    private void createOrderItemsSidePanel(JFrame frame) {
+    private void createOrderItemsSidePanel(JFrame frame, String entityId) {
         JPanel orderPanel = new JPanel();
         orderPanel.setBackground(Color.DARK_GRAY);       
         orderPanel.setLayout(new BoxLayout(orderPanel, BoxLayout.Y_AXIS));   
@@ -283,15 +285,12 @@ abstract class EntitiesPanel {
 
         for (int i = 0; i < this.items.getItemsList().size(); i++) {
             HashMap<ItemData, String> itemData = this.items.getItemsList().get(i).getAllData();
-            setOrderItemsPanelDetails(orderPanel, itemData);
+            setOrderItemsPanelDetails(orderPanel, itemData, entityId);
         }
         
         JButton closeBtn = new JButton("Close");
         closeBtn.setForeground(new Color(255, 153, 0));
-        closeBtn.addActionListener(e -> {
-            this.basketItems.clear();
-            frame.dispose();
-        });
+        closeBtn.addActionListener(e -> frame.dispose());
         orderPanel.add(closeBtn);
         
         // set vertical scrollbars
@@ -309,18 +308,21 @@ abstract class EntitiesPanel {
      * @param itemPanel the scrollable panel.
      * @param itemDetails the details of the item.
      */
-    private void setOrderItemsPanelDetails(JPanel itemPanel, HashMap<ItemData, String> itemDetails) {
+    private void setOrderItemsPanelDetails(JPanel itemPanel, HashMap<ItemData, String> itemDetails, String entityId) {
         JPanel panel = new JPanel();
         panel.setBackground(Color.LIGHT_GRAY);       
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         
+        Entity entity = this.entities.getEntityById(entityId);
+        String price = entity instanceof Customer ? itemDetails.get(ItemData.CUSTOMER_PRICE) : itemDetails.get(ItemData.SUPPLIER_PRICE);
+        
         String itemInfo = "<html>Name: " + itemDetails.get(ItemData.NAME) + "<br>Description: " + itemDetails.get(ItemData.DESCRIPTION);              
-        itemInfo += "<br>Price: £" + itemDetails.get(ItemData.CUSTOMER_PRICE) + "<br>Items available: " + itemDetails.get(ItemData.QUANTITY) + "</html>";
+        itemInfo += "<br>Price: £" + price + "<br>Items available: " + itemDetails.get(ItemData.QUANTITY) + "</html>";
         JLabel labelInfo = new JLabel(itemInfo);
         panel.add(labelInfo);
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
         
-        if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0) {
+        if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0 || entity instanceof Supplier) {
             // Create a sub-panel for label + input field
             JPanel linePanel = new JPanel();
             linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
@@ -336,8 +338,8 @@ abstract class EntitiesPanel {
             JButton orderButton = new JButton("Order");        
             orderButton.addActionListener(e -> {
                 int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
-                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable ? quantityAvailable : Integer.parseInt(quantityField.getText());
-                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
+                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable && entity instanceof Customer ? quantityAvailable : Integer.parseInt(quantityField.getText());
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * Float.parseFloat(price));
                 quantityField.setEnabled(false);
                 orderButton.setEnabled(false);
                 setBasketItem(orderItem, quantityField, orderButton);
@@ -369,11 +371,15 @@ abstract class EntitiesPanel {
         this.basketPanel.add(this.basketLabel);
         this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
+        Entity entity = this.entities.getEntityById(entityId);
+        
         JButton purchaseBtn = new JButton("Purchase");
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
-            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems, OrderStatus.SHIPPED);
-            this.updateStockLevelAfterPurchase();
+            this.orders.addOrder(entityId, getTotalPurchaseCost(), this.basketItems, entity instanceof Customer ? OrderStatus.SHIPPED : OrderStatus.ORDERED);
+            if (entity instanceof Customer) {
+                this.updateStockLevelAfterPurchase();
+            }
             frame.dispose();
             this.basketItems.clear();
         });

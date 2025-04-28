@@ -110,4 +110,23 @@ public abstract class EntitiesList {
             printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
         }
     }
+    
+    /**
+     * Get Entity based on the passed id.
+     * @param id the id of the entity
+     * @return the entity
+     */
+    public Entity getEntityById(String id) {
+        Entity entity = null;
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                entity = this.entitiesList.get(i);
+                break;
+            }
+        }
+        if (entity == null) {
+            printlog(LogType.ERROR, this.logEntityType + " not found");
+        }
+        return entity;
+    }
  }
