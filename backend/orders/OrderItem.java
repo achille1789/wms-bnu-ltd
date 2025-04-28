@@ -12,22 +12,22 @@ public class OrderItem {
     // The fields.
     private String name;
     private int quantity;
-    private String supplierId;
+    private String itemId;
     private float cost;
     
     /**
      * Add a new order item.
-     * Info needed are: name, quantity, supplierId name and cost.
+     * Info needed are: name, quantity, itemId name and cost.
      *
      * @param name the name of the item
      * @param quantity the quantity of the item
-     * @param supplierId the supplierId of the item
+     * @param itemId the itemId of the item
      * @param cost the cost of the item
      */
-    public OrderItem(String name, int quantity, String supplierId, float cost) {
+    public OrderItem(String name, int quantity, String itemId, float cost) {
         this.name = name;
         this.quantity = quantity;
-        this.supplierId = supplierId;
+        this.itemId = itemId;
         this.cost = cost;
     }
     
@@ -41,7 +41,7 @@ public class OrderItem {
         HashMap<OrderItemData, String> orderItemData = new HashMap<>();
         orderItemData.put(OrderItemData.NAME, this.name);
         orderItemData.put(OrderItemData.QUANTITY, String.valueOf(this.quantity));
-        orderItemData.put(OrderItemData.SUPPLIER_ID, this.supplierId);
+        orderItemData.put(OrderItemData.ITEM_ID, this.itemId);
         orderItemData.put(OrderItemData.COST, String.valueOf(this.cost));
         return orderItemData;
     }
@@ -54,5 +54,8 @@ public class OrderItem {
     }
     public float getCost() {
         return this.cost;
+    }
+    public String getItemId() {
+        return this.itemId;
     }
 }

@@ -337,7 +337,7 @@ abstract class EntitiesPanel {
             orderButton.addActionListener(e -> {
                 int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
                 int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable ? quantityAvailable : Integer.parseInt(quantityField.getText());
-                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.SUPPLIER_ID), quantity * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE)));
                 quantityField.setEnabled(false);
                 orderButton.setEnabled(false);
                 setBasketItem(orderItem, quantityField, orderButton);

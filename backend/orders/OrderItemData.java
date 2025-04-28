@@ -6,6 +6,6 @@ package backend.orders;
 public enum OrderItemData {
     NAME,
     QUANTITY,
-    SUPPLIER_ID,
+    ITEM_ID,
     COST,
 }
