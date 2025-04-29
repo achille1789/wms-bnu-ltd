@@ -74,14 +74,15 @@ public abstract class EntitiesList {
     /**
      * Update data of the passed Entities.
      * @param id the id of the entity
-     * @param key the key of the data to update
-     * @param value the new value of the data
+     * @param newData a HashMap with the data to update
      */
-    public void updateEntityData(String id, Data key, String value) {
+    public void updateEntityData(String id, HashMap<Data, String> newData) {
         boolean found = false;
         for (int i = 0; i < this.entitiesList.size(); i++) {
             if (id.equals(this.entitiesList.get(i).getId())) {
-                this.entitiesList.get(i).update(key, value);
+                for (Data key : newData.keySet()) {
+                  this.entitiesList.get(i).update(key, newData.get(key));
+                }
                 printlog(LogType.INFO, this.logEntityType + " data updated: " + this.entitiesList.get(i).getAllData().toString());
                 found = true;
                 break;
@@ -109,5 +110,24 @@ public abstract class EntitiesList {
         if (!found) {
             printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
         }
+    }
+    
+    /**
+     * Get Entity based on the passed id.
+     * @param id the id of the entity
+     * @return the entity
+     */
+    public Entity getEntityById(String id) {
+        Entity entity = null;
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                entity = this.entitiesList.get(i);
+                break;
+            }
+        }
+        if (entity == null) {
+            printlog(LogType.ERROR, this.logEntityType + " not found");
+        }
+        return entity;
     }
  }

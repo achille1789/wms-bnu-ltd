@@ -2,6 +2,7 @@ package backend;
 
 import java.util.List;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import backend.orders.*;
 import backend.Logger;
@@ -50,5 +51,30 @@ import backend.Logger;
             }
         }
         return entityOrders;
+    }
+    
+    /**
+     * Get list of orders for a passed Entity id.
+     * @return an LinkedList with all the pending Orders
+     */
+    public List<Order> getPendingOrders() {
+        List<Order> pendingOrders = new LinkedList<>();
+        for (int i = 0; i < this.ordersList.size(); i++) {
+            if (OrderStatus.PENDING.equals(this.ordersList.get(i).getStatus())) {
+                pendingOrders.add(this.ordersList.get(i));
+            }
+        }
+        return pendingOrders;
+    }
+    
+    /**
+     * Set all pending orders as delivered.
+     */
+    public void setNewOrderStatus(OrderStatus status) {
+        for (int i = 0; i < this.ordersList.size(); i++) {
+            if (OrderStatus.PENDING.equals(this.ordersList.get(i).getStatus())) {
+                this.ordersList.get(i).setStatus(status);
+            }
+        }
     }
  }

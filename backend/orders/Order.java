@@ -87,4 +87,11 @@ public class Order {
     public OrderStatus getStatus() {
         return this.status;
     }
+    
+    /**
+     * Setters
+     */
+    public void setStatus(OrderStatus status) {
+        this.status = status;
+    }
 }

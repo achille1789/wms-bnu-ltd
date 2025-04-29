@@ -76,13 +76,15 @@ public class SuppliersPanel extends EntitiesPanel {
      */
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
+        HashMap<Data, String> newEntityData = new HashMap<>();
         SuppliersList suppliers = (SuppliersList)getEntities();
-        suppliers.updateEntityData(id, Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
-        suppliers.updateEntityData(id, Data.CRN, entityFields.get(Data.CRN).getTextFieldString());
-        suppliers.updateEntityData(id, Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
-        suppliers.updateEntityData(id, Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
-        suppliers.updateEntityData(id, Data.BANK_ACCOUNT, entityFields.get(Data.BANK_ACCOUNT).getTextFieldString());
-        suppliers.updateEntityData(id, Data.SORT_CODE, entityFields.get(Data.SORT_CODE).getTextFieldString());
+        newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
+        newEntityData.put(Data.CRN, entityFields.get(Data.CRN).getTextFieldString());
+        newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
+        newEntityData.put(Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
+        newEntityData.put(Data.BANK_ACCOUNT, entityFields.get(Data.BANK_ACCOUNT).getTextFieldString());
+        newEntityData.put(Data.SORT_CODE, entityFields.get(Data.SORT_CODE).getTextFieldString());
+        suppliers.updateEntityData(id, newEntityData);
         HashMap<Data, String> updatedSupplierData = suppliers.getEntityData(id);
         label.setText(updatedSupplierData.get(Data.NAME));
         frame.dispose();
