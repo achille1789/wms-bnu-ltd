@@ -126,7 +126,6 @@ public class ItemsPanel {
                 String name = itemFields.get(ItemData.NAME).getTextFieldString();
                 String description = itemFields.get(ItemData.DESCRIPTION).getTextFieldString();
                 int quantity = Integer.parseInt(itemFields.get(ItemData.QUANTITY).getTextFieldString());
-                quantity = quantity < 10 ? 10 : quantity;
                 String supplier = itemFields.get(ItemData.SUPPLIER).getDropListSelected();
                 float supplierPrice = Float.parseFloat(itemFields.get(ItemData.SUPPLIER_PRICE).getTextFieldString());
                 String supplierId = this.suppliers.getSupplierIdByName(supplier);

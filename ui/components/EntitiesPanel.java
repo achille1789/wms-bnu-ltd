@@ -175,7 +175,7 @@ abstract class EntitiesPanel {
         order.addActionListener(e -> createOrderFrame(id));
         panel.add(order);
         JButton history = new JButton("Order History");
-        history.addActionListener(e -> System.out.println("Button clicked!" + id));
+        history.addActionListener(e -> createEntityOrdersHistoryFrame(id));
         panel.add(history);
         JButton update = new JButton(getLabelsText(Labels.UPDATE_ENTITY_BTN));
         update.addActionListener(e -> createEntityFieldsFrame(Action.UPDATE,labelName, id));
@@ -495,6 +495,56 @@ abstract class EntitiesPanel {
         
         this.basketPanel.add(panel);
         this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+    }
+    
+    /**
+     * Create Entity orders history frame.
+     *
+     * @param entityId the id of the Entity that created the order.
+     */
+     private void createEntityOrdersHistoryFrame(String entityId) {
+        JFrame frame = new JFrame("Orders History");
+        frame.setSize(600, 500);
+        JPanel orderHistoryPanel = new JPanel();
+        orderHistoryPanel.setBackground(Color.DARK_GRAY);       
+        orderHistoryPanel.setLayout(new BoxLayout(orderHistoryPanel, BoxLayout.Y_AXIS));   
+        orderHistoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        JLabel noOrdersLabel = new JLabel("No orders found for this " + getEntityType(false));
+        noOrdersLabel.setForeground(Color.WHITE);
+        orderHistoryPanel.add(noOrdersLabel);
+        orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+        
+        JButton closeBtn = new JButton("Close");
+        closeBtn.addActionListener(e -> frame.dispose());
+        orderHistoryPanel.add(closeBtn);
+        
+        List <Order> ordersList = this.orders.getEntityOrders(entityId);
+        if (ordersList.size() > 0) {
+            noOrdersLabel.setText(getEntityType(false) + " has " + ordersList.size() + " orders");
+            for (int i = 0; i < ordersList.size(); i++) {
+                JPanel itemPanel = new JPanel();
+                itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.X_AXIS)); // left-aligned
+                itemPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+                itemPanel.setBackground(Color.LIGHT_GRAY); 
+                Order order = ordersList.get(i);
+                HashMap<OrderData, String> orderData = order.getAllData();
+                String orderInfo = "<html>Date: " + orderData.get(OrderData.DATE) + "<br>Id: " + orderData.get(OrderData.ORDER_ID) + "<br>Status: " + orderData.get(OrderData.STATUS);
+                orderInfo += "<br>Items:<br>" + orderData.get(OrderData.ORDER_ITEMS).replace("}{", "<br>- ").replace("{", "- ").replace("}", "") + "<br>Order Cost: £" + orderData.get(OrderData.TOTAL_COST) + "</html>";
+                JLabel labelInfo = new JLabel(orderInfo);
+                itemPanel.add(labelInfo);
+                orderHistoryPanel.add(itemPanel);
+                orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
+            }
+        }
+        // set vertical scrollbars
+        JScrollPane scrollPane = new JScrollPane(orderHistoryPanel);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        
+        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
+        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
+        frame.setVisible(true);
+        frame.add(scrollPane, BorderLayout.CENTER);
     }
     
     /**
