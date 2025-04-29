@@ -74,12 +74,14 @@ public class CustomersPanel extends EntitiesPanel {
      */
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
+        HashMap<Data, String> newEntityData = new HashMap<>();
         CustomersList customers = (CustomersList)getEntities();
-        customers.updateEntityData(id, Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
-        customers.updateEntityData(id, Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
-        customers.updateEntityData(id, Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
-        customers.updateEntityData(id, Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
-        customers.updateEntityData(id, Data.CREDIT_CARD, entityFields.get(Data.CREDIT_CARD).getTextFieldString());
+        newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
+        newEntityData.put(Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
+        newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
+        newEntityData.put(Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
+        newEntityData.put(Data.CREDIT_CARD, entityFields.get(Data.CREDIT_CARD).getTextFieldString());
+        customers.updateEntityData(id, newEntityData);
         HashMap<Data, String> updatedCustomerData = customers.getEntityData(id);
         label.setText(updatedCustomerData.get(Data.NAME) + " " + updatedCustomerData.get(Data.SURNAME));
         frame.dispose();

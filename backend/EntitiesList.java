@@ -74,14 +74,15 @@ public abstract class EntitiesList {
     /**
      * Update data of the passed Entities.
      * @param id the id of the entity
-     * @param key the key of the data to update
-     * @param value the new value of the data
+     * @param newData a HashMap with the data to update
      */
-    public void updateEntityData(String id, Data key, String value) {
+    public void updateEntityData(String id, HashMap<Data, String> newData) {
         boolean found = false;
         for (int i = 0; i < this.entitiesList.size(); i++) {
             if (id.equals(this.entitiesList.get(i).getId())) {
-                this.entitiesList.get(i).update(key, value);
+                for (Data key : newData.keySet()) {
+                  this.entitiesList.get(i).update(key, newData.get(key));
+                }
                 printlog(LogType.INFO, this.logEntityType + " data updated: " + this.entitiesList.get(i).getAllData().toString());
                 found = true;
                 break;
