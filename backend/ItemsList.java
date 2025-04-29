@@ -103,7 +103,13 @@ import backend.Logger;
         for (int i = 0; i < this.itemsList.size(); i++) {
             if (id.equals(this.itemsList.get(i).getId())) {
                 this.itemsList.get(i).setQuantity(quantity);
-                Logger.info("Item quantity updated: " + this.itemsList.get(i).getQuantity());
+                if (quantity == 0) {
+                    Logger.error("ALERT: new item quantity is 0");
+                } else if (quantity < 10) {
+                    Logger.warn("ALERT: new item quantity is " + quantity);
+                } else {
+                    Logger.info("Item quantity updated: " + this.itemsList.get(i).getQuantity());
+                }
                 found = true;
                 break;
             }
@@ -145,5 +151,19 @@ import backend.Logger;
             }
         }
         return supplierItems;
+    }
+    
+    /**
+     * Get Item with low stock level
+     * @return the list of the items 
+     */
+    public List<Item> getItemsLowStock() {
+        List<Item> itemsLowStock = new ArrayList<>();
+        for (int i = 0; i < this.itemsList.size(); i++) {
+            if (this.itemsList.get(i).getQuantity() < 10) {
+                itemsLowStock.add(this.itemsList.get(i));
+            }
+        }
+        return itemsLowStock;
     }
  }

@@ -84,7 +84,7 @@ abstract class EntitiesPanel {
         JButton add = new JButton(getLabelsText(Labels.ADD_ENTITY_BTN));
         add.addActionListener(e -> createEntityFieldsFrame(Action.ADD, null, ""));
         this.entitiesPanel.add(add);
-        createPendingDeliveryPanel(this.entitiesPanel, entities);
+        createSupplierExtraInfoPanel(this.entitiesPanel, entities);
         this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         for (int i = 0; i < this.entities.getEntitiesList().size(); i++) {
             Entity entity = this.entities.getEntitiesList().get(i);
@@ -214,13 +214,29 @@ abstract class EntitiesPanel {
      * @param panel the panel where to add the pending deliveries.
      * @param entities the list of Entities.
      */
-    protected void createPendingDeliveryPanel(JPanel panel, EntitiesList entities) {
+    protected void createSupplierExtraInfoPanel(JPanel panel, EntitiesList entities) {
         if (entities instanceof SuppliersList) {
             JPanel linePanel = new JPanel();
             linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
             linePanel.setMaximumSize(new Dimension(300, 30)); // fix height of the line
             linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             linePanel.setBackground(Color.DARK_GRAY);
+            
+            JButton stockLevelBtn = new JButton("Items Stock Level");
+            stockLevelBtn.addActionListener(e -> {
+                String stockMsg;
+                if (this.items.getItemsList().size() == 0) {
+                    stockMsg = "Currently there are no items in stock";
+                } else {
+                    stockMsg = "Items Stock:\n";
+                    for (int i = 0; i < this.items.getItemsList().size(); i++) {
+                        stockMsg += "- " + this.items.getItemsList().get(i).getName() + " has " + this.items.getItemsList().get(i).getQuantity() + " items left\n";
+                    }
+                }
+                JOptionPane.showMessageDialog(null, stockMsg, "Items Stock Level", JOptionPane.INFORMATION_MESSAGE);
+            });
+            panel.add(stockLevelBtn);
+            
             int pendingDeliveries = this.orders.getPendingOrders().size();
             JLabel label = new JLabel(pendingDeliveries + " pending deliveries");
             label.setForeground(Color.WHITE);
@@ -514,6 +530,14 @@ abstract class EntitiesPanel {
             String basketItemId = this.basketItems.get(i).getItemId();
             int newQuantity = this.items.getItemQuantity(basketItemId) - this.basketItems.get(i).getQuantity();
             this.items.updateItemQuantity(basketItemId, newQuantity);
+        }
+        List<Item> itemsLowStock = this.items.getItemsLowStock();
+        if (itemsLowStock.size() > 0) {
+            String alertMessage = "Low Stock Items:\n";
+            for (int i = 0; i < itemsLowStock.size(); i++) {
+                alertMessage += "- " + itemsLowStock.get(i).getName() + " has " + itemsLowStock.get(i).getQuantity() + " items left\n";
+            }
+            JOptionPane.showMessageDialog(null, alertMessage, "Stock Alert", JOptionPane.ERROR_MESSAGE);
         }
     }
     
