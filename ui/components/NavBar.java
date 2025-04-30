@@ -27,7 +27,7 @@ public class NavBar {
         frame.setJMenuBar(menubar);
         
         // create the File menu
-        JMenu menu = new JMenu("File");
+        JMenu menu = new JMenu("Menu");
         menubar.add(menu);
         
         JMenuItem item = new JMenuItem("Quit");

@@ -438,10 +438,11 @@ abstract class EntitiesPanel {
         JButton purchaseBtn = new JButton("Purchase");
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
-            this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), entity instanceof Customer ? OrderStatus.SHIPPED : OrderStatus.PENDING);
             if (entity instanceof Customer) {
+                this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), OrderStatus.SHIPPED);
                 this.updateStockLevelAfterPurchase();
             } else {
+                this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), OrderStatus.PENDING);
                 this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getButton().setEnabled(true);
                 this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getLabel().setText(this.orders.getPendingOrders().size() + " pending deliveries");
             }

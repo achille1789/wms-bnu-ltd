@@ -1,7 +1,7 @@
 package backend.orders;
 
 /**
- * Enam with all the possible OrderItem details
+ * Enam with all the Order data
  */
 public enum OrderData {
     ORDER_ID,

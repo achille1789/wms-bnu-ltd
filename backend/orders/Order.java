@@ -27,7 +27,9 @@ public class Order {
      * Info needed are: name, description, available quantity, supplier name and price.
      *
      * @param entityId the entity that created the order
+     * @param totalCost the total cost of the order
      * @param orderItems the list of order items
+     * @param status the status of the order
      */
     public Order(String entityId, float totalCost, List<OrderItem> orderItems, OrderStatus status) {
         this.entityId = entityId;

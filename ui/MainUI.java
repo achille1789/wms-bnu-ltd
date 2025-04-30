@@ -23,6 +23,8 @@ public class MainUI {
     private SuppliersList suppliers;
     private OrdersList suppliersOrders;
     private OrdersList customersOrders;
+    private Finance financeSales;
+    private Finance financePurchases;
     
     /**
      * Create an MainUI and display its GUI on screen.
@@ -35,6 +37,8 @@ public class MainUI {
         this.suppliers = new SuppliersList(prepopulated);
         this.suppliersOrders = new OrdersList();
         this.customersOrders = new OrdersList();
+        this.financeSales = new Finance(this.customersOrders);
+        this.financePurchases = new Finance(this.suppliersOrders);
         makeFrame();
     }
     
@@ -59,9 +63,10 @@ public class MainUI {
         new CustomersPanel(contentPane, this.customers, this.customersOrders, this.items, BorderLayout.WEST);
         new ItemsPanel(contentPane, this.items, this.suppliers);
         new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, this.items, BorderLayout.EAST);
+        new FinancesPanel(contentPane, this.financeSales, this.financePurchases);
         
-        String versionText = NavBar.VERSION;
-        contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
+//         String versionText = NavBar.VERSION;
+//         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
         
         // place the frame at the center of the screen and show
         Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
