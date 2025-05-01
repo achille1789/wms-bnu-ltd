@@ -1,7 +1,8 @@
 package backend.entities;
 
-import java.time.Instant;
 import java.util.HashMap;
+
+import utils.IdGenerator;
 
 /**
  * A class to create Customer objects.
@@ -23,8 +24,7 @@ public class Customer extends Entity implements ICustomer {
      * @param creditCard of the customer
      */
     public Customer add(String name, String surname, String email, String address, String creditCard) {
-        String rand = String.valueOf((int)(Math.random() * 1000));
-        String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
+        String id = IdGenerator.getId();
         this.entityData = getEntityData();
         this.entityData.put(Data.ID, id);
         this.entityData.put(Data.NAME, name);

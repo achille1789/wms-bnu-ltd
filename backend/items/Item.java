@@ -1,7 +1,8 @@
 package backend.items;
 
 import java.util.HashMap;
-import java.time.Instant;
+
+import utils.IdGenerator;
 
 /**
  * A class that defines a warehouse Item.
@@ -38,8 +39,7 @@ public class Item {
         this.supplierId = supplierId;
         this.supplierPrice = supplierPrice;
         this.customerPrice = getCustomerPrice(supplierPrice);
-        String rand = String.valueOf((int)(Math.random() * 1000));
-        this.id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
+        this.id = IdGenerator.getId();
     }
     
     /**
