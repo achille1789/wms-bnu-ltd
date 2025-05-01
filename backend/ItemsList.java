@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import backend.items.*;
-import backend.Logger;
+import utils.Logger;
 
 /**
  * A class that handles the list of warehouse Items.

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import backend.entities.Customer;
 import backend.entities.Data;
+import utils.Logger;
 
 /**
  * A class that handles the list of Customers.

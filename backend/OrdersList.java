@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import backend.orders.*;
-import backend.Logger;
+import utils.Logger;
 
 /**
  * A class that handles the list of warehouse Items.

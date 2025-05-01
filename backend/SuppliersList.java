@@ -7,6 +7,7 @@ import java.util.HashMap;
 import backend.entities.Supplier;
 import backend.entities.Data;
 import backend.entities.Entity;
+import utils.Logger;
 
 /**
  * A class that handles the list of Suppliers.

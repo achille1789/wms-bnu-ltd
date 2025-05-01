@@ -7,7 +7,6 @@ import java.util.HashMap;
 
 import backend.finances.FinanceItem;
 import backend.orders.*;
-import backend.Logger;
 
 /**
  * A class to perform Finance calculations.

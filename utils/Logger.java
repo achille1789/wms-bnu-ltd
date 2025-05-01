@@ -1,4 +1,4 @@
-package backend;
+package utils;
 
 /**
  * Enam with all the type of log
@@ -16,7 +16,7 @@ enum LogType {
  * @author Vanni Gallo
  * @version 1.0.0
  */
-class Logger {
+public class Logger {
     // ANSI color codes
     private static final String RESET = "\u001B[0m";
     private static final String RED = "\u001B[31m";
