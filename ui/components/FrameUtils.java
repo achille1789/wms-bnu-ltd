@@ -59,4 +59,14 @@ public class FrameUtils {
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));   
         panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
+    
+    /**
+     * Create high contrast panel
+     *
+     * @param panel The JPanel to make DARK_GRAY
+     */
+    public static void createReverseHighContrastPanel(JPanel panel, boolean vertical) {
+        panel.setBackground(Color.LIGHT_GRAY);       
+        panel.setLayout(new BoxLayout(panel, vertical ? BoxLayout.Y_AXIS : BoxLayout.X_AXIS));
+    }
 }

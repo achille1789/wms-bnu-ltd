@@ -157,8 +157,7 @@ abstract class EntitiesPanel {
      */
     protected void setEntitiesPanelDetails(String id, String name) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         JLabel labelName = new JLabel(name);
         panel.add(labelName);
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
@@ -209,8 +208,8 @@ abstract class EntitiesPanel {
     protected void createSupplierExtraInfoPanel(JPanel panel, EntitiesList entities) {
         if (entities instanceof SuppliersList) {
             JPanel linePanel = new JPanel();
-            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
-            linePanel.setMaximumSize(new Dimension(300, 30)); // fix height of the line
+            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS));
+            linePanel.setMaximumSize(new Dimension(300, 30));
             linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
             linePanel.setBackground(Color.DARK_GRAY);
             
@@ -261,13 +260,10 @@ abstract class EntitiesPanel {
         JFrame frame = new JFrame(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_LABEL : Labels.ADD_ENTITY_FRAME_LABEL));
         frame.setSize(700, 200);
 
-        // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5));
         updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Input components
         HashMap<Data, InputPair> entityFields = getEntityFields(id);
-
         JButton confirmBtn = new JButton(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_BTN : Labels.ADD_ENTITY_FRAME_BTN));
         confirmBtn.setForeground(new Color(0, 153, 0));
         confirmBtn.addActionListener(e -> {
@@ -292,9 +288,7 @@ abstract class EntitiesPanel {
         updatePanel.add(confirmBtn);
         updatePanel.add(cancelBtn);
 
-        // Add updatePanel to frame
         frame.add(updatePanel);
-
         FrameUtils.centerFrame(frame);
     }
     
@@ -351,8 +345,7 @@ abstract class EntitiesPanel {
      */
     private void setOrderItemsPanelDetails(JPanel itemPanel, HashMap<ItemData, String> itemDetails, String entityId) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         
         Entity entity = this.entities.getEntityById(entityId);
         String price = entity instanceof Customer ? itemDetails.get(ItemData.CUSTOMER_PRICE) : itemDetails.get(ItemData.SUPPLIER_PRICE);
@@ -366,12 +359,11 @@ abstract class EntitiesPanel {
         if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0 || entity instanceof Supplier) {
             // Create a sub-panel for label + input field
             JPanel linePanel = new JPanel();
-            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
-            linePanel.setMaximumSize(new Dimension(200, 30)); // fix height of the line
+            linePanel.setMaximumSize(new Dimension(200, 30));
             linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            linePanel.setBackground(Color.LIGHT_GRAY); 
+            FrameUtils.createReverseHighContrastPanel(linePanel, false);
             JLabel label = new JLabel("Quantity to order:");
-            JTextField quantityField = new JTextField(10); // 10 columns width
+            JTextField quantityField = new JTextField(10);
             linePanel.add(label);
             linePanel.add(quantityField);
             panel.add(linePanel);
@@ -441,8 +433,7 @@ abstract class EntitiesPanel {
         HashMap<OrderItemData, String> orderItemData = orderItem.getAllData();
         
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         
         this.basketLabel.setText("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
         
@@ -490,9 +481,8 @@ abstract class EntitiesPanel {
             noOrdersLabel.setText(getEntityType(false) + " has " + ordersList.size() + " orders");
             for (int i = 0; i < ordersList.size(); i++) {
                 JPanel itemPanel = new JPanel();
-                itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.X_AXIS)); // left-aligned
                 itemPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-                itemPanel.setBackground(Color.LIGHT_GRAY); 
+                FrameUtils.createReverseHighContrastPanel(itemPanel, false);
                 Order order = ordersList.get(i);
                 HashMap<OrderData, String> orderData = order.getAllData();
                 String orderInfo = "<html>Date: " + orderData.get(OrderData.DATE) + "<br>Id: " + orderData.get(OrderData.ORDER_ID) + "<br>Status: " + orderData.get(OrderData.STATUS);

@@ -64,8 +64,7 @@ public class ItemsPanel {
      */
     private void setItemsPanelDetails(Item item) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         JLabel labelName = new JLabel(" Item: " + item.getName() + " ");
         panel.add(labelName);
         JLabel labelDescription = new JLabel(" Description: " + item.getDescription() + " ");
@@ -98,18 +97,16 @@ public class ItemsPanel {
         JFrame frame = new JFrame("Add Warehouse Item");
         frame.setSize(700, 200);
 
-        // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5));
         updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         if (this.suppliers.getEntitiesList().size() > 0) {
-            // Input components
             HashMap<ItemData, InputPair> itemFields = new HashMap<>();
             itemFields.put(ItemData.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
             itemFields.put(ItemData.DESCRIPTION, new InputPair(new JLabel("Description:"), new JTextField("", 15)));
             itemFields.put(ItemData.QUANTITY, new InputPair(new JLabel("Initial Quantity:"), new JTextField("", 15)));
             JComboBox<String> comboBox = new JComboBox<>(this.suppliers.getSuppliersName());
-            itemFields.put(ItemData.SUPPLIER, new InputPair(new JLabel("Supplier:"), comboBox)); // TODO: add list of suppliers
+            itemFields.put(ItemData.SUPPLIER, new InputPair(new JLabel("Supplier:"), comboBox));
             itemFields.put(ItemData.SUPPLIER_PRICE, new InputPair(new JLabel("Supplier Price:"), new JTextField("", 15)));
     
             JButton confirmBtn = new JButton("Add Item");
@@ -133,11 +130,11 @@ public class ItemsPanel {
     
             // Add components to the Add Item Panel
             for (InputPair field : itemFields.values()) {
-                updatePanel.add(field.getLabel()); // JLabel
+                updatePanel.add(field.getLabel());
                 if (field.getLabelString().toUpperCase().equals(ItemData.SUPPLIER.name() + ":")) {
-                    updatePanel.add(field.getDropList()); // JComboBox<String>
+                    updatePanel.add(field.getDropList());
                 } else {
-                    updatePanel.add(field.getTextField()); // JTextField
+                    updatePanel.add(field.getTextField());
                 }
             }
             updatePanel.add(new JLabel(""));
@@ -155,7 +152,6 @@ public class ItemsPanel {
             updatePanel.add(cancelBtn);
         }
 
-        // Add updatePanel to frame
         frame.add(updatePanel);
         FrameUtils.centerFrame(frame);
     }
