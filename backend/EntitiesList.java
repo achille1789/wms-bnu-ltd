@@ -38,6 +38,22 @@ public abstract class EntitiesList {
         }
     }
     
+    /**
+     * Get list index of entity that matches the passed Id.
+     * @param id of the entity
+     * @return the index of the entity
+     */
+     private int getEntityIndex(String id) {
+        int index = -1;
+        for (int i = 0; i < this.entitiesList.size(); i++) {
+            if (id.equals(this.entitiesList.get(i).getId())) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+     }
+    
     
     /**
      * Setters.
@@ -59,17 +75,12 @@ public abstract class EntitiesList {
      * @return a HashMap with all the entity data
      */
     public HashMap<Data, String> getEntityData(String id) {
-        HashMap<Data, String> entityData = null;
-        for (int i = 0; i < this.entitiesList.size(); i++) {
-            if (id.equals(this.entitiesList.get(i).getId())) {
-                entityData = this.entitiesList.get(i).getAllData();
-                break;
-            }
+        int index = getEntityIndex(id);
+        if (index > -1) {
+            return this.entitiesList.get(index).getAllData();
         }
-        if (entityData == null) {
-            printlog(LogType.ERROR, this.logEntityType + " not found");
-        }
-        return entityData;
+        printlog(LogType.ERROR, this.logEntityType + " not found");
+        return null;
     }
 
     /**
@@ -78,18 +89,13 @@ public abstract class EntitiesList {
      * @param newData a HashMap with the data to update
      */
     public void updateEntityData(String id, HashMap<Data, String> newData) {
-        boolean found = false;
-        for (int i = 0; i < this.entitiesList.size(); i++) {
-            if (id.equals(this.entitiesList.get(i).getId())) {
-                for (Data key : newData.keySet()) {
-                  this.entitiesList.get(i).update(key, newData.get(key));
-                }
-                printlog(LogType.INFO, this.logEntityType + " data updated: " + this.entitiesList.get(i).getAllData().toString());
-                found = true;
-                break;
+        int index = getEntityIndex(id);
+        if (index > -1) {
+            for (Data key : newData.keySet()) {
+              this.entitiesList.get(index).update(key, newData.get(key));
             }
-        }
-        if (!found) {
+            printlog(LogType.INFO, this.logEntityType + " data updated: " + this.entitiesList.get(index).getAllData().toString());
+        } else {
             printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
         }
     }
@@ -99,17 +105,12 @@ public abstract class EntitiesList {
      * @param id the id of the entity
      */
     public void deleteEntity(String id) {
-        boolean found = false;
-        for (int i = 0; i < this.entitiesList.size(); i++) {
-            if (id.equals(this.entitiesList.get(i).getId())) {
-                this.entitiesList.remove(i);
-                printlog(LogType.INFO, this.logEntityType + " deleted");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
+        int index = getEntityIndex(id);
+        if (index > -1) {
+            this.entitiesList.remove(index);
+            printlog(LogType.INFO, this.logEntityType + " deleted");
+        } else {
+            printlog(LogType.ERROR, this.logEntityType + " not found, entity not deleted");
         }
     }
     
@@ -119,16 +120,11 @@ public abstract class EntitiesList {
      * @return the entity
      */
     public Entity getEntityById(String id) {
-        Entity entity = null;
-        for (int i = 0; i < this.entitiesList.size(); i++) {
-            if (id.equals(this.entitiesList.get(i).getId())) {
-                entity = this.entitiesList.get(i);
-                break;
-            }
+        int index = getEntityIndex(id);
+        if (index > -1) {
+            return this.entitiesList.get(index);
         }
-        if (entity == null) {
-            printlog(LogType.ERROR, this.logEntityType + " not found");
-        }
-        return entity;
+        printlog(LogType.ERROR, this.logEntityType + " not found");
+        return null;
     }
  }

@@ -31,6 +31,22 @@ import utils.Logger;
         }
     }
     
+    /**
+     * Get list index of item that matches the passed Id.
+     * @param id of the item
+     * @return the index of the item
+     */
+     private int getItemIndex(String id) {
+        int index = -1;
+        for (int i = 0; i < this.itemsList.size(); i++) {
+            if (id.equals(this.itemsList.get(i).getId())) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+     }
+    
     // TODO: handle wrong input data
     /**
      * Set all the item details to create a new Item.
@@ -55,42 +71,19 @@ import utils.Logger;
     }
     
     /**
-     * Get data of the passed id Item.
-     * @param id of the item
-     * @return a HashMap with all the Item data
-     */
-    public HashMap<ItemData, String> getItemData(String id) {
-        HashMap<ItemData, String> itemData = null;
-        for (int i = 0; i < this.itemsList.size(); i++) {
-            if (id.equals(this.itemsList.get(i).getId())) {
-                itemData = this.itemsList.get(i).getAllData();
-                break;
-            }
-        }
-        if (itemData == null) {
-            Logger.error("Item not found");
-        }
-        return itemData;
-    }
-    
-    /**
      * Get Item quantity
      * @param name the name of the item
      * @return the quantity of the item
      */
     public int getItemQuantity(String id) {
-        int quantity = -1;
-        for (int i = 0; i < this.itemsList.size(); i++) {
-            if (id.equals(this.itemsList.get(i).getId())) {
-                quantity = this.itemsList.get(i).getQuantity();
-                break;
-            }
+        int index = getItemIndex(id);
+        if (index > -1) {
+            int quantity = this.itemsList.get(index).getQuantity();
+            Logger.info("Current Item quantity: " + quantity);
+            return quantity;
         }
-        if (quantity == -1) {
-            Logger.error("Item not found, quantity not updated");
-        }
-        Logger.info("Current Item quantity: " + quantity);
-        return quantity;
+        Logger.error("Item not found");
+        return index;
     }
     
     /**
@@ -99,22 +92,17 @@ import utils.Logger;
      * @param quantity the new quantity of the item
      */
     public void updateItemQuantity(String id, int quantity) {
-        boolean found = false;
-        for (int i = 0; i < this.itemsList.size(); i++) {
-            if (id.equals(this.itemsList.get(i).getId())) {
-                this.itemsList.get(i).setQuantity(quantity);
-                if (quantity == 0) {
-                    Logger.error("ALERT: new item quantity is 0");
-                } else if (quantity < 10) {
-                    Logger.warn("ALERT: new item quantity is " + quantity);
-                } else {
-                    Logger.info("Item quantity updated: " + this.itemsList.get(i).getQuantity());
-                }
-                found = true;
-                break;
+        int index = getItemIndex(id);
+        if (index > -1) {
+            this.itemsList.get(index).setQuantity(quantity);
+            if (quantity == 0) {
+                Logger.error("ALERT: new item quantity is 0");
+            } else if (quantity < 10) {
+                Logger.warn("ALERT: new item quantity is " + quantity);
+            } else {
+                Logger.info("Item quantity updated: " + this.itemsList.get(index).getQuantity());
             }
-        }
-        if (!found) {
+        } else {
             Logger.error("Item not found, quantity not updated");
         }
     }
@@ -124,17 +112,12 @@ import utils.Logger;
      * @param id the id of the item
      */
     public void deleteItem(String id) {
-        boolean found = false;
-        for (int i = 0; i < this.itemsList.size(); i++) {
-            if (id.equals(this.itemsList.get(i).getId())) {
-                this.itemsList.remove(i);
-                Logger.info("Item deleted");
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            Logger.error("Item not found, data not updated");
+        int index = getItemIndex(id);
+        if (index > -1) {
+            this.itemsList.remove(index);
+            Logger.info("Item deleted");
+        } else {
+            Logger.error("Item not found, item not deleted");
         }
     }
     
