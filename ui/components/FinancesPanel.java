@@ -75,10 +75,7 @@ public class FinancesPanel {
         panel.add(closeBtn);
         
         frame.add(panel);
-
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**

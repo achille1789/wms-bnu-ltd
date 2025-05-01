@@ -65,12 +65,6 @@ public class MainUI {
         new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, this.items, BorderLayout.EAST);
         new FinancesPanel(contentPane, this.financeSales, this.financePurchases);
         
-//         String versionText = NavBar.VERSION;
-//         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
-        
-        // place the frame at the center of the screen and show
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
 }

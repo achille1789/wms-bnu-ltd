@@ -47,11 +47,7 @@ public class ItemsPanel {
             createItemsPanel(item);
         }
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.itemsPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.itemsPanel);        
         mainUIContentPane.add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -165,9 +161,6 @@ public class ItemsPanel {
 
         // Add updatePanel to frame
         frame.add(updatePanel);
-
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
 }

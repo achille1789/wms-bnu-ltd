@@ -91,11 +91,7 @@ abstract class EntitiesPanel {
             createEntityPanel(entity);
         }
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.entitiesPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.entitiesPanel);
         mainUIContentPane.add(scrollPane, region);
     }
     
@@ -303,9 +299,7 @@ abstract class EntitiesPanel {
         // Add updatePanel to frame
         frame.add(updatePanel);
 
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
@@ -323,9 +317,7 @@ abstract class EntitiesPanel {
         createOrderItemsSidePanel(frame, entityId);
         createBasketSidePanel(frame, entityId);
         
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
@@ -355,12 +347,7 @@ abstract class EntitiesPanel {
         closeBtn.addActionListener(e -> frame.dispose());
         orderPanel.add(closeBtn);
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(orderPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // Add orderPanel to frame
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(orderPanel);
         frame.add(scrollPane, BorderLayout.WEST);
     }
     
@@ -451,12 +438,7 @@ abstract class EntitiesPanel {
         });
         this.basketPanel.add(purchaseBtn);
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.basketPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // Add basketPanel to frame
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.basketPanel);
         frame.add(scrollPane, BorderLayout.EAST);
     }
     
@@ -537,15 +519,10 @@ abstract class EntitiesPanel {
                 orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
         }
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(orderHistoryPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(orderHistoryPanel);        
         frame.add(scrollPane, BorderLayout.CENTER);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
