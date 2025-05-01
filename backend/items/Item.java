@@ -73,28 +73,19 @@ public class Item {
      */
     public String getName() {
         return this.name;
-    }
-    
+    }   
     public int getQuantity() {
         return this.quantity;
-    }
-    
+    }    
     public float getSupplierPrice() {
         return this.supplierPrice;
-    }
-    
-    public float getCustomerPrice() {
-        return this.customerPrice;
-    }
-    
+    }    
     public String getId() {
         return this.id;
-    }
-    
+    }    
     public String getDescription() {
         return this.description;
-    }
-    
+    }    
     public String getSupplierId() {
         return this.supplierId;
     }

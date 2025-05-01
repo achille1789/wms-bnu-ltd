@@ -68,24 +68,19 @@ public class Order {
      */
     public String getOrderId() {
         return this.orderId;
-    }
-    
+    }    
     public String getEntityId() {
         return this.entityId;
-    }
-    
+    }    
     public String getDate() {
         return this.date;
-    }
-    
+    }    
     public float getTotalCost() {
         return this.totalCost;
-    }
-    
+    }    
     public List<OrderItem> getOrderItems() {
         return this.orderItems;
-    }
-    
+    }    
     public OrderStatus getStatus() {
         return this.status;
     }

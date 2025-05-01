@@ -15,11 +15,6 @@ public abstract class Entity {
     private HashMap<Data, String> entityData = new HashMap<>();
     
     /**
-     * Add a new order.
-     */
-    public abstract void addNewOrder();
-    
-    /**
      * Update entity data.
      * @param key the key of the data to update
      * @param value the new value of the data
@@ -43,12 +38,10 @@ public abstract class Entity {
      */
     public String getName() {
         return this.entityData.get(Data.NAME);
-    }
-    
+    }    
     public String getId() {
         return this.entityData.get(Data.ID);
-    }
-    
+    }    
     public HashMap<Data, String> getEntityData() {
         return this.entityData;
     }

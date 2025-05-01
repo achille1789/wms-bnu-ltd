@@ -12,7 +12,7 @@ import utils.IdGenerator;
  */
 public class Customer extends Entity implements ICustomer {
     // The fields.
-    HashMap<Data, String> entityData;
+    HashMap<Data, String> customerData;
     
     /**
      * Add a new entity Customer.
@@ -25,28 +25,20 @@ public class Customer extends Entity implements ICustomer {
      */
     public Customer add(String name, String surname, String email, String address, String creditCard) {
         String id = IdGenerator.getId();
-        this.entityData = getEntityData();
-        this.entityData.put(Data.ID, id);
-        this.entityData.put(Data.NAME, name);
-        this.entityData.put(Data.SURNAME, surname);
-        this.entityData.put(Data.EMAIL, email);
-        this.entityData.put(Data.ADDRESS, address);
-        this.entityData.put(Data.CREDIT_CARD, creditCard);
+        this.customerData = getEntityData();
+        this.customerData.put(Data.ID, id);
+        this.customerData.put(Data.NAME, name);
+        this.customerData.put(Data.SURNAME, surname);
+        this.customerData.put(Data.EMAIL, email);
+        this.customerData.put(Data.ADDRESS, address);
+        this.customerData.put(Data.CREDIT_CARD, creditCard);
         return this;
-    }
-    
-    /**
-     * Add a new Customer order.
-     */
-    @Override
-    public void addNewOrder() {
-        System.out.println("new order placed"); // TODO: remove log
     }
     
     /**
      * Getters
      */
     public String getSurname() {
-        return this.entityData.get(Data.SURNAME);
+        return this.customerData.get(Data.SURNAME);
     }
 }
