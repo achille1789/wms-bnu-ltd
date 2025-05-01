@@ -74,13 +74,9 @@ abstract class EntitiesPanel {
         this.orders = orders;
         this.items = items;
         this.entitiesPanel = new JPanel();
-        this.entitiesPanel.setBackground(Color.DARK_GRAY);       
-        this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   
-        this.entitiesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalEntitiesLabel = new JLabel(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
         this.totalEntitiesLabel.setPreferredSize(new Dimension(160, 50));
-        this.totalEntitiesLabel.setForeground(Color.WHITE);
-        this.entitiesPanel.add(this.totalEntitiesLabel);
+        FrameUtils.createHighContrastPanel(this.entitiesPanel, this.totalEntitiesLabel);
         JButton add = new JButton(getLabelsText(Labels.ADD_ENTITY_BTN));
         add.addActionListener(e -> createEntityFieldsFrame(Action.ADD, null, ""));
         this.entitiesPanel.add(add);
@@ -327,12 +323,8 @@ abstract class EntitiesPanel {
      */
     private void createOrderItemsSidePanel(JFrame frame, String entityId) {
         JPanel orderPanel = new JPanel();
-        orderPanel.setBackground(Color.DARK_GRAY);       
-        orderPanel.setLayout(new BoxLayout(orderPanel, BoxLayout.Y_AXIS));   
-        orderPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel totalItemsLabel = new JLabel("Catalogue has " + this.items.getItemsList().size() + " items");
-        totalItemsLabel.setForeground(Color.WHITE);
-        orderPanel.add(totalItemsLabel);
+        FrameUtils.createHighContrastPanel(orderPanel, totalItemsLabel);
         orderPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         Entity entity = this.entities.getEntityById(entityId);
@@ -412,12 +404,8 @@ abstract class EntitiesPanel {
      */
     private void createBasketSidePanel(JFrame frame, String entityId) {
         this.basketPanel = new JPanel();
-        this.basketPanel.setBackground(Color.DARK_GRAY);       
-        this.basketPanel.setLayout(new BoxLayout(this.basketPanel, BoxLayout.Y_AXIS));   
-        this.basketPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.basketLabel = new JLabel("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
-        this.basketLabel.setForeground(Color.WHITE);
-        this.basketPanel.add(this.basketLabel);
+        FrameUtils.createHighContrastPanel(this.basketPanel, this.basketLabel);
         this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
         Entity entity = this.entities.getEntityById(entityId);
@@ -489,12 +477,8 @@ abstract class EntitiesPanel {
         JFrame frame = new JFrame("Orders History");
         frame.setSize(600, 500);
         JPanel orderHistoryPanel = new JPanel();
-        orderHistoryPanel.setBackground(Color.DARK_GRAY);       
-        orderHistoryPanel.setLayout(new BoxLayout(orderHistoryPanel, BoxLayout.Y_AXIS));   
-        orderHistoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel noOrdersLabel = new JLabel("No orders found for this " + getEntityType(false));
-        noOrdersLabel.setForeground(Color.WHITE);
-        orderHistoryPanel.add(noOrdersLabel);
+        FrameUtils.createHighContrastPanel(orderHistoryPanel, noOrdersLabel);
         orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
         JButton closeBtn = new JButton("Close");

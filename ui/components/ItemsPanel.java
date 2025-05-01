@@ -31,13 +31,9 @@ public class ItemsPanel {
         this.items = items;
         this.suppliers = suppliers;
         this.itemsPanel = new JPanel();
-        this.itemsPanel.setBackground(Color.DARK_GRAY);       
-        this.itemsPanel.setLayout(new BoxLayout(this.itemsPanel, BoxLayout.Y_AXIS));   
-        this.itemsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalItemsLabel = new JLabel(this.items.getItemsList().size() + " warehouse items in catalog");
         this.totalItemsLabel.setPreferredSize(new Dimension(160, 50));
-        this.totalItemsLabel.setForeground(Color.WHITE);
-        this.itemsPanel.add(this.totalItemsLabel);
+        FrameUtils.createHighContrastPanel(this.itemsPanel, this.totalItemsLabel);
         JButton add = new JButton("Add Warehouse Item");
         add.addActionListener(e -> createAddItemFieldsFrame(Action.ADD, null, ""));
         this.itemsPanel.add(add);

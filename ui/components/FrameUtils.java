@@ -34,4 +34,29 @@ public class FrameUtils {
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         return scrollPane;
     }
+    
+    /**
+     * Create high contrast panel
+     *
+     * @param panel The JPanel to make DARK_GRAY
+     * @param label The JLabel to make WHITE
+     */
+    public static void createHighContrastPanel(JPanel panel, JLabel label) {
+        panel.setBackground(Color.DARK_GRAY);       
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));   
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        label.setForeground(Color.WHITE);
+        panel.add(label);
+    }
+    
+    /**
+     * Create high contrast panel
+     *
+     * @param panel The JPanel to make DARK_GRAY
+     */
+    public static void createHighContrastPanel(JPanel panel) {
+        panel.setBackground(Color.DARK_GRAY);       
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));   
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+    }
 }
