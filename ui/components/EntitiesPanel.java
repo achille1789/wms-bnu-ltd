@@ -264,6 +264,7 @@ abstract class EntitiesPanel {
      * Create Order Items left panel.
      * 
      * @param frame the order frame.
+     * @param entityId the id of the Entity that created the order.
      */
     private void createOrderItemsSidePanel(JFrame frame, String entityId) {
         JPanel orderPanel = new JPanel();
