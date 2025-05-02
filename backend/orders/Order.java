@@ -5,7 +5,8 @@ import java.util.List;
 import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.Instant;
+
+import utils.IdGenerator;
 
 /**
  * A class that defines Order with many Items.
@@ -38,8 +39,7 @@ public class Order {
         this.status = status;
         LocalDateTime now = LocalDateTime.now();
         this.date = now.format(DateTimeFormatter.ofPattern("dd/MM/yyyy - HH:mm:ss"));
-        String rand = String.valueOf((int)(Math.random() * 1000));
-        this.orderId = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
+        this.orderId = IdGenerator.getId();
     }
     
     /**
@@ -68,24 +68,19 @@ public class Order {
      */
     public String getOrderId() {
         return this.orderId;
-    }
-    
+    }    
     public String getEntityId() {
         return this.entityId;
-    }
-    
+    }    
     public String getDate() {
         return this.date;
-    }
-    
+    }    
     public float getTotalCost() {
         return this.totalCost;
-    }
-    
+    }    
     public List<OrderItem> getOrderItems() {
         return this.orderItems;
-    }
-    
+    }    
     public OrderStatus getStatus() {
         return this.status;
     }

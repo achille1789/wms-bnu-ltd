@@ -4,9 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
 
-import backend.ItemsList;
-import backend.SuppliersList;
-import backend.items.*;
+import backend.InventoryManager;
+import backend.SupplierManager;
+import backend.warehouseitems.*;
 
 /**
  * ItemsPanel is the class that generates the Items Panel.
@@ -16,8 +16,8 @@ import backend.items.*;
  */
 public class ItemsPanel {
     // fields
-    private ItemsList items;
-    private SuppliersList suppliers;
+    private InventoryManager items;
+    private SupplierManager suppliers;
     private JPanel itemsPanel;
     private JLabel totalItemsLabel;
 
@@ -27,17 +27,13 @@ public class ItemsPanel {
      * @param mainUIContentPane The contentPane that is created in MainUI.
      * @param items The instance of the ItemsList class.
      */
-    public ItemsPanel(JPanel mainUIContentPane, ItemsList items, SuppliersList suppliers) {
+    public ItemsPanel(JPanel mainUIContentPane, InventoryManager items, SupplierManager suppliers) {
         this.items = items;
         this.suppliers = suppliers;
         this.itemsPanel = new JPanel();
-        this.itemsPanel.setBackground(Color.DARK_GRAY);       
-        this.itemsPanel.setLayout(new BoxLayout(this.itemsPanel, BoxLayout.Y_AXIS));   
-        this.itemsPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalItemsLabel = new JLabel(this.items.getItemsList().size() + " warehouse items in catalog");
         this.totalItemsLabel.setPreferredSize(new Dimension(160, 50));
-        this.totalItemsLabel.setForeground(Color.WHITE);
-        this.itemsPanel.add(this.totalItemsLabel);
+        FrameUtils.createHighContrastPanel(this.itemsPanel, this.totalItemsLabel);
         JButton add = new JButton("Add Warehouse Item");
         add.addActionListener(e -> createAddItemFieldsFrame(Action.ADD, null, ""));
         this.itemsPanel.add(add);
@@ -47,11 +43,7 @@ public class ItemsPanel {
             createItemsPanel(item);
         }
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.itemsPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.itemsPanel);        
         mainUIContentPane.add(scrollPane, BorderLayout.CENTER);
     }
     
@@ -72,8 +64,7 @@ public class ItemsPanel {
      */
     private void setItemsPanelDetails(Item item) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         JLabel labelName = new JLabel(" Item: " + item.getName() + " ");
         panel.add(labelName);
         JLabel labelDescription = new JLabel(" Description: " + item.getDescription() + " ");
@@ -106,18 +97,16 @@ public class ItemsPanel {
         JFrame frame = new JFrame("Add Warehouse Item");
         frame.setSize(700, 200);
 
-        // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5));
         updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         
         if (this.suppliers.getEntitiesList().size() > 0) {
-            // Input components
             HashMap<ItemData, InputPair> itemFields = new HashMap<>();
             itemFields.put(ItemData.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
             itemFields.put(ItemData.DESCRIPTION, new InputPair(new JLabel("Description:"), new JTextField("", 15)));
             itemFields.put(ItemData.QUANTITY, new InputPair(new JLabel("Initial Quantity:"), new JTextField("", 15)));
             JComboBox<String> comboBox = new JComboBox<>(this.suppliers.getSuppliersName());
-            itemFields.put(ItemData.SUPPLIER, new InputPair(new JLabel("Supplier:"), comboBox)); // TODO: add list of suppliers
+            itemFields.put(ItemData.SUPPLIER, new InputPair(new JLabel("Supplier:"), comboBox));
             itemFields.put(ItemData.SUPPLIER_PRICE, new InputPair(new JLabel("Supplier Price:"), new JTextField("", 15)));
     
             JButton confirmBtn = new JButton("Add Item");
@@ -141,11 +130,11 @@ public class ItemsPanel {
     
             // Add components to the Add Item Panel
             for (InputPair field : itemFields.values()) {
-                updatePanel.add(field.getLabel()); // JLabel
+                updatePanel.add(field.getLabel());
                 if (field.getLabelString().toUpperCase().equals(ItemData.SUPPLIER.name() + ":")) {
-                    updatePanel.add(field.getDropList()); // JComboBox<String>
+                    updatePanel.add(field.getDropList());
                 } else {
-                    updatePanel.add(field.getTextField()); // JTextField
+                    updatePanel.add(field.getTextField());
                 }
             }
             updatePanel.add(new JLabel(""));
@@ -163,11 +152,7 @@ public class ItemsPanel {
             updatePanel.add(cancelBtn);
         }
 
-        // Add updatePanel to frame
         frame.add(updatePanel);
-
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
 }

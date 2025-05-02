@@ -9,8 +9,8 @@ import java.awt.event.*;
 
 import backend.*;
 import backend.entities.*;
-import backend.items.ItemData;
-import backend.items.Item;
+import backend.warehouseitems.ItemData;
+import backend.warehouseitems.Item;
 import backend.orders.*;
 
 /**
@@ -51,51 +51,43 @@ enum UIItems {
  */
 abstract class EntitiesPanel {
     // fields
-    private EntitiesList entities;
+    private EntityManager entities;
     private JPanel entitiesPanel;
     private JLabel totalEntitiesLabel;
     private int padding = 0;
-    private OrdersList orders;
-    private ItemsList items;
+    private OrderManager orders;
+    private InventoryManager items;
     private List<OrderItem> basketItems = new LinkedList<>();
     private JLabel basketLabel;
     private JPanel basketPanel;
-    private HashMap<UIItems, InputPair> pendingDeliveryPanel = new HashMap<>();
+    private HashMap<UIItems, InputPair> pendingDeliveryItems = new HashMap<>();
     
     /**
      * Create the Entities panel.
      * 
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param entities The instance of the EntitiesList class.
+     * @param entities The instance of the EntityManager class.
      * @param region of the UI where display the panel.
      */
-    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, OrdersList orders, ItemsList items, String region) {
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntityManager entities, OrderManager orders, InventoryManager items, String region) {
         this.entities = entities;
         this.orders = orders;
         this.items = items;
         this.entitiesPanel = new JPanel();
-        this.entitiesPanel.setBackground(Color.DARK_GRAY);       
-        this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   
-        this.entitiesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.totalEntitiesLabel = new JLabel(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
         this.totalEntitiesLabel.setPreferredSize(new Dimension(160, 50));
-        this.totalEntitiesLabel.setForeground(Color.WHITE);
-        this.entitiesPanel.add(this.totalEntitiesLabel);
+        FrameUtils.createHighContrastPanel(this.entitiesPanel, this.totalEntitiesLabel);
         JButton add = new JButton(getLabelsText(Labels.ADD_ENTITY_BTN));
         add.addActionListener(e -> createEntityFieldsFrame(Action.ADD, null, ""));
         this.entitiesPanel.add(add);
-        createSupplierExtraInfoPanel(this.entitiesPanel, entities);
+        createSupplierExtraInfoPanel(this.entitiesPanel, entities, this.items, this.orders, this.pendingDeliveryItems);
         this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         for (int i = 0; i < this.entities.getEntitiesList().size(); i++) {
             Entity entity = this.entities.getEntitiesList().get(i);
             createEntityPanel(entity);
         }
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.entitiesPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.entitiesPanel);
         mainUIContentPane.add(scrollPane, region);
     }
     
@@ -131,7 +123,7 @@ abstract class EntitiesPanel {
     /**
      * Getters.
      */
-     protected EntitiesList getEntities() {
+     protected EntityManager getEntities() {
         return this.entities;
      }     
      protected JLabel getTotalEntitiesLabel() {
@@ -165,8 +157,7 @@ abstract class EntitiesPanel {
      */
     protected void setEntitiesPanelDetails(String id, String name) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         JLabel labelName = new JLabel(name);
         panel.add(labelName);
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
@@ -209,56 +200,6 @@ abstract class EntitiesPanel {
     }
     
     /**
-     * Create Pending Deliveries panel.
-     *
-     * @param panel the panel where to add the pending deliveries.
-     * @param entities the list of Entities.
-     */
-    protected void createSupplierExtraInfoPanel(JPanel panel, EntitiesList entities) {
-        if (entities instanceof SuppliersList) {
-            JPanel linePanel = new JPanel();
-            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
-            linePanel.setMaximumSize(new Dimension(300, 30)); // fix height of the line
-            linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            linePanel.setBackground(Color.DARK_GRAY);
-            
-            JButton stockLevelBtn = new JButton("Items Stock Level");
-            stockLevelBtn.addActionListener(e -> {
-                String stockMsg;
-                if (this.items.getItemsList().size() == 0) {
-                    stockMsg = "Currently there are no items in stock";
-                } else {
-                    stockMsg = "Items Stock:\n";
-                    for (int i = 0; i < this.items.getItemsList().size(); i++) {
-                        stockMsg += "- " + this.items.getItemsList().get(i).getName() + " has " + this.items.getItemsList().get(i).getQuantity() + " items left\n";
-                    }
-                }
-                JOptionPane.showMessageDialog(null, stockMsg, "Items Stock Level", JOptionPane.INFORMATION_MESSAGE);
-            });
-            panel.add(stockLevelBtn);
-            
-            int pendingDeliveries = this.orders.getPendingOrders().size();
-            JLabel label = new JLabel(pendingDeliveries + " pending deliveries");
-            label.setForeground(Color.WHITE);
-            JButton deliveryBtn = new JButton("Receive Deliveries");
-            deliveryBtn.setForeground(Color.BLUE);
-            if (pendingDeliveries == 0) {
-                deliveryBtn.setEnabled(false);
-            }
-            deliveryBtn.addActionListener(e -> {
-                updateStockLevelAfterDelivery();
-                this.orders.setNewOrderStatus(OrderStatus.DELIVERED);
-                this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getButton().setEnabled(false);
-                this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getLabel().setText(this.orders.getPendingOrders().size() + " pending deliveries");
-            });
-            linePanel.add(label);
-            linePanel.add(deliveryBtn);
-            this.pendingDeliveryPanel.put(UIItems.PENDING_DELIVERY_PANEL, new InputPair(label, deliveryBtn));
-            panel.add(linePanel);
-        }
-    }
-    
-    /**
      * Create a new frame panel to update entity data.
      * 
      * @param action type: update or add.
@@ -269,13 +210,10 @@ abstract class EntitiesPanel {
         JFrame frame = new JFrame(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_LABEL : Labels.ADD_ENTITY_FRAME_LABEL));
         frame.setSize(700, 200);
 
-        // Create a panel and use GridLayout for label + field pairs
-        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
+        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5));
         updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        // Input components
         HashMap<Data, InputPair> entityFields = getEntityFields(id);
-
         JButton confirmBtn = new JButton(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_BTN : Labels.ADD_ENTITY_FRAME_BTN));
         confirmBtn.setForeground(new Color(0, 153, 0));
         confirmBtn.addActionListener(e -> {
@@ -300,12 +238,8 @@ abstract class EntitiesPanel {
         updatePanel.add(confirmBtn);
         updatePanel.add(cancelBtn);
 
-        // Add updatePanel to frame
         frame.add(updatePanel);
-
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
@@ -323,28 +257,23 @@ abstract class EntitiesPanel {
         createOrderItemsSidePanel(frame, entityId);
         createBasketSidePanel(frame, entityId);
         
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
      * Create Order Items left panel.
      * 
      * @param frame the order frame.
+     * @param entityId the id of the Entity that created the order.
      */
     private void createOrderItemsSidePanel(JFrame frame, String entityId) {
         JPanel orderPanel = new JPanel();
-        orderPanel.setBackground(Color.DARK_GRAY);       
-        orderPanel.setLayout(new BoxLayout(orderPanel, BoxLayout.Y_AXIS));   
-        orderPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel totalItemsLabel = new JLabel("Catalogue has " + this.items.getItemsList().size() + " items");
-        totalItemsLabel.setForeground(Color.WHITE);
-        orderPanel.add(totalItemsLabel);
+        FrameUtils.createHighContrastPanel(orderPanel, totalItemsLabel);
         orderPanel.add(Box.createRigidArea(new Dimension(0, 10)));
 
         Entity entity = this.entities.getEntityById(entityId);
-        List <Item> itemsList = entity instanceof Customer ? this.items.getItemsList() : this.items.getSupplierItems(entityId);
+        List<Item> itemsList = getSidePanelOrderItems(entityId, this.items);
         for (int i = 0; i < itemsList.size(); i++) {
             HashMap<ItemData, String> itemData = itemsList.get(i).getAllData();
             setOrderItemsPanelDetails(orderPanel, itemData, entityId);
@@ -355,12 +284,7 @@ abstract class EntitiesPanel {
         closeBtn.addActionListener(e -> frame.dispose());
         orderPanel.add(closeBtn);
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(orderPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // Add orderPanel to frame
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(orderPanel);
         frame.add(scrollPane, BorderLayout.WEST);
     }
     
@@ -372,46 +296,17 @@ abstract class EntitiesPanel {
      */
     private void setOrderItemsPanelDetails(JPanel itemPanel, HashMap<ItemData, String> itemDetails, String entityId) {
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         
-        Entity entity = this.entities.getEntityById(entityId);
-        String price = entity instanceof Customer ? itemDetails.get(ItemData.CUSTOMER_PRICE) : itemDetails.get(ItemData.SUPPLIER_PRICE);
-        
+        Entity entity = this.entities.getEntityById(entityId);        
+        float price = getPrice(itemDetails);
         String itemInfo = "<html>Name: " + itemDetails.get(ItemData.NAME) + "<br>Description: " + itemDetails.get(ItemData.DESCRIPTION);              
         itemInfo += "<br>Price: £" + price + "<br>Items available: " + itemDetails.get(ItemData.QUANTITY) + "</html>";
         JLabel labelInfo = new JLabel(itemInfo);
         panel.add(labelInfo);
         panel.add(Box.createRigidArea(new Dimension(5, 10)));
         
-        if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0 || entity instanceof Supplier) {
-            // Create a sub-panel for label + input field
-            JPanel linePanel = new JPanel();
-            linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS)); // left-aligned
-            linePanel.setMaximumSize(new Dimension(200, 30)); // fix height of the line
-            linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-            linePanel.setBackground(Color.LIGHT_GRAY); 
-            JLabel label = new JLabel("Quantity to order:");
-            JTextField quantityField = new JTextField(10); // 10 columns width
-            linePanel.add(label);
-            linePanel.add(quantityField);
-            panel.add(linePanel);
-            
-            JButton orderButton = new JButton("Order");        
-            orderButton.addActionListener(e -> {
-                int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
-                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable && entity instanceof Customer ? quantityAvailable : Integer.parseInt(quantityField.getText());
-                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * Float.parseFloat(price));
-                quantityField.setEnabled(false);
-                orderButton.setEnabled(false);
-                setBasketItem(orderItem, quantityField, orderButton);
-            });
-            panel.add(orderButton);
-        } else {           
-            JLabel label = new JLabel("Item not available");
-            label.setForeground(Color.RED);
-            panel.add(label);
-        }
+        getOrderQuantityLinePanel(panel, itemDetails, price);
         
         itemPanel.add(panel);
         itemPanel.add(Box.createRigidArea(new Dimension(0, 10)));
@@ -425,12 +320,8 @@ abstract class EntitiesPanel {
      */
     private void createBasketSidePanel(JFrame frame, String entityId) {
         this.basketPanel = new JPanel();
-        this.basketPanel.setBackground(Color.DARK_GRAY);       
-        this.basketPanel.setLayout(new BoxLayout(this.basketPanel, BoxLayout.Y_AXIS));   
-        this.basketPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         this.basketLabel = new JLabel("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
-        this.basketLabel.setForeground(Color.WHITE);
-        this.basketPanel.add(this.basketLabel);
+        FrameUtils.createHighContrastPanel(this.basketPanel, this.basketLabel);
         this.basketPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
         Entity entity = this.entities.getEntityById(entityId);
@@ -438,25 +329,21 @@ abstract class EntitiesPanel {
         JButton purchaseBtn = new JButton("Purchase");
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
-            if (entity instanceof Customer) {
-                this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), OrderStatus.SHIPPED);
+            OrderStatus status = getOrderStatus();
+            if (this.basketItems.size() == 0) return;
+            this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), status);
+            if (status == OrderStatus.SHIPPED) {
                 this.updateStockLevelAfterPurchase();
             } else {
-                this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), OrderStatus.PENDING);
-                this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getButton().setEnabled(true);
-                this.pendingDeliveryPanel.get(UIItems.PENDING_DELIVERY_PANEL).getLabel().setText(this.orders.getPendingOrders().size() + " pending deliveries");
+                this.pendingDeliveryItems.get(UIItems.PENDING_DELIVERY_PANEL).getButton().setEnabled(true);
+                this.pendingDeliveryItems.get(UIItems.PENDING_DELIVERY_PANEL).getLabel().setText(this.orders.getPendingOrders().size() + " pending deliveries");
             }
             frame.dispose();
             this.basketItems.clear();
         });
         this.basketPanel.add(purchaseBtn);
         
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(this.basketPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
-        // Add basketPanel to frame
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(this.basketPanel);
         frame.add(scrollPane, BorderLayout.EAST);
     }
     
@@ -466,13 +353,12 @@ abstract class EntitiesPanel {
      * @param itemPanel the scrollable panel.
      * @param itemDetails the details of the item.
      */
-    private void setBasketItem(OrderItem orderItem, JTextField quantityField, JButton orderButton) {
+    protected void setBasketItem(OrderItem orderItem, JTextField quantityField, JButton orderButton) {
         this.basketItems.add(orderItem);
         HashMap<OrderItemData, String> orderItemData = orderItem.getAllData();
         
         JPanel panel = new JPanel();
-        panel.setBackground(Color.LIGHT_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createReverseHighContrastPanel(panel, true);
         
         this.basketLabel.setText("Items in basket: " + this.basketItems.size() + " - Total Cost: £" + getTotalPurchaseCost());
         
@@ -507,12 +393,8 @@ abstract class EntitiesPanel {
         JFrame frame = new JFrame("Orders History");
         frame.setSize(600, 500);
         JPanel orderHistoryPanel = new JPanel();
-        orderHistoryPanel.setBackground(Color.DARK_GRAY);       
-        orderHistoryPanel.setLayout(new BoxLayout(orderHistoryPanel, BoxLayout.Y_AXIS));   
-        orderHistoryPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         JLabel noOrdersLabel = new JLabel("No orders found for this " + getEntityType(false));
-        noOrdersLabel.setForeground(Color.WHITE);
-        orderHistoryPanel.add(noOrdersLabel);
+        FrameUtils.createHighContrastPanel(orderHistoryPanel, noOrdersLabel);
         orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         
         JButton closeBtn = new JButton("Close");
@@ -524,9 +406,8 @@ abstract class EntitiesPanel {
             noOrdersLabel.setText(getEntityType(false) + " has " + ordersList.size() + " orders");
             for (int i = 0; i < ordersList.size(); i++) {
                 JPanel itemPanel = new JPanel();
-                itemPanel.setLayout(new BoxLayout(itemPanel, BoxLayout.X_AXIS)); // left-aligned
                 itemPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-                itemPanel.setBackground(Color.LIGHT_GRAY); 
+                FrameUtils.createReverseHighContrastPanel(itemPanel, false);
                 Order order = ordersList.get(i);
                 HashMap<OrderData, String> orderData = order.getAllData();
                 String orderInfo = "<html>Date: " + orderData.get(OrderData.DATE) + "<br>Id: " + orderData.get(OrderData.ORDER_ID) + "<br>Status: " + orderData.get(OrderData.STATUS);
@@ -537,15 +418,10 @@ abstract class EntitiesPanel {
                 orderHistoryPanel.add(Box.createRigidArea(new Dimension(0, 10)));
             }
         }
-        // set vertical scrollbars
-        JScrollPane scrollPane = new JScrollPane(orderHistoryPanel);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        JScrollPane scrollPane = FrameUtils.createVerticalScrollablePane(orderHistoryPanel);        
         frame.add(scrollPane, BorderLayout.CENTER);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
@@ -595,7 +471,7 @@ abstract class EntitiesPanel {
     /**
      * Update stock level after delivery.
      */
-    private void updateStockLevelAfterDelivery() {
+    protected void updateStockLevelAfterDelivery() {
         List <Order> pendingOrders = this.orders.getPendingOrders();
         for (int i = 0; i < pendingOrders.size(); i++) {
             List<OrderItem> orderItems = pendingOrders.get(i).getOrderItems();
@@ -612,13 +488,18 @@ abstract class EntitiesPanel {
      * @param entity The Entity to get the name from.
      * @return the name of the Entity.
      */
-    private String getEntityName(Entity entity) {
-        if (entity instanceof Customer) {
-            Customer customer = (Customer) entity;
-            return customer.getName() + " " + customer.getSurname();
-        }
-        return entity.getName();
-    }
+    protected abstract String getEntityName(Entity entity);
+    
+    /**
+     * Create Entity extra info panel.
+     *
+     * @param panel the panel where to add the pending deliveries.
+     * @param entities the list of Entities.
+     * @param items the list of Items.
+     * @param orders the list of Orders.
+     * @param pendingDeliveryItems the list of pending deliveries.
+     */
+    protected abstract void createSupplierExtraInfoPanel(JPanel panel, EntityManager entities, InventoryManager items, OrderManager orders, HashMap<UIItems, InputPair> pendingDeliveryItems);
     
     /**
      * Get the Entity fields.
@@ -626,6 +507,27 @@ abstract class EntitiesPanel {
      * @return the fields of the Entity.
      */
     protected abstract HashMap<Data, InputPair> getEntityFields(String id);
+    
+    /**
+     * Get the item price.
+     * @param itemDetails an HashMap containing the item price.
+     * @return the item price as float.
+     */
+    protected abstract float getPrice(HashMap<ItemData, String> itemDetails);
+    
+    /**
+     * Get the side panel for Order Items.
+     * @param id of the Entity.
+     * @param items the list of Items.
+     * @return the list of items that can be ordered.
+     */
+    protected abstract List<Item> getSidePanelOrderItems(String id, InventoryManager items);
+    
+    /**
+     * Get the Order status.
+     * @return the Order status.
+     */
+    protected abstract OrderStatus getOrderStatus();
     
     /**
      * Update the panel of the selected Entity.
@@ -642,4 +544,12 @@ abstract class EntitiesPanel {
      * @param entityFields the data needed by the entity.
      */
     protected abstract void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields);
+    
+    /**
+     * Add the line panel of the item quantity.
+     * @param panel where to attach order item line panel.
+     * @param itemDetails an HashMap containing the item quantity.
+     * @param price the price of the item.
+     */
+    protected abstract void getOrderQuantityLinePanel(JPanel panel, HashMap<ItemData, String> itemDetails, float price);
 }

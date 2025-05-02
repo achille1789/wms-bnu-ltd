@@ -3,9 +3,13 @@ package ui.components;
 import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
+import java.util.List;
 
 import backend.*;
+import backend.warehouseitems.Item;
+import backend.warehouseitems.ItemData;
 import backend.entities.*;
+import backend.orders.*;
 
 /**
  * CustomersPanel is the class that generates the Customers Panel.
@@ -18,16 +22,18 @@ public class CustomersPanel extends EntitiesPanel {
     /**
      * Constructor for the CustomersPanel.
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param customers The instance of the CustomersList class.
+     * @param customers The instance of the CustomerManager class.
      * @param region of the UI where display the panel.
      */
-     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, OrdersList customersOrders, ItemsList items, String region) {
+     public CustomersPanel(JPanel mainUIContentPane, CustomerManager customers, OrderManager customersOrders, InventoryManager items, String region) {
          setInputsPadding(3);
          createEntitiesPanel(mainUIContentPane, customers, customersOrders, items, region);
      }
     
     /**
     * Get the Entity type to populate the labels.
+    * Override abstract method getEntityType.
+    *
     * @param plural true if the label is plural, false otherwise.
     * @return the entity type as string.
     */
@@ -37,8 +43,55 @@ public class CustomersPanel extends EntitiesPanel {
     }
     
     /**
+     * Get the side panel for Order Items.
+     * Override abstract method getSidePanelOrderItems.
+     *
+     * @param id of the Entity.
+     * @param items the list of Items.
+     * @return the list of items that can be ordered.
+     */
+    @Override
+    protected List<Item> getSidePanelOrderItems(String id, InventoryManager items) {
+        return items.getItemsList();
+    }
+    
+    /**
+     * Get the item price.
+     * Override abstract method getPrice.
+     *
+     * @param itemDetails an HashMap containing the item price.
+     * @return the item price as float.
+     */
+    @Override
+    protected float getPrice(HashMap<ItemData, String> itemDetails) {
+        return Float.parseFloat(itemDetails.get(ItemData.CUSTOMER_PRICE));
+    }
+    
+    /**
+     * Get the Order status.
+     * Override abstract method getOrderStatus.
+     *
+     * @return the Order status.
+     */
+    protected OrderStatus getOrderStatus() {
+        return OrderStatus.SHIPPED;
+    }
+    
+    /**
+     * Get the Entity name.
+     * Override abstract method getEntityName.
+     *
+     * @param entity The Entity to get the name from.
+     * @return the name of the Entity.
+     */
+    protected String getEntityName(Entity entity) {
+        Customer customer = (Customer) entity;
+        return customer.getName() + " " + customer.getSurname();
+    }
+    
+    /**
      * Create a panel for an Customer.
-     * Override abstract method of EntitiesPanel.
+     * Override abstract method EntitiesPanel.
      *
      * @param id of the customer.
      * @return a HashMap of Data and InputPair.
@@ -65,7 +118,7 @@ public class CustomersPanel extends EntitiesPanel {
     
     /**
      * Update the panel of the selected Entity.
-     * Override abstract method of EntitiesPanel.
+     * Override abstract method EntitiesPanel.
      *
      * @param frame the JFrame of the panel.
      * @param label the JLabel of the panel.
@@ -75,7 +128,7 @@ public class CustomersPanel extends EntitiesPanel {
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
         HashMap<Data, String> newEntityData = new HashMap<>();
-        CustomersList customers = (CustomersList)getEntities();
+        CustomerManager customers = (CustomerManager)getEntities();
         newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
         newEntityData.put(Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
         newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
@@ -89,12 +142,14 @@ public class CustomersPanel extends EntitiesPanel {
 
     /**
      * Add the panel of the new Entity.
+     * Override abstract method addEntityPanel.
+     *
      * @param frame where to display the add entity panel.
      * @param entityFields the data needed by the entity.
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
-        CustomersList customers = (CustomersList)getEntities();
+        CustomerManager customers = (CustomerManager)getEntities();
         String name = entityFields.get(Data.NAME).getTextFieldString();
         String surname = entityFields.get(Data.SURNAME).getTextFieldString();
         String email = entityFields.get(Data.EMAIL).getTextFieldString();
@@ -108,5 +163,58 @@ public class CustomersPanel extends EntitiesPanel {
         setEntitiesPanelDetails(id, fullName);
         getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
         frame.dispose();
+    }
+    
+    /**
+     * Create Entity extra info panel.
+     * Override abstract method createSupplierExtraInfoPanel.
+     *
+     * @param panel the panel where to add the pending deliveries.
+     * @param entities the list of Entities.
+     * @param items the list of Items.
+     * @param orders the list of Orders.
+     * @param pendingDeliveryItems the list of pending deliveries.
+     */
+    @Override
+    protected void createSupplierExtraInfoPanel(JPanel panel, EntityManager entities, InventoryManager items, OrderManager orders, HashMap<UIItems, InputPair> pendingDeliveryItems) {
+        // Customer Panel does not have extra info panel
+    }
+    
+    /**
+     * Add the line panel of the item quantity.
+     * Override abstract method getOrderQuantityLinePanel.
+     *
+     * @param panel where to attach order item line panel.
+     * @param itemDetails an HashMap containing the item quantity.
+     */
+    @Override
+    protected void getOrderQuantityLinePanel(JPanel panel, HashMap<ItemData, String> itemDetails, float price) {
+        if (Integer.parseInt(itemDetails.get(ItemData.QUANTITY)) > 0) {
+            // Create a sub-panel for label + input field
+            JPanel linePanel = new JPanel();
+            linePanel.setMaximumSize(new Dimension(200, 30));
+            linePanel.setAlignmentX(Component.LEFT_ALIGNMENT);
+            FrameUtils.createReverseHighContrastPanel(linePanel, false);
+            JLabel label = new JLabel("Quantity to order:");
+            JTextField quantityField = new JTextField(10);
+            linePanel.add(label);
+            linePanel.add(quantityField);
+            panel.add(linePanel);
+            
+            JButton orderButton = new JButton("Order");        
+            orderButton.addActionListener(e -> {
+                int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
+                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable ? quantityAvailable : Integer.parseInt(quantityField.getText());
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * price);
+                quantityField.setEnabled(false);
+                orderButton.setEnabled(false);
+                setBasketItem(orderItem, quantityField, orderButton);
+            });
+            panel.add(orderButton);
+        } else {           
+            JLabel label = new JLabel("Item not available");
+            label.setForeground(Color.RED);
+            panel.add(label);
+        }
     }
 }

@@ -1,7 +1,8 @@
 package backend.entities;
 
-import java.time.Instant;
 import java.util.HashMap;
+
+import utils.IdGenerator;
 
 /**
  * A class to create Supplier objects.
@@ -22,24 +23,15 @@ public class Supplier extends Entity implements ISupplier {
      * @param sortCode of the supplier
      */
     public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode) {
-        String rand = String.valueOf((int)(Math.random() * 1000));
-        String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
-        HashMap<Data, String> entityData = getEntityData();
-        entityData.put(Data.ID, id);
-        entityData.put(Data.NAME, name);
-        entityData.put(Data.CRN, crn);
-        entityData.put(Data.EMAIL, email);
-        entityData.put(Data.ADDRESS, address);
-        entityData.put(Data.BANK_ACCOUNT, bankAccount);
-        entityData.put(Data.SORT_CODE, sortCode);
+        String id = IdGenerator.getId();
+        HashMap<Data, String> supplierData = getEntityData();
+        supplierData.put(Data.ID, id);
+        supplierData.put(Data.NAME, name);
+        supplierData.put(Data.CRN, crn);
+        supplierData.put(Data.EMAIL, email);
+        supplierData.put(Data.ADDRESS, address);
+        supplierData.put(Data.BANK_ACCOUNT, bankAccount);
+        supplierData.put(Data.SORT_CODE, sortCode);
         return this;
-    }
-    
-    /**
-     * Add a new Supplier order.
-     */
-    @Override
-    public void addNewOrder() {
-        System.out.println("new order placed"); // TODO: remove log
     }
 }

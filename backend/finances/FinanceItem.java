@@ -1,7 +1,6 @@
 package backend.finances;
 
 import java.util.HashMap;
-import java.time.Instant;
 
 /**
  * A class that defines a FinanceItem to store total items purchased/sold and their cost.

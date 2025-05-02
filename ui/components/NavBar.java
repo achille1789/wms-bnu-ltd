@@ -12,8 +12,8 @@ import javax.swing.border.EmptyBorder;
  * @version 1.0
  */
 public class NavBar {
-    // static fields
-    public static final String VERSION = "Version 1.0";
+    // fields
+    private static final String VERSION = "Version 1.0\n";
     
     /**
      * Create the main frame's menu bar.
@@ -21,25 +21,17 @@ public class NavBar {
      * @param frame The frame that the menu bar should be added to.
      */
     public NavBar(JFrame frame) {
-        final int SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
-
         JMenuBar menubar = new JMenuBar();
         frame.setJMenuBar(menubar);
-        
-        // create the File menu
         JMenu menu = new JMenu("Menu");
         menubar.add(menu);
-        
         JMenuItem item = new JMenuItem("Quit");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
         item.addActionListener(e -> quit());
         menu.add(item);
-
-        // create the Help menu
-        menu = new JMenu("Help");
-        menubar.add(menu);
         
-        item = new JMenuItem("About Main UI...");
+        menu = new JMenu("About");
+        menubar.add(menu);
+        item = new JMenuItem("About this app");
         item.addActionListener(e -> showAbout(frame));
         menu.add(item);
     }
@@ -51,11 +43,10 @@ public class NavBar {
         System.exit(0);
     }
 
-    // TODO: add description
     /**
      * 'About' function: show the 'about' box.
      */
     private void showAbout(JFrame frame) {
-        JOptionPane.showMessageDialog(frame, "MainUI\n" + VERSION, "About Main UI", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(frame, "Running " + VERSION + "Please refer to the README file for any info.", "About BNU Industry Solutions Ltd.", JOptionPane.INFORMATION_MESSAGE);
     }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import backend.orders.*;
-import backend.Logger;
+import utils.Logger;
 
 /**
  * A class that handles the list of warehouse Items.
@@ -13,7 +13,7 @@ import backend.Logger;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- public class OrdersList {
+ public class OrderManager {
     // The fields.
     private List<Order> ordersList = new ArrayList<>();
     

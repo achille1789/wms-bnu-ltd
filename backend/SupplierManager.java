@@ -7,6 +7,7 @@ import java.util.HashMap;
 import backend.entities.Supplier;
 import backend.entities.Data;
 import backend.entities.Entity;
+import utils.Logger;
 
 /**
  * A class that handles the list of Suppliers.
@@ -14,11 +15,11 @@ import backend.entities.Entity;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-public class SuppliersList extends EntitiesList implements ISuppliersList {    
+public class SupplierManager extends EntityManager implements ISupplierManager {    
     /**
      * @param prepopulated to instantiate the class with 2 suppliers for debugging
      */
-    public SuppliersList(boolean prepopulated) {
+    public SupplierManager(boolean prepopulated) {
         setLogEntityType("Supplier");
         if (prepopulated) {
             getEntitiesList().add(new Supplier().add("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30"));

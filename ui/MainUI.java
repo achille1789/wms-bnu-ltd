@@ -18,13 +18,13 @@ import backend.*;
 public class MainUI {
     // fields
     private JFrame frame;
-    private CustomersList customers;
-    private ItemsList items;
-    private SuppliersList suppliers;
-    private OrdersList suppliersOrders;
-    private OrdersList customersOrders;
-    private Finance financeSales;
-    private Finance financePurchases;
+    private CustomerManager customers;
+    private InventoryManager items;
+    private SupplierManager suppliers;
+    private OrderManager suppliersOrders;
+    private OrderManager customersOrders;
+    private FinancialReporting financeSales;
+    private FinancialReporting financePurchases;
     
     /**
      * Create an MainUI and display its GUI on screen.
@@ -32,13 +32,13 @@ public class MainUI {
      * @param prepopulated If true, the UI will be prepopulated with some data.
      */
     public MainUI(boolean prepopulated) {
-        this.customers = new CustomersList(prepopulated);
-        this.items = new ItemsList(prepopulated);
-        this.suppliers = new SuppliersList(prepopulated);
-        this.suppliersOrders = new OrdersList();
-        this.customersOrders = new OrdersList();
-        this.financeSales = new Finance(this.customersOrders);
-        this.financePurchases = new Finance(this.suppliersOrders);
+        this.customers = new CustomerManager(prepopulated);
+        this.items = new InventoryManager(prepopulated);
+        this.suppliers = new SupplierManager(prepopulated);
+        this.suppliersOrders = new OrderManager();
+        this.customersOrders = new OrderManager();
+        this.financeSales = new FinancialReporting(this.customersOrders);
+        this.financePurchases = new FinancialReporting(this.suppliersOrders);
         makeFrame();
     }
     
@@ -65,12 +65,6 @@ public class MainUI {
         new SuppliersPanel(contentPane, this.suppliers, this.suppliersOrders, this.items, BorderLayout.EAST);
         new FinancesPanel(contentPane, this.financeSales, this.financePurchases);
         
-//         String versionText = NavBar.VERSION;
-//         contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
-        
-        // place the frame at the center of the screen and show
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
 }

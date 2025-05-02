@@ -17,23 +17,21 @@ import backend.finances.FinanceItem;
  */
 public class FinancesPanel {
     // fields
-    private Finance financeSales;
-    private Finance financePurchases;
+    private FinancialReporting financeSales;
+    private FinancialReporting financePurchases;
     
     /**
      * Create a FinancesPanel instance.
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param financeSales The instance of the Finance class for sales.
-     * @param financePurchases The instance of the Finance class for purchases.
+     * @param financeSales The instance of the FinancialReporting class for sales.
+     * @param financePurchases The instance of the FinancialReporting class for purchases.
      */
-    public FinancesPanel(JPanel mainUIContentPane, Finance financeSales, Finance financePurchases) {
+    public FinancesPanel(JPanel mainUIContentPane, FinancialReporting financeSales, FinancialReporting financePurchases) {
         this.financeSales = financeSales;
         this.financePurchases = financePurchases;
         
         JPanel panel = new JPanel();
-        panel.setBackground(Color.DARK_GRAY);       
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));   
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        FrameUtils.createHighContrastPanel(panel);
         JButton reportBtn = new JButton("Generate Financial Report");
         reportBtn.addActionListener(e -> createFinancialReportFrame());
         panel.add(reportBtn);
@@ -49,9 +47,7 @@ public class FinancesPanel {
         frame.setSize(700, 500);
         
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
-        panel.setBackground(Color.DARK_GRAY);  
-        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        FrameUtils.createHighContrastPanel(panel);
         
         String[] salesColumns = {"Item Name", "Sold Units", "Total Revenue"};    
         buildTable(panel, "Sales", this.financeSales, salesColumns);
@@ -63,7 +59,7 @@ public class FinancesPanel {
         JLabel totalPurchasesLabel = new JLabel("Total Purchases: £" + this.financePurchases.getAllTransactionsCost());
         totalPurchasesLabel.setForeground(Color.WHITE);
         float totalRevenues = this.financeSales.getAllTransactionsCost() - this.financePurchases.getAllTransactionsCost();
-        JLabel totalRevenuesLabel = new JLabel("Net Income: £" + totalRevenues);
+        JLabel totalRevenuesLabel = new JLabel("Net Income: £" + String.format("%.2f", totalRevenues));
         totalRevenuesLabel.setForeground(totalRevenues >= 0 ? Color.GREEN : Color.RED);
         panel.add(totalSalesLabel);
         panel.add(totalPurchasesLabel);
@@ -75,20 +71,17 @@ public class FinancesPanel {
         panel.add(closeBtn);
         
         frame.add(panel);
-
-        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
-        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
-        frame.setVisible(true);
+        FrameUtils.centerFrame(frame);
     }
     
     /**
      * Get the labels text.
      * @param panel the panel where to add the table
      * @param labelText the text of the label
-     * @param finances the finances object
+     * @param finances the FinancialReporting object
      * @param columns the columns of the table
      */
-     private void buildTable(JPanel panel, String labelText, Finance finances, String[] columns) {
+     private void buildTable(JPanel panel, String labelText, FinancialReporting finances, String[] columns) {
         JLabel label = new JLabel(labelText);
         label.setForeground(Color.WHITE);
         HashMap<String, FinanceItem> transactionsMap = finances.getAllTransactions();
