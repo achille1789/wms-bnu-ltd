@@ -330,6 +330,7 @@ abstract class EntitiesPanel {
         purchaseBtn.setForeground(new Color(255, 153, 0));
         purchaseBtn.addActionListener(e -> {
             OrderStatus status = getOrderStatus();
+            if (this.basketItems.size() == 0) return;
             this.orders.addOrder(entityId, getTotalPurchaseCost(), new LinkedList<>(this.basketItems), status);
             if (status == OrderStatus.SHIPPED) {
                 this.updateStockLevelAfterPurchase();

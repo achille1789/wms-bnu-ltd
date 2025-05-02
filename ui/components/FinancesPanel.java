@@ -59,7 +59,7 @@ public class FinancesPanel {
         JLabel totalPurchasesLabel = new JLabel("Total Purchases: £" + this.financePurchases.getAllTransactionsCost());
         totalPurchasesLabel.setForeground(Color.WHITE);
         float totalRevenues = this.financeSales.getAllTransactionsCost() - this.financePurchases.getAllTransactionsCost();
-        JLabel totalRevenuesLabel = new JLabel("Net Income: £" + totalRevenues);
+        JLabel totalRevenuesLabel = new JLabel("Net Income: £" + String.format("%.2f", totalRevenues));
         totalRevenuesLabel.setForeground(totalRevenues >= 0 ? Color.GREEN : Color.RED);
         panel.add(totalSalesLabel);
         panel.add(totalPurchasesLabel);
