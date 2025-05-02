@@ -4,9 +4,9 @@ import java.awt.*;
 import javax.swing.*;
 import java.util.HashMap;
 
-import backend.ItemsList;
-import backend.SuppliersList;
-import backend.items.*;
+import backend.InventoryManager;
+import backend.SupplierManager;
+import backend.warehouseitems.*;
 
 /**
  * ItemsPanel is the class that generates the Items Panel.
@@ -16,8 +16,8 @@ import backend.items.*;
  */
 public class ItemsPanel {
     // fields
-    private ItemsList items;
-    private SuppliersList suppliers;
+    private InventoryManager items;
+    private SupplierManager suppliers;
     private JPanel itemsPanel;
     private JLabel totalItemsLabel;
 
@@ -27,7 +27,7 @@ public class ItemsPanel {
      * @param mainUIContentPane The contentPane that is created in MainUI.
      * @param items The instance of the ItemsList class.
      */
-    public ItemsPanel(JPanel mainUIContentPane, ItemsList items, SuppliersList suppliers) {
+    public ItemsPanel(JPanel mainUIContentPane, InventoryManager items, SupplierManager suppliers) {
         this.items = items;
         this.suppliers = suppliers;
         this.itemsPanel = new JPanel();

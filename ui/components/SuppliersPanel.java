@@ -18,10 +18,10 @@ public class SuppliersPanel extends EntitiesPanel {
     /**
      * Constructor for the SuppliersPanel.
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param customers The instance of the SuppliersList class.
+     * @param customers The instance of the SupplierManager class.
      * @param region of the UI where display the panel.
      */
-     public SuppliersPanel(JPanel mainUIContentPane, SuppliersList suppliers, OrdersList suppliersOrders, ItemsList items, String region) {
+     public SuppliersPanel(JPanel mainUIContentPane, SupplierManager suppliers, OrderManager suppliersOrders, InventoryManager items, String region) {
          setInputsPadding(1);
          createEntitiesPanel(mainUIContentPane, suppliers, suppliersOrders, items, region);
      }
@@ -77,7 +77,7 @@ public class SuppliersPanel extends EntitiesPanel {
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
         HashMap<Data, String> newEntityData = new HashMap<>();
-        SuppliersList suppliers = (SuppliersList)getEntities();
+        SupplierManager suppliers = (SupplierManager)getEntities();
         newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
         newEntityData.put(Data.CRN, entityFields.get(Data.CRN).getTextFieldString());
         newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
@@ -97,7 +97,7 @@ public class SuppliersPanel extends EntitiesPanel {
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
-        SuppliersList suppliers = (SuppliersList)getEntities();
+        SupplierManager suppliers = (SupplierManager)getEntities();
         String name = entityFields.get(Data.NAME).getTextFieldString();
         String crn = entityFields.get(Data.CRN).getTextFieldString();
         String email = entityFields.get(Data.EMAIL).getTextFieldString();

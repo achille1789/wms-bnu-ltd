@@ -1,4 +1,4 @@
-package backend.items;
+package backend.warehouseitems;
 
 import java.util.HashMap;
 

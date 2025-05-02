@@ -1,14 +1,5 @@
 package utils;
 
-/**
- * Enam with all the type of log
- */
-enum LogType {
-    INFO,
-    WARN,
-    ERROR,
-}
-
  /**
  * A class that handles all the logs.
  *

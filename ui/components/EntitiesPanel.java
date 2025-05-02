@@ -9,8 +9,8 @@ import java.awt.event.*;
 
 import backend.*;
 import backend.entities.*;
-import backend.items.ItemData;
-import backend.items.Item;
+import backend.warehouseitems.ItemData;
+import backend.warehouseitems.Item;
 import backend.orders.*;
 
 /**
@@ -51,12 +51,12 @@ enum UIItems {
  */
 abstract class EntitiesPanel {
     // fields
-    private EntitiesList entities;
+    private EntityManager entities;
     private JPanel entitiesPanel;
     private JLabel totalEntitiesLabel;
     private int padding = 0;
-    private OrdersList orders;
-    private ItemsList items;
+    private OrderManager orders;
+    private InventoryManager items;
     private List<OrderItem> basketItems = new LinkedList<>();
     private JLabel basketLabel;
     private JPanel basketPanel;
@@ -66,10 +66,10 @@ abstract class EntitiesPanel {
      * Create the Entities panel.
      * 
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param entities The instance of the EntitiesList class.
+     * @param entities The instance of the EntityManager class.
      * @param region of the UI where display the panel.
      */
-    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, OrdersList orders, ItemsList items, String region) {
+    protected void createEntitiesPanel(JPanel mainUIContentPane, EntityManager entities, OrderManager orders, InventoryManager items, String region) {
         this.entities = entities;
         this.orders = orders;
         this.items = items;
@@ -123,7 +123,7 @@ abstract class EntitiesPanel {
     /**
      * Getters.
      */
-     protected EntitiesList getEntities() {
+     protected EntityManager getEntities() {
         return this.entities;
      }     
      protected JLabel getTotalEntitiesLabel() {
@@ -205,8 +205,8 @@ abstract class EntitiesPanel {
      * @param panel the panel where to add the pending deliveries.
      * @param entities the list of Entities.
      */
-    protected void createSupplierExtraInfoPanel(JPanel panel, EntitiesList entities) {
-        if (entities instanceof SuppliersList) {
+    protected void createSupplierExtraInfoPanel(JPanel panel, EntityManager entities) {
+        if (entities instanceof SupplierManager) {
             JPanel linePanel = new JPanel();
             linePanel.setLayout(new BoxLayout(linePanel, BoxLayout.X_AXIS));
             linePanel.setMaximumSize(new Dimension(300, 30));

@@ -3,12 +3,12 @@ package backend;
 import backend.entities.Supplier;
 
  /**
-  * An interface to implement addSupplier() method for SuppliersList.
+  * An interface to implement addSupplier() method for SupplierManager.
   *
   * @author Vanni Gallo
   * @version 1.0.0
   */
-public interface ISuppliersList {
+public interface ISupplierManager {
     /**
      * Add a new entity Supplier.
      * Info needed are: name, crn, email, address, bank account and sort code.

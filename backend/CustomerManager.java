@@ -14,11 +14,11 @@ import utils.Logger;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-public class CustomersList extends EntitiesList implements ICustomersList {
+public class CustomerManager extends EntityManager implements ICustomerManager {
     /**
      * @param prepopulated to instantiate the class with 2 customers for debugging
      */
-    public CustomersList(boolean prepopulated) {
+    public CustomerManager(boolean prepopulated) {
         setLogEntityType("Customer");
         if (prepopulated) {
             getEntitiesList().add(new Customer().add("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456"));

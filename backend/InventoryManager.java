@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import backend.items.*;
+import backend.warehouseitems.*;
 import utils.Logger;
 
 /**
@@ -14,14 +14,14 @@ import utils.Logger;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- public class ItemsList {
+ public class InventoryManager {
     // The fields.
     private List<Item> itemsList = new LinkedList<>();
     
     /**
      * @param prepopulated to instantiate the class with 2 warehouse items for debugging
      */
-    public ItemsList(boolean prepopulated) {
+    public InventoryManager(boolean prepopulated) {
         if (prepopulated) {
             Item item1 = new Item("Brick", "Construction bricks", 100, "Hello&Sons ltd", "random-id1", 5);
             Item item2 = new Item("Cement", "Construction cement", 50, "Bye&Friends ltd", "random-id2", 15);

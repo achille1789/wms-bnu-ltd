@@ -17,16 +17,16 @@ import backend.finances.FinanceItem;
  */
 public class FinancesPanel {
     // fields
-    private Finance financeSales;
-    private Finance financePurchases;
+    private FinancialReporting financeSales;
+    private FinancialReporting financePurchases;
     
     /**
      * Create a FinancesPanel instance.
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param financeSales The instance of the Finance class for sales.
-     * @param financePurchases The instance of the Finance class for purchases.
+     * @param financeSales The instance of the FinancialReporting class for sales.
+     * @param financePurchases The instance of the FinancialReporting class for purchases.
      */
-    public FinancesPanel(JPanel mainUIContentPane, Finance financeSales, Finance financePurchases) {
+    public FinancesPanel(JPanel mainUIContentPane, FinancialReporting financeSales, FinancialReporting financePurchases) {
         this.financeSales = financeSales;
         this.financePurchases = financePurchases;
         
@@ -78,10 +78,10 @@ public class FinancesPanel {
      * Get the labels text.
      * @param panel the panel where to add the table
      * @param labelText the text of the label
-     * @param finances the finances object
+     * @param finances the FinancialReporting object
      * @param columns the columns of the table
      */
-     private void buildTable(JPanel panel, String labelText, Finance finances, String[] columns) {
+     private void buildTable(JPanel panel, String labelText, FinancialReporting finances, String[] columns) {
         JLabel label = new JLabel(labelText);
         label.setForeground(Color.WHITE);
         HashMap<String, FinanceItem> transactionsMap = finances.getAllTransactions();

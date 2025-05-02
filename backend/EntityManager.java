@@ -6,7 +6,7 @@ import java.util.HashMap;
 
 import backend.entities.Entity;
 import backend.entities.Data;
-import utils.Logger;
+import utils.*;
 
 /**
  * A class that handles the list of Entities.
@@ -14,7 +14,7 @@ import utils.Logger;
  * @author Vanni Gallo
  * @version 1.0.0
  */
-public abstract class EntitiesList {
+public abstract class EntityManager {
     // The fields.
     private List<Entity> entitiesList = new LinkedList<>();
     private String logEntityType = "Entity";

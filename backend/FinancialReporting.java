@@ -9,20 +9,20 @@ import backend.finances.FinanceItem;
 import backend.orders.*;
 
 /**
- * A class to perform Finance calculations.
+ * A class to perform Financial calculations.
  *
  * @author Vanni Gallo
  * @version 1.0.0
  */
- public class Finance {
+ public class FinancialReporting {
     // The fields.
-    private OrdersList ordersList;
+    private OrderManager ordersList;
     
     /**
      * Constructor
      * @param ordersList the list of orders
      */
-    public Finance(OrdersList ordersList) {
+    public FinancialReporting(OrderManager ordersList) {
         this.ordersList = ordersList;
     }
     

@@ -18,10 +18,10 @@ public class CustomersPanel extends EntitiesPanel {
     /**
      * Constructor for the CustomersPanel.
      * @param mainUIContentPane The contentPane that is created in MainUI.
-     * @param customers The instance of the CustomersList class.
+     * @param customers The instance of the CustomerManager class.
      * @param region of the UI where display the panel.
      */
-     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, OrdersList customersOrders, ItemsList items, String region) {
+     public CustomersPanel(JPanel mainUIContentPane, CustomerManager customers, OrderManager customersOrders, InventoryManager items, String region) {
          setInputsPadding(3);
          createEntitiesPanel(mainUIContentPane, customers, customersOrders, items, region);
      }
@@ -75,7 +75,7 @@ public class CustomersPanel extends EntitiesPanel {
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
         HashMap<Data, String> newEntityData = new HashMap<>();
-        CustomersList customers = (CustomersList)getEntities();
+        CustomerManager customers = (CustomerManager)getEntities();
         newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
         newEntityData.put(Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
         newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
@@ -94,7 +94,7 @@ public class CustomersPanel extends EntitiesPanel {
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
-        CustomersList customers = (CustomersList)getEntities();
+        CustomerManager customers = (CustomerManager)getEntities();
         String name = entityFields.get(Data.NAME).getTextFieldString();
         String surname = entityFields.get(Data.SURNAME).getTextFieldString();
         String email = entityFields.get(Data.EMAIL).getTextFieldString();

@@ -13,7 +13,7 @@ import utils.Logger;
  * @author Vanni Gallo
  * @version 1.0.0
  */
- public class OrdersList {
+ public class OrderManager {
     // The fields.
     private List<Order> ordersList = new ArrayList<>();
     
