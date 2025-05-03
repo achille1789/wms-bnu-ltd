@@ -47,7 +47,6 @@ import utils.Logger;
         return index;
      }
     
-    // TODO: handle wrong input data
     /**
      * Set all the item details to create a new Item.
      * If data is invalid print an error message.

@@ -27,7 +27,6 @@ public class CustomerManager extends EntityManager implements ICustomerManager {
         }
     }
     
-    // TODO: handle wrong input data
     /**
      * Set all the customer data to create a new customer.
      * If data is invalid print an error message.

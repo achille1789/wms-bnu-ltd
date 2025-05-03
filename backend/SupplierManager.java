@@ -28,7 +28,6 @@ public class SupplierManager extends EntityManager implements ISupplierManager {
         }
     }
     
-    // TODO: handle wrong input data
     /**
      * Set all the supplier data to create a new supplier.
      * If data is invalid print an error message.
