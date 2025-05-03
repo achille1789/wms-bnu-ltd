@@ -7,6 +7,7 @@ import java.util.HashMap;
 import backend.InventoryManager;
 import backend.SupplierManager;
 import backend.warehouseitems.*;
+import utils.*;
 
 /**
  * ItemsPanel is the class that generates the Items Panel.
@@ -112,17 +113,29 @@ public class ItemsPanel {
             JButton confirmBtn = new JButton("Add Item");
             confirmBtn.setForeground(new Color(0, 153, 0));
             confirmBtn.addActionListener(e -> {
-                String name = itemFields.get(ItemData.NAME).getTextFieldString();
-                String description = itemFields.get(ItemData.DESCRIPTION).getTextFieldString();
-                int quantity = Integer.parseInt(itemFields.get(ItemData.QUANTITY).getTextFieldString());
-                String supplier = itemFields.get(ItemData.SUPPLIER).getDropListSelected();
-                float supplierPrice = Float.parseFloat(itemFields.get(ItemData.SUPPLIER_PRICE).getTextFieldString());
-                String supplierId = this.suppliers.getSupplierIdByName(supplier);
-                this.items.addItem(name, description, quantity, supplier, supplierId, supplierPrice);
-                this.totalItemsLabel.setText(this.items.getItemsList().size() + " warehouse items in catalog");
-                Item item = this.items.getItemsList().getLast();
-                createItemsPanel(item);
-                frame.dispose();
+                try {
+                    String name = itemFields.get(ItemData.NAME).getTextFieldString();
+                    String description = itemFields.get(ItemData.DESCRIPTION).getTextFieldString();
+                    String quantity = itemFields.get(ItemData.QUANTITY).getTextFieldString();
+                    String supplier = itemFields.get(ItemData.SUPPLIER).getDropListSelected();
+                    String supplierId = this.suppliers.getSupplierIdByName(supplier);
+                    String price = itemFields.get(ItemData.SUPPLIER_PRICE).getTextFieldString();
+                    HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(name, description, quantity, price);
+                    int intQuantity = Integer.parseInt(validatedInputs.get(InputType.QUANTITY));
+                    this.items.addItem(
+                        validatedInputs.get(InputType.NAME),
+                        validatedInputs.get(InputType.DESCRIPTION),
+                        Integer.parseInt(validatedInputs.get(InputType.QUANTITY)),
+                        supplier, supplierId,
+                        Float.parseFloat(validatedInputs.get(InputType.PRICE))
+                    );
+                    this.totalItemsLabel.setText(this.items.getItemsList().size() + " warehouse items in catalog");
+                    Item item = this.items.getItemsList().getLast();
+                    createItemsPanel(item);
+                    frame.dispose();
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             });
             JButton cancelBtn = new JButton("Cancel");
             cancelBtn.setForeground(new Color(255, 153, 0));

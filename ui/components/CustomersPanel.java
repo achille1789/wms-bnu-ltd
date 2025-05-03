@@ -10,6 +10,7 @@ import backend.warehouseitems.Item;
 import backend.warehouseitems.ItemData;
 import backend.entities.*;
 import backend.orders.*;
+import utils.*;
 
 /**
  * CustomersPanel is the class that generates the Customers Panel.
@@ -104,14 +105,14 @@ public class CustomersPanel extends EntitiesPanel {
             entityFields.put(Data.SURNAME, new InputPair(new JLabel("Surname:"), new JTextField("", 15)));
             entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField("", 15)));
             entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField("", 15)));
-            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card:"), new JTextField("", 15)));
+            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card (16 digits):"), new JTextField("", 15)));
         } else {
             HashMap<Data, String> entitiesData = getEntities().getEntityData(id);
             entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField(entitiesData.get(Data.NAME), 15)));
             entityFields.put(Data.SURNAME, new InputPair(new JLabel("Surname:"), new JTextField(entitiesData.get(Data.SURNAME), 15)));
             entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField(entitiesData.get(Data.EMAIL), 15)));
             entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField(entitiesData.get(Data.ADDRESS), 15)));
-            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card:"), new JTextField(entitiesData.get(Data.CREDIT_CARD), 15)));
+            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card (16 digits):"), new JTextField(entitiesData.get(Data.CREDIT_CARD), 15)));
         }
         return entityFields;
     }
@@ -127,17 +128,28 @@ public class CustomersPanel extends EntitiesPanel {
      */
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
-        HashMap<Data, String> newEntityData = new HashMap<>();
-        CustomerManager customers = (CustomerManager)getEntities();
-        newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
-        newEntityData.put(Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
-        newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
-        newEntityData.put(Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
-        newEntityData.put(Data.CREDIT_CARD, entityFields.get(Data.CREDIT_CARD).getTextFieldString());
-        customers.updateEntityData(id, newEntityData);
-        HashMap<Data, String> updatedCustomerData = customers.getEntityData(id);
-        label.setText(updatedCustomerData.get(Data.NAME) + " " + updatedCustomerData.get(Data.SURNAME));
-        frame.dispose();
+        try {
+            HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(
+                entityFields.get(Data.NAME).getTextFieldString(),
+                entityFields.get(Data.SURNAME).getTextFieldString(),
+                entityFields.get(Data.EMAIL).getTextFieldString(),
+                entityFields.get(Data.ADDRESS).getTextFieldString(),
+                entityFields.get(Data.CREDIT_CARD).getTextFieldString()
+            );
+            HashMap<Data, String> newEntityData = new HashMap<>();
+            CustomerManager customers = (CustomerManager)getEntities();
+            newEntityData.put(Data.NAME, validatedInputs.get(InputType.NAME));
+            newEntityData.put(Data.SURNAME, validatedInputs.get(InputType.SURNAME));
+            newEntityData.put(Data.EMAIL, validatedInputs.get(InputType.EMAIL));
+            newEntityData.put(Data.ADDRESS, validatedInputs.get(InputType.ADDRESS));
+            newEntityData.put(Data.CREDIT_CARD, validatedInputs.get(InputType.CREDIT_CARD));
+            customers.updateEntityData(id, newEntityData);
+            HashMap<Data, String> updatedCustomerData = customers.getEntityData(id);
+            label.setText(updatedCustomerData.get(Data.NAME) + " " + updatedCustomerData.get(Data.SURNAME));
+            frame.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -149,20 +161,25 @@ public class CustomersPanel extends EntitiesPanel {
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
-        CustomerManager customers = (CustomerManager)getEntities();
-        String name = entityFields.get(Data.NAME).getTextFieldString();
-        String surname = entityFields.get(Data.SURNAME).getTextFieldString();
-        String email = entityFields.get(Data.EMAIL).getTextFieldString();
-        String address = entityFields.get(Data.ADDRESS).getTextFieldString();
-        String creditCard = entityFields.get(Data.CREDIT_CARD).getTextFieldString();
-        customers.addCustomer(name, surname, email, address, creditCard);
-        getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + customers.getEntitiesList().size());
-        Customer customer = (Customer)customers.getEntitiesList().getLast();
-        String id = customer.getId();
-        String fullName = customer.getName() + " " + customer.getSurname();
-        setEntitiesPanelDetails(id, fullName);
-        getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
-        frame.dispose();
+        try {
+            CustomerManager customers = (CustomerManager)getEntities();
+            String name = entityFields.get(Data.NAME).getTextFieldString();
+            String surname = entityFields.get(Data.SURNAME).getTextFieldString();
+            String email = entityFields.get(Data.EMAIL).getTextFieldString();
+            String address = entityFields.get(Data.ADDRESS).getTextFieldString();
+            String creditCard = entityFields.get(Data.CREDIT_CARD).getTextFieldString();
+            HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(name, surname, email, address, creditCard);
+            customers.addCustomer(validatedInputs.get(InputType.NAME), validatedInputs.get(InputType.SURNAME), validatedInputs.get(InputType.EMAIL), validatedInputs.get(InputType.ADDRESS), validatedInputs.get(InputType.CREDIT_CARD));
+            getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + customers.getEntitiesList().size());
+            Customer customer = (Customer)customers.getEntitiesList().getLast();
+            String id = customer.getId();
+            String fullName = customer.getName() + " " + customer.getSurname();
+            setEntitiesPanelDetails(id, fullName);
+            getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
+            frame.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
@@ -203,12 +220,18 @@ public class CustomersPanel extends EntitiesPanel {
             
             JButton orderButton = new JButton("Order");        
             orderButton.addActionListener(e -> {
-                int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
-                int quantity = Integer.parseInt(quantityField.getText()) > quantityAvailable ? quantityAvailable : Integer.parseInt(quantityField.getText());
-                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * price);
-                quantityField.setEnabled(false);
-                orderButton.setEnabled(false);
-                setBasketItem(orderItem, quantityField, orderButton);
+                try {
+                    int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
+                    HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(quantityField.getText());
+                    int quantityOrdered = Integer.parseInt(validatedInputs.get(InputType.QUANTITY));
+                    int quantity = quantityOrdered > quantityAvailable ? quantityAvailable : quantityOrdered;
+                    OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * price);
+                    quantityField.setEnabled(false);
+                    orderButton.setEnabled(false);
+                    setBasketItem(orderItem, quantityField, orderButton);
+                } catch (Exception err) {
+                    JOptionPane.showMessageDialog(null, err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
             });
             panel.add(orderButton);
         } else {           

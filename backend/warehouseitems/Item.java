@@ -12,6 +12,7 @@ import utils.IdGenerator;
  */
 public class Item {
     // The fields.
+    private static final float CUSTOMER_PRICE_INCREMENT = 1.4f;
     private String name;
     private String description;
     private int quantity;
@@ -97,6 +98,6 @@ public class Item {
      * @return the customer price
      */
     private float getCustomerPrice(float supplierPrice) {
-        return supplierPrice * 1.4f;
+        return Math.round(supplierPrice * CUSTOMER_PRICE_INCREMENT * 100f) / 100f;
     }
 }

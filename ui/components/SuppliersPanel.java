@@ -10,6 +10,7 @@ import backend.entities.*;
 import backend.warehouseitems.Item;
 import backend.warehouseitems.ItemData;
 import backend.orders.*;
+import utils.*;
 
 /**
  * SuppliersPanel is the class that generates the Suppliers Panel.
@@ -100,18 +101,18 @@ public class SuppliersPanel extends EntitiesPanel {
         HashMap<Data, InputPair> entityFields = new HashMap<>();
         if (id.equals("")) {
             entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
-            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num.:"), new JTextField("", 15)));
+            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num. (8 digits):"), new JTextField("", 15)));
             entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField("", 15)));
             entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField("", 15)));
-            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account:"), new JTextField("", 15)));
+            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account (8 digits):"), new JTextField("", 15)));
             entityFields.put(Data.SORT_CODE, new InputPair(new JLabel("Sort Code:"), new JTextField("", 15)));
         } else {
             HashMap<Data, String> entitiesData = getEntities().getEntityData(id);
             entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField(entitiesData.get(Data.NAME), 15)));
-            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num.:"), new JTextField(entitiesData.get(Data.CRN), 15)));
+            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num. (8 digits):"), new JTextField(entitiesData.get(Data.CRN), 15)));
             entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField(entitiesData.get(Data.EMAIL), 15)));
             entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField(entitiesData.get(Data.ADDRESS), 15)));
-            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account:"), new JTextField(entitiesData.get(Data.BANK_ACCOUNT), 15)));
+            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account (8 digits):"), new JTextField(entitiesData.get(Data.BANK_ACCOUNT), 15)));
             entityFields.put(Data.SORT_CODE, new InputPair(new JLabel("Sort Code:"), new JTextField(entitiesData.get(Data.SORT_CODE), 15)));
         }
         return entityFields;
@@ -128,18 +129,30 @@ public class SuppliersPanel extends EntitiesPanel {
      */
     @Override
     protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
-        HashMap<Data, String> newEntityData = new HashMap<>();
-        SupplierManager suppliers = (SupplierManager)getEntities();
-        newEntityData.put(Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
-        newEntityData.put(Data.CRN, entityFields.get(Data.CRN).getTextFieldString());
-        newEntityData.put(Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
-        newEntityData.put(Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
-        newEntityData.put(Data.BANK_ACCOUNT, entityFields.get(Data.BANK_ACCOUNT).getTextFieldString());
-        newEntityData.put(Data.SORT_CODE, entityFields.get(Data.SORT_CODE).getTextFieldString());
-        suppliers.updateEntityData(id, newEntityData);
-        HashMap<Data, String> updatedSupplierData = suppliers.getEntityData(id);
-        label.setText(updatedSupplierData.get(Data.NAME));
-        frame.dispose();
+        try {
+            HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(
+                entityFields.get(Data.NAME).getTextFieldString(),
+                entityFields.get(Data.CRN).getTextFieldString(),
+                entityFields.get(Data.EMAIL).getTextFieldString(),
+                entityFields.get(Data.ADDRESS).getTextFieldString(),
+                entityFields.get(Data.BANK_ACCOUNT).getTextFieldString(),
+                entityFields.get(Data.SORT_CODE).getTextFieldString()
+            );
+            HashMap<Data, String> newEntityData = new HashMap<>();
+            SupplierManager suppliers = (SupplierManager)getEntities();
+            newEntityData.put(Data.NAME, validatedInputs.get(InputType.NAME));
+            newEntityData.put(Data.CRN, validatedInputs.get(InputType.CRN));
+            newEntityData.put(Data.EMAIL, validatedInputs.get(InputType.EMAIL));
+            newEntityData.put(Data.ADDRESS, validatedInputs.get(InputType.ADDRESS));
+            newEntityData.put(Data.BANK_ACCOUNT, validatedInputs.get(InputType.BANK_ACCOUNT));
+            newEntityData.put(Data.SORT_CODE, validatedInputs.get(InputType.SORT_CODE));
+            suppliers.updateEntityData(id, newEntityData);
+            HashMap<Data, String> updatedSupplierData = suppliers.getEntityData(id);
+            label.setText(updatedSupplierData.get(Data.NAME));
+            frame.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -151,19 +164,31 @@ public class SuppliersPanel extends EntitiesPanel {
      */
     @Override
     protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
-        SupplierManager suppliers = (SupplierManager)getEntities();
-        String name = entityFields.get(Data.NAME).getTextFieldString();
-        String crn = entityFields.get(Data.CRN).getTextFieldString();
-        String email = entityFields.get(Data.EMAIL).getTextFieldString();
-        String address = entityFields.get(Data.ADDRESS).getTextFieldString();
-        String bankAccount = entityFields.get(Data.BANK_ACCOUNT).getTextFieldString();
-        String sortCode = entityFields.get(Data.SORT_CODE).getTextFieldString();
-        suppliers.addSupplier(name, crn, email, address, bankAccount, sortCode);
-        getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + suppliers.getEntitiesList().size());
-        Supplier supplier = (Supplier)suppliers.getEntitiesList().getLast();
-        setEntitiesPanelDetails(supplier.getId(), supplier.getName());
-        getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
-        frame.dispose();
+        try {
+            SupplierManager suppliers = (SupplierManager)getEntities();
+            String name = entityFields.get(Data.NAME).getTextFieldString();
+            String crn = entityFields.get(Data.CRN).getTextFieldString();
+            String email = entityFields.get(Data.EMAIL).getTextFieldString();
+            String address = entityFields.get(Data.ADDRESS).getTextFieldString();
+            String bankAccount = entityFields.get(Data.BANK_ACCOUNT).getTextFieldString();
+            String sortCode = entityFields.get(Data.SORT_CODE).getTextFieldString();
+            HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(name, crn, email, address, bankAccount, sortCode);
+            suppliers.addSupplier(
+                validatedInputs.get(InputType.NAME),
+                validatedInputs.get(InputType.CRN),
+                validatedInputs.get(InputType.EMAIL),
+                validatedInputs.get(InputType.ADDRESS),
+                validatedInputs.get(InputType.BANK_ACCOUNT),
+                validatedInputs.get(InputType.SORT_CODE)
+            );
+            getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + suppliers.getEntitiesList().size());
+            Supplier supplier = (Supplier)suppliers.getEntitiesList().getLast();
+            setEntitiesPanelDetails(supplier.getId(), supplier.getName());
+            getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
+            frame.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     
     /**
@@ -241,12 +266,17 @@ public class SuppliersPanel extends EntitiesPanel {
         
         JButton orderButton = new JButton("Order");        
         orderButton.addActionListener(e -> {
-            int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
-            int quantity = Integer.parseInt(quantityField.getText());
-            OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * price);
-            quantityField.setEnabled(false);
-            orderButton.setEnabled(false);
-            setBasketItem(orderItem, quantityField, orderButton);
+            try {
+                int quantityAvailable = Integer.parseInt(itemDetails.get(ItemData.QUANTITY));
+                HashMap<InputType, String> validatedInputs = InputValidator.getValidateInputs(quantityField.getText());
+                int quantity = Integer.parseInt(validatedInputs.get(InputType.QUANTITY));
+                OrderItem orderItem = new OrderItem(itemDetails.get(ItemData.NAME), quantity, itemDetails.get(ItemData.ID), quantity * price);
+                quantityField.setEnabled(false);
+                orderButton.setEnabled(false);
+                setBasketItem(orderItem, quantityField, orderButton);
+            } catch (Exception err) {
+                JOptionPane.showMessageDialog(null, err.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         });
         panel.add(orderButton);
     }
