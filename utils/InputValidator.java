@@ -101,7 +101,7 @@ public class InputValidator {
     }
     
     /**
-     * Validate inputs.
+     * Validate inputs for Warehouse Item data.
      *
      * @param name the name to validate
      * @param description the description to validate
@@ -119,7 +119,7 @@ public class InputValidator {
     }
         
     /**
-     * Validate inputs.
+     * Validate inputs Customer data.
      *
      * @param name the name to validate
      * @param surname the surname to validate
@@ -139,7 +139,7 @@ public class InputValidator {
     }
     
     /**
-     * Validate inputs.
+     * Validate inputs for Supplier data.
      *
      * @param name the name to validate
      * @param crn the company registration number to validate
