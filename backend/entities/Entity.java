@@ -41,8 +41,5 @@ public abstract class Entity {
     }    
     public String getId() {
         return this.entityData.get(Data.ID);
-    }    
-    public HashMap<Data, String> getEntityData() {
-        return this.entityData;
     }
 }
