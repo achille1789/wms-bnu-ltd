@@ -23,7 +23,7 @@ public class SupplierManagerTest {
         System.setOut(new PrintStream(outContent));
 
         // act
-        SupplierManager supplierManager = new SupplierManager(false); 
+        SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
         System.setOut(originalOut);      
@@ -39,7 +39,7 @@ public class SupplierManagerTest {
     @Test
     public void getEntityDataTest() {       
         // arrange
-        SupplierManager supplierManager = new SupplierManager(false); 
+        SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
         // act
@@ -60,7 +60,7 @@ public class SupplierManagerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
-        SupplierManager supplierManager = new SupplierManager(false); 
+        SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         String supplier1Id = supplierManager.getEntitiesList().get(0).getId();
         
@@ -103,7 +103,7 @@ public class SupplierManagerTest {
     @Test
     public void deleteEntityTest() {       
         // arrange
-        SupplierManager supplierManager = new SupplierManager(false); 
+        SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
         // act
@@ -121,7 +121,7 @@ public class SupplierManagerTest {
     @Test
     public void getEntityByIdTest() {       
         // arrange
-        SupplierManager supplierManager = new SupplierManager(false); 
+        SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
         

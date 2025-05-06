@@ -23,7 +23,7 @@ public class CustomerManagerTest {
         System.setOut(new PrintStream(outContent));
 
         // act
-        CustomerManager customerManager = new CustomerManager(false); 
+        CustomerManager customerManager = new CustomerManager(); 
         customerManager.addCustomer("name1", "surname1", "email1", "address1", "1234567887654321");
         customerManager.addCustomer("name2", "surname2", "email2", "address2", "0000111122223333");
         System.setOut(originalOut);      
@@ -39,7 +39,7 @@ public class CustomerManagerTest {
     @Test
     public void getEntityDataTest() {       
         // arrange
-        CustomerManager customerManager = new CustomerManager(false); 
+        CustomerManager customerManager = new CustomerManager(); 
         customerManager.addCustomer("name1", "surname1", "email1", "address1", "1234567887654321");
         customerManager.addCustomer("name2", "surname2", "email2", "address2", "0000111122223333");
         // act
@@ -60,7 +60,7 @@ public class CustomerManagerTest {
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
         PrintStream originalOut = System.out;
         System.setOut(new PrintStream(outContent));
-        CustomerManager customerManager = new CustomerManager(false); 
+        CustomerManager customerManager = new CustomerManager(); 
         customerManager.addCustomer("name1", "surname1", "email1", "address1", "1234567887654321");
         String customer1Id = customerManager.getEntitiesList().get(0).getId();
         
@@ -100,7 +100,7 @@ public class CustomerManagerTest {
     @Test
     public void deleteEntityTest() {       
         // arrange
-        CustomerManager customerManager = new CustomerManager(false); 
+        CustomerManager customerManager = new CustomerManager(); 
         customerManager.addCustomer("name1", "surname1", "email1", "address1", "1234567887654321");
         customerManager.addCustomer("name2", "surname2", "email2", "address2", "0000111122223333");
         // act
@@ -118,7 +118,7 @@ public class CustomerManagerTest {
     @Test
     public void getEntityByIdTest() {       
         // arrange
-        CustomerManager customerManager = new CustomerManager(false); 
+        CustomerManager customerManager = new CustomerManager(); 
         customerManager.addCustomer("name1", "surname1", "email1", "address1", "1234567887654321");
         customerManager.addCustomer("name2", "surname2", "email2", "address2", "0000111122223333");
         

@@ -19,19 +19,6 @@ import utils.Logger;
     private List<Item> itemsList = new LinkedList<>();
     
     /**
-     * @param prepopulated to instantiate the class with 2 warehouse items for debugging
-     */
-    public InventoryManager(boolean prepopulated) {
-        if (prepopulated) {
-            Item item1 = new Item("Brick", "Construction bricks", 100, "Hello&Sons ltd", "random-id1", 5);
-            Item item2 = new Item("Cement", "Construction cement", 50, "Bye&Friends ltd", "random-id2", 15);
-            this.itemsList.add(item1);
-            this.itemsList.add(item2);
-            Logger.info("Added 2 warehouse items for debugging");
-        }
-    }
-    
-    /**
      * Get list index of item that matches the passed Id.
      * @param id of the item
      * @return the index of the item

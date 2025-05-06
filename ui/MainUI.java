@@ -28,13 +28,11 @@ public class MainUI {
     
     /**
      * Create an MainUI and display its GUI on screen.
-     *
-     * @param prepopulated If true, the UI will be prepopulated with some data.
      */
-    public MainUI(boolean prepopulated) {
-        this.customers = new CustomerManager(prepopulated);
-        this.items = new InventoryManager(prepopulated);
-        this.suppliers = new SupplierManager(prepopulated);
+    public MainUI() {
+        this.customers = new CustomerManager();
+        this.items = new InventoryManager();
+        this.suppliers = new SupplierManager();
         this.suppliersOrders = new OrderManager();
         this.customersOrders = new OrderManager();
         this.financeSales = new FinancialReporting(this.customersOrders);

@@ -17,15 +17,11 @@ import utils.Logger;
  */
 public class SupplierManager extends EntityManager implements ISupplierManager {    
     /**
-     * @param prepopulated to instantiate the class with 2 suppliers for debugging
+     * The constructor that will create a SupplierManager object that extends EntityManager and implements ISupplierManager.
+     * This set the log entity type to Supplier.
      */
-    public SupplierManager(boolean prepopulated) {
+    public SupplierManager() {
         setLogEntityType("Supplier");
-        if (prepopulated) {
-            getEntitiesList().add(new Supplier().add("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30"));
-            getEntitiesList().add(new Supplier().add("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60"));
-            Logger.info("Added 2 suppliers for debugging");
-        }
     }
     
     /**

@@ -16,15 +16,11 @@ import utils.Logger;
  */
 public class CustomerManager extends EntityManager implements ICustomerManager {
     /**
-     * @param prepopulated to instantiate the class with 2 customers for debugging
+     * The constructor that will create a CustomerManager object that extends EntityManager and implements ICustomerManager.
+     * This set the log entity type to Customer.
      */
-    public CustomerManager(boolean prepopulated) {
+    public CustomerManager() {
         setLogEntityType("Customer");
-        if (prepopulated) {
-            getEntitiesList().add(new Customer().add("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456"));
-            getEntitiesList().add(new Customer().add("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654"));
-            Logger.info("Added 2 customers for debugging");
-        }
     }
     
     /**
