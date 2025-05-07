@@ -1,3 +1,7 @@
 .idea
 *.class
 *.ctxt
+bin
+jacoco.exec
+jacoco
+coverage-report

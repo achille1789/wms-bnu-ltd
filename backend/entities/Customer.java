@@ -25,7 +25,7 @@ public class Customer extends Entity implements ICustomer {
      */
     public Customer add(String name, String surname, String email, String address, String creditCard) {
         String id = IdGenerator.getId();
-        this.customerData = getEntityData();
+        this.customerData = getAllData();
         this.customerData.put(Data.ID, id);
         this.customerData.put(Data.NAME, name);
         this.customerData.put(Data.SURNAME, surname);

@@ -20,7 +20,7 @@ public class IdGenerator {
      * @return a String with the new ID
      */
     public static String getId() {
-        String rand = String.valueOf((int)(Math.random() * 1000));
+        String rand = String.format("%03d", (int)(Math.random() * 1000));
         return String.valueOf(Instant.now().getEpochSecond()) + "-" + rand;
     }
 }

@@ -54,7 +54,7 @@ import utils.Logger;
     }
     
     /**
-     * Get list of orders for a passed Entity id.
+     * Get list of pending orders.
      * @return an LinkedList with all the pending Orders
      */
     public List<Order> getPendingOrders() {

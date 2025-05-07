@@ -24,7 +24,7 @@ public class Supplier extends Entity implements ISupplier {
      */
     public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode) {
         String id = IdGenerator.getId();
-        HashMap<Data, String> supplierData = getEntityData();
+        HashMap<Data, String> supplierData = getAllData();
         supplierData.put(Data.ID, id);
         supplierData.put(Data.NAME, name);
         supplierData.put(Data.CRN, crn);

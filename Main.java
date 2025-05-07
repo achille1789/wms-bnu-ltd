@@ -12,13 +12,7 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        boolean prepopulated = false;
-        if (args.length > 0) {
-            if (args[0].equals("prepopulated")) {
-                prepopulated = true;
-            }
-        }
         
-        new MainUI(prepopulated);
+        new MainUI();
     }
 }

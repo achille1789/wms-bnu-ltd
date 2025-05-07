@@ -19,19 +19,6 @@ import utils.Logger;
     private List<Item> itemsList = new LinkedList<>();
     
     /**
-     * @param prepopulated to instantiate the class with 2 warehouse items for debugging
-     */
-    public InventoryManager(boolean prepopulated) {
-        if (prepopulated) {
-            Item item1 = new Item("Brick", "Construction bricks", 100, "Hello&Sons ltd", "random-id1", 5);
-            Item item2 = new Item("Cement", "Construction cement", 50, "Bye&Friends ltd", "random-id2", 15);
-            this.itemsList.add(item1);
-            this.itemsList.add(item2);
-            Logger.info("Added 2 warehouse items for debugging");
-        }
-    }
-    
-    /**
      * Get list index of item that matches the passed Id.
      * @param id of the item
      * @return the index of the item
@@ -54,6 +41,8 @@ import utils.Logger;
      * @param description the description of the item
      * @param quantity the available quantity of the item
      * @param supplier the name of the supplier
+     * @param supplierId the id of the supplier
+     * @param supplierPrice the supplier price of the item
      */
     public void addItem(String name, String description, int quantity, String supplier, String supplierId, float supplierPrice) {
         Item item = new Item(name, description, quantity, supplier, supplierId, supplierPrice);
@@ -71,7 +60,7 @@ import utils.Logger;
     
     /**
      * Get Item quantity
-     * @param name the name of the item
+     * @param id the name of the item
      * @return the quantity of the item
      */
     public int getItemQuantity(String id) {
