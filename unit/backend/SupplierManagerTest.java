@@ -106,16 +106,24 @@ public class SupplierManagerTest {
         SupplierManager supplierManager = new SupplierManager(); 
         supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
         supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
+        
         // act
         List<Entity> suppliersList = supplierManager.getEntitiesList();
         String supplier1Id = suppliersList.get(0).getId();
         String supplier2Id = suppliersList.get(1).getId();
         assertEquals(2, suppliersList.size());
         supplierManager.deleteEntity(supplier1Id);
+        
         // assert
         assertEquals(1, suppliersList.size());
         HashMap<Data, String> supplier2Data = supplierManager.getEntityData(supplier2Id);
         assertEquals("name2", supplier2Data.get(Data.NAME));
+        
+        // act
+        supplierManager.deleteEntity("random-id");
+        
+        // assert
+        assertEquals(1, suppliersList.size());
     }
     
     @Test
@@ -131,8 +139,41 @@ public class SupplierManagerTest {
         String supplier2Id = suppliersList.get(1).getId();
         
         // assert
-        HashMap<Data, String> supplier1Data = supplierManager.getEntityData(supplier1Id);
-        assertEquals("name1", supplier1Data.get(Data.NAME));
-        assertEquals(null, supplierManager.getEntityData("random-id"));
+        Entity supplier = supplierManager.getEntityById(supplier1Id);
+        assertEquals("name1", supplier.getName());
+        assertEquals(null, supplierManager.getEntityById("random-id"));
+    }
+    
+    @Test
+    public void getSuppliersNameTest() {       
+        // arrange
+        SupplierManager supplierManager = new SupplierManager(); 
+        supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
+        supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
+        
+        // act
+        String[] suppliersNames = supplierManager.getSuppliersName();
+        
+        // assert
+        assertEquals(2, suppliersNames.length);
+        assertEquals("name1", suppliersNames[0]);
+        assertEquals("name2", suppliersNames[1]);
+    }
+    
+    @Test
+    public void getSupplierIdByNameTest() {       
+        // arrange
+        SupplierManager supplierManager = new SupplierManager(); 
+        supplierManager.addSupplier("name1", "12345678", "email1", "address1", "11112222", "10-20-30");
+        supplierManager.addSupplier("name2", "87654321", "email2", "address2", "33334444", "40-50-60");
+        List<Entity> suppliersList = supplierManager.getEntitiesList();
+        
+        // act
+        String supplierId1 = supplierManager.getSupplierIdByName("name1");
+        String supplierId2 = supplierManager.getSupplierIdByName("name2");
+        
+        // assert
+        assertEquals(suppliersList.get(0).getId(), supplierId1);
+        assertEquals(suppliersList.get(1).getId(), supplierId2);
     }
 }

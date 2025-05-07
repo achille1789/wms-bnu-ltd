@@ -41,6 +41,8 @@ import utils.Logger;
      * @param description the description of the item
      * @param quantity the available quantity of the item
      * @param supplier the name of the supplier
+     * @param supplierId the id of the supplier
+     * @param supplierPrice the supplier price of the item
      */
     public void addItem(String name, String description, int quantity, String supplier, String supplierId, float supplierPrice) {
         Item item = new Item(name, description, quantity, supplier, supplierId, supplierPrice);
@@ -58,7 +60,7 @@ import utils.Logger;
     
     /**
      * Get Item quantity
-     * @param name the name of the item
+     * @param id the name of the item
      * @return the quantity of the item
      */
     public int getItemQuantity(String id) {
