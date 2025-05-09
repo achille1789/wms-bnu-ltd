@@ -1,0 +1,51 @@
+@startuml
+
+'UML 1 entities
+enum Data
+abstract class Entity
+interface ICustomer
+interface ISupplier
+class Customer
+class Supplier
+
+Data <.. Entity
+Data <.. Customer
+Data <.. Supplier
+
+Entity <|-- Customer
+Entity <|-- Supplier
+
+ICustomer <|.. Customer
+ISupplier <|.. Supplier
+
+'UML 2 entity managers
+'abstract class EntityManager
+'interface ICustomerManager
+'interface ISupplierManager
+'class CustomerManager
+'class SupplierManager
+'
+'EntityManager <|-- CustomerManager
+'EntityManager <|-- SupplierManager
+'
+'ICustomerManager <|.. CustomerManager
+'ISupplierManager <|.. SupplierManager
+
+'UML 3 entity multiplicity
+'abstract class Entity
+'class Customer
+'class Supplier
+'
+'abstract class EntityManager
+'class CustomerManager
+'class SupplierManager
+'
+'Entity <|-- Customer
+'Entity <|-- Supplier
+'
+'EntityManager <|-- CustomerManager
+'EntityManager <|-- SupplierManager
+'EntityManager "1" --> "0..*" Entity
+'CustomerManager "1" --> "0..*" Customer
+'SupplierManager "1" --> "0..*" Supplier
+@enduml
