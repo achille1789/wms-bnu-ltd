@@ -74,6 +74,7 @@ public class SuppliersPanel extends EntitiesPanel {
      *
      * @return the Order status.
      */
+    @Override
     protected OrderStatus getOrderStatus() {
         return OrderStatus.PENDING;
     }
@@ -85,6 +86,7 @@ public class SuppliersPanel extends EntitiesPanel {
      * @param entity The Entity to get the name from.
      * @return the name of the Entity.
      */
+    @Override
     protected String getEntityName(Entity entity) {
         return entity.getName();
     }

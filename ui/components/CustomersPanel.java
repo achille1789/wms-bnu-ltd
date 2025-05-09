@@ -74,6 +74,7 @@ public class CustomersPanel extends EntitiesPanel {
      *
      * @return the Order status.
      */
+    @Override
     protected OrderStatus getOrderStatus() {
         return OrderStatus.SHIPPED;
     }
@@ -85,6 +86,7 @@ public class CustomersPanel extends EntitiesPanel {
      * @param entity The Entity to get the name from.
      * @return the name of the Entity.
      */
+    @Override
     protected String getEntityName(Entity entity) {
         Customer customer = (Customer) entity;
         return customer.getName() + " " + customer.getSurname();
