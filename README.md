@@ -36,12 +36,12 @@ java Main
 2. Open the project folder.
 3. Compile the project.
 4. Right-click on the Main class and select "void main()".<br>
-<img src="/readme-images/bluej-main.png" width="400" />
+<img src="/readme-images/bluej-main.png" width="500" />
 
 ## How to use the application
 ### Add Suppliers, Warehouse Items and Customers
 1. Launch the application.<br>
-<img src="/readme-images/main.png" width="400" />
+<img src="/readme-images/main.png" width="500" />
 
 2. The user interface is divided into five main sections:
    - Nav Bar: Positioned at the top of the window, it includes the "Menu" and "About" tabs.
@@ -66,7 +66,7 @@ java Main
    - Click on the "Add Customer" button.
    - Enter the necessary information, then click "Add Customer" to save.
 
-<img src="/readme-images/main-populated.png" width="400" />
+<img src="/readme-images/main-populated.png" width="500" />
 
 ### Purchase Items
 Items can be purchased from both suppliers and customers, following a similar process with a few key differences:
@@ -97,7 +97,7 @@ To place an order:<br>
    - All supplier orders placed to replenish inventory
    - The total cost and profit will be automatically calculated and displayed.
 
-<img src="/readme-images/report.png" width="400" />
+<img src="/readme-images/report.png" width="500" />
 
 ## Unit Tests
 The project includes unit tests to ensure the functionality of the application.<br>
