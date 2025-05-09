@@ -42,15 +42,18 @@ java Main
 ### Add Suppliers, Warehouse Items and Customers
 1. Launch the application.<br>
 <img src="/readme-images/main.png" width="400" />
+
 2. The user interface is divided into five main sections:
    - Nav Bar: Positioned at the top of the window, it includes the "Menu" and "About" tabs.
    - Customers panel: Located on the left side, it displays a list of all existing customers.
    - Warehouse items panel: Centred in the window, it shows all available items for purchase.
    - Suppliers panel: Found on the right side, it lists all current suppliers.
    - Financial report panel: Situated at the bottom, it features a button to generate a financial report.
+
 3. Add one or more suppliers:
    - Click on the "Add Supplier" button.
    - Enter the required information, then click "Add Supplier" again to confirm.
+
 4. Add one or more warehouse items to the catalog:
    - Click on the "Add Warehouse Item" button.
    - Enter required information:
@@ -58,6 +61,7 @@ java Main
         - Initial Quantity: The starting stock level. A non-zero value is considered leftover inventory from the previous year and will be excluded from the financial report.
         - Supplier: Select the appropriate supplier from the dropdown list.
    - Click "Add Item" to finalise.
+
 5. Add one or more customers:
    - Click on the "Add Customer" button.
    - Enter the necessary information, then click "Add Customer" to save.
