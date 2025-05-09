@@ -6,9 +6,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.LinkedList;
 
-import backend.*;
-import backend.orders.*;
-import backend.warehouseitems.*;
+import src.backend.*;
+import src.backend.orders.*;
+import src.backend.warehouseitems.*;
 
 /**
  * Test class for OrderManager.

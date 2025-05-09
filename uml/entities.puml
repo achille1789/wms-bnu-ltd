@@ -1,0 +1,116 @@
+@startuml
+
+'UML 1 entities
+enum Data {
+    ID
+    NAME
+    SURNAME
+    ADDRESS
+    EMAIL
+    CREDIT_CARD
+    BANK_ACCOUNT
+    CRN
+    SORT_CODE
+}
+abstract class Entity {
+    +getName(): string
+    +getId(): string
+    +getAllData(): HashMap<Data, String>
+    +update(): void
+}
+interface ICustomer {
+    +add(): Customer
+    +getSurname(): string
+}
+interface ISupplier {
+   +add(): Supplier
+}
+class Customer {
+   +add(): Customer
+   +getSurname(): string
+}
+class Supplier {
+   +add(): Supplier
+}
+
+Data <.. Entity
+Data <.. Customer
+Data <.. Supplier
+
+Entity <|-- Customer
+Entity <|-- Supplier
+
+ICustomer <|.. Customer
+ISupplier <|.. Supplier
+
+'UML 2 entity managers
+'abstract class EntityManager {
+'    +getEntitiesList(): List<Entity>
+'    +getEntityData(): HashMap<Data, String>
+'    +updateEntityData(): void
+'    +deleteEntity(): void
+'    +getEntityById(): Entity
+'}
+'interface ICustomerManager {
+'    +addCustomer(): void
+'}
+'interface ISupplierManager {
+'    +addCustomer(): void
+'    +getSuppliersName(): String[]
+'    +getSupplierIdByName(): String
+'}
+'class CustomerManager {
+'    +addCustomer(): void
+'}
+'class SupplierManager {
+'    +addCustomer(): void
+'    +getSuppliersName(): String[]
+'    +getSupplierIdByName(): String
+'}
+'
+'EntityManager <|-- CustomerManager
+'EntityManager <|-- SupplierManager
+'
+'ICustomerManager <|.. CustomerManager
+'ISupplierManager <|.. SupplierManager
+
+'UML 3 entity multiplicity
+'abstract class Entity {
+'    +getName(): string
+'    +getId(): string
+'    +getAllData(): HashMap<Data, String>
+'    +update(): void
+'}
+'class Customer {
+'   +add(): Customer
+'   +getSurname(): string
+'}
+'class Supplier {
+'   +add(): Supplier
+'}
+'
+'abstract class EntityManager {
+'    +getEntitiesList(): List<Entity>
+'    +getEntityData(): HashMap<Data, String>
+'    +updateEntityData(): void
+'    +deleteEntity(): void
+'    +getEntityById(): Entity
+'}
+'class CustomerManager {
+'    +addCustomer(): void
+'}
+'class SupplierManager {
+'    +addCustomer(): void
+'    +getSuppliersName(): String[]
+'    +getSupplierIdByName(): String
+'}
+'
+'Entity <|-- Customer
+'Entity <|-- Supplier
+'
+'EntityManager <|-- CustomerManager
+'EntityManager <|-- SupplierManager
+'EntityManager "1" *-- "0..*" Entity
+'CustomerManager "1" o-- "0..*" Customer
+'SupplierManager "1" o-- "0..*" Supplier
+@enduml

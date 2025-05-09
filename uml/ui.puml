@@ -1,0 +1,63 @@
+@startuml 
+
+abstract class EntitiesPanel
+class CustomersPanel
+class SuppliersPanel
+class FinancesPanel
+class ItemsPanel
+class NavBar
+class CustomerManager {
+    +addCustomer(): void
+    +getEntitiesList(): List<Entity>
+    +getEntityData(): HashMap<Data, String>
+    +updateEntityData(): void
+    +deleteEntity(): void
+    +getEntityById(): Entity
+}
+class SupplierManager {
+    +addSupplier(): void
+    +getSuppliersName(): String[]
+    +getSupplierIdByName(): String
+    +getEntitiesList(): List<Entity>
+    +getEntityData(): HashMap<Data, String>
+    +updateEntityData(): void
+    +deleteEntity(): void
+    +getEntityById(): Entity
+}
+class InventoryManager {
+    +addItem(): void
+    +getItemsList(): List<Item>
+    +getItemQuantity(): int
+    +getSupplierItems(): List<Item>
+    +getItemsLowStock(): List<Item>
+    +deleteItem(): void
+    +updateItemQuantity(): void
+}
+class OrderManager {
+    +addOrder(): void
+    +getOrdersList(): List<Order>
+    +getEntityOrders(): List<Order>
+    +getPendingOrders(): List<Order>
+    +setNewOrderStatus(): void
+}
+class FinancialReporting {
+    +getAllTransactions(): HashMap<String, FinanceItem>
+    +getAllTransactionsCost(): float
+}
+class MainUI
+
+SuppliersPanel --|> EntitiesPanel
+CustomersPanel --|> EntitiesPanel
+
+NavBar "1" o-- "1" MainUI
+CustomersPanel "1" o-- "1" MainUI
+ItemsPanel "1" o-- "1" MainUI
+SuppliersPanel "1" o-- "1" MainUI
+FinancesPanel "1" o-- "1" MainUI
+MainUI "1" *-- "1" CustomerManager
+MainUI "1" *-- "1" SupplierManager
+MainUI "1" *-- "1" InventoryManager
+MainUI "2" *-- "1" OrderManager
+MainUI "2" *-- "1" FinancialReporting
+
+@enduml

@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
-import utils.InputValidator;
-import utils.InputType;
+import src.utils.InputValidator;
+import src.utils.InputType;
 
 /**
  * Test class for InputValidator.

@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
-import backend.entities.Supplier;
-import backend.entities.Data;
+import src.backend.entities.Supplier;
+import src.backend.entities.Data;
 
 /**
  * Test class for Supplier.

@@ -1,0 +1,19 @@
+@startuml
+
+start
+
+:SuppliersPanel.addEntityPanel();
+:new JFrame frame;
+
+repeat
+  :InputValidator.getValidateInputs();
+repeat while (not valid?) is (error)
+
+:SupplierManager.addSupplier(data);
+:frame.dispose();
+:EntitiesPanel.setEntitiesPanelDetails();
+:new JPanel panel;
+
+stop
+
+@enduml

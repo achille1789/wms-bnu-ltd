@@ -1,0 +1,52 @@
+@startuml 
+
+enum OrderItemData {
+    NAME,
+    QUANTITY,
+    ITEM_ID,
+    COST,
+}
+enum OrderData {
+    ORDER_ID,
+    ENTITY_ID,
+    DATE,
+    ORDER_ITEMS,
+    TOTAL_COST,
+    STATUS,
+}
+enum OrderStatus {
+    PENDING,
+    SHIPPED,
+    DELIVERED,
+}
+class OrderItem {
+    +getAllData(): HashMap<OrderItemData, String>
+    +addCost(): void
+    +getQuantity(): int
+    +getCost(): float
+}
+class Order {
+    +getAllData(): HashMap<OrderData, String>
+    +getOrderId(): String
+    +getEntityId(): String
+    +getDate(): String
+    +getTotalCost(): float
+    +getOrderItems(): List<OrderItem>
+    +getStatus(): OrderStatus
+}
+class OrderManager {
+    +addOrder(): void
+    +getOrdersList(): List<Order>
+    +getEntityOrders(): List<Order>
+    +getPendingOrders(): List<Order>
+    +setNewOrderStatus(): void
+}
+
+OrderItemData <.. OrderItem
+OrderData <.. Order
+OrderStatus <.. Order
+OrderStatus <.. OrderManager
+OrderItem "0..*" o-- "1" Order
+Order "0..*" o-- "1" OrderManager
+
+@enduml

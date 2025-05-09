@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
-import backend.warehouseitems.Item;
-import backend.warehouseitems.ItemData;
+import src.backend.warehouseitems.Item;
+import src.backend.warehouseitems.ItemData;
 
 /**
  * Test class for Item.

@@ -2,8 +2,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
-import backend.entities.Customer;
-import backend.entities.Data;
+import src.backend.entities.Customer;
+import src.backend.entities.Data;
 
 /**
  * Test class for Customer.

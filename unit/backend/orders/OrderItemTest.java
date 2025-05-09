@@ -2,7 +2,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 
-import backend.orders.*;
+import src.backend.orders.*;
 
 /**
  * Test class for OrderItem.

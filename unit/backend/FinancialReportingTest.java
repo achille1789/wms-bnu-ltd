@@ -3,9 +3,9 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import backend.*;
-import backend.finances.FinanceItem;
-import backend.orders.*;
+import src.backend.*;
+import src.backend.finances.FinanceItem;
+import src.backend.orders.*;
 
 /**
  * Test class for FinancialReporting.

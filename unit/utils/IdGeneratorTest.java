@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
-import utils.IdGenerator;
+import src.utils.IdGenerator;
 
 /**
  * Test class for IdGenerator.

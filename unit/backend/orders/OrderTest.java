@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ArrayList;
 
-import backend.orders.*;
+import src.backend.orders.*;
 
 /**
  * Test class for Order.
