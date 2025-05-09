@@ -1,5 +1,4 @@
 @startuml
-'https://plantuml.com/activity-diagram-beta
 
 start
 
@@ -10,7 +9,7 @@ repeat
   :InputValidator.getValidateInputs();
 repeat while (not valid?) is (error)
 
-:Suppliers.addSupplier(data);
+:SupplierManager.addSupplier(data);
 :frame.dispose();
 :EntitiesPanel.setEntitiesPanelDetails();
 :new JPanel panel;

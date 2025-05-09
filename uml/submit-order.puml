@@ -1,0 +1,25 @@
+@startuml
+
+start
+
+:EntitiesPanel.createOrderFrame();
+:new JFrame frame;
+:EntitiesPanel.createOrderItemsSidePanel();
+:EntitiesPanel.createBasketSidePanel();
+:EntitiesPanel.setOrderItemsPanelDetails();
+repeat
+  :SupplierPanel.getOrderQuantityLinePanel();
+  :EntitiesPanel.setBasketItem();
+repeat while (order another item?) is (yes)
+
+:OrderManager.addOrder(data);
+:EntitiesPanel.updateStockLevelAfterPurchase();
+:InventoryManager.updateItemQuantity();
+:frame.dispose();
+if (InventoryManager.getItemsLowStock()) then (low stock)
+  :JOptionPane.showMessageDialog();
+endif
+
+stop
+
+@enduml
