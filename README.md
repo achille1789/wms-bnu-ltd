@@ -1,6 +1,6 @@
 # Warehouse Management System for BNU Industry Solutions Ltd
 
-This application is a Warehouse Management System (WMS) developed for BNU Industry Solutions Ltd.
+This application is a Warehouse Management System (WMS) developed for BNU Industry Solutions Ltd.<br>
 It is designed to streamline the management of warehouse inventory and operations, offering features such as:
 - Stock level tracking
 - Supplier and customer management
@@ -73,6 +73,7 @@ Items can be purchased from both suppliers and customers, following a similar pr
 - Customer orders allow selection from any available items, regardless of supplier. In contrast, supplier orders are limited to items provided by the selected supplier.
 - The purchase price for customers is 40% higher than the supplier price.
 - When items are purchased from a customer, the selected quantities are immediately deducted from stock. When items are ordered from a supplier, the quantities are marked as "pending" and must be manually received by clicking the "Receive Deliveries" button before they are added to stock.
+
 To place an order:<br>
 1. Select a customer or supplier from the appropriate panel.
 2. Click the "Order" button.
@@ -86,8 +87,8 @@ To place an order:<br>
 1. Click on the "Update Customer" or "Update Supplier" button and update the required information.
 2. Confirm to save the changes.
 
-### Delete Customer/Supplier
-1. Click on the "Delete Customer" or "Delete Supplier" button.
+### Delete Customer/Supplier/Item
+1. Click on the "Delete" button.
 
 ### Generate Financial Report
 1. Click on the "Generate Financial Report" button.
@@ -100,7 +101,7 @@ To place an order:<br>
 
 ## Unit Tests
 The project includes unit tests to ensure the functionality of the application.<br>
-The tests are written using JUnit and can be run from the command line.
+The tests are written using JUnit and can be run from the command line.<br>
 The tests are located in the `unit` folder and can be run using the following command (Windows OS may require a different command):
 ```bash
 javac -d bin -cp .:junit-platform-console-standalone-1.11.1.jar $(find src -name "*.java") $(find unit -name "*.java")
