@@ -1,0 +1,36 @@
+@startuml 
+
+enum ItemData {
+    ID,
+    NAME,
+    DESCRIPTION,
+    QUANTITY,
+    SUPPLIER,
+    SUPPLIER_ID,
+    SUPPLIER_PRICE,
+    CUSTOMER_PRICE,
+}
+class Item {
+    +getAllData(): HashMap<ItemData, String>
+    +getName(): String
+    +getQuantity(): int
+    +getSupplierPrice(): float
+    +getId(): String
+    +getDescription(): String
+    +getSupplierId(): String
+    +setQuantity(): void
+}
+class InventoryManager {
+    +addItem(): void
+    +getItemsList(): List<Item>
+    +getItemQuantity(): int
+    +getSupplierItems(): List<Item>
+    +getItemsLowStock(): List<Item>
+    +deleteItem(): void
+    +updateItemQuantity(): void
+}
+
+ItemData <.. Item
+Item "0..*" o-- "1" InventoryManager
+
+@enduml

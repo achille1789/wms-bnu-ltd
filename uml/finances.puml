@@ -1,0 +1,24 @@
+@startuml 
+
+class FinanceItem {
+    +addQuantity(): void
+    +getName(): String
+    +getQuantity(): int
+    +getCost(): float
+}
+class FinancialReporting {
+    +getAllTransactions(): HashMap<String, FinanceItem>
+    +getAllTransactionsCost(): float
+}
+class OrderManager {
+    +addOrder(): void
+    +getOrdersList(): List<Order>
+    +getEntityOrders(): List<Order>
+    +getPendingOrders(): List<Order>
+    +setNewOrderStatus(): void
+}
+
+FinanceItem "0..*" o-- "1" FinancialReporting
+OrderManager "1" *-- "1" FinancialReporting
+
+@enduml

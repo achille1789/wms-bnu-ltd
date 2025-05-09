@@ -1,0 +1,31 @@
+@startuml 
+
+abstract class EntitiesPanel
+class CustomersPanel
+class SuppliersPanel
+class FinancesPanel
+class ItemsPanel
+class NavBar
+class CustomerManager
+class SupplierManager
+class InventoryManager
+class OrderManager
+class FinancialReporting
+class MainUI
+
+SuppliersPanel --|> EntitiesPanel
+CustomersPanel --|> EntitiesPanel
+
+NavBar "1" o-- "1" MainUI
+CustomersPanel "1" o-- "1" MainUI
+ItemsPanel "1" o-- "1" MainUI
+SuppliersPanel "1" o-- "1" MainUI
+FinancesPanel "1" o-- "1" MainUI
+CustomerManager "1" *-- "1" CustomersPanel
+SupplierManager "1" *-- "1" SuppliersPanel
+InventoryManager "1" *-- "1" ItemsPanel
+OrderManager "1" *-- "1" CustomersPanel
+OrderManager "1" *-- "1" SuppliersPanel
+FinancialReporting "1" *-- "1" FinancesPanel
+
+@enduml
