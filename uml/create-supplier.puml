@@ -1,0 +1,20 @@
+@startuml
+'https://plantuml.com/activity-diagram-beta
+
+start
+
+:SuppliersPanel.addEntityPanel();
+:new JFrame frame;
+
+repeat
+  :InputValidator.getValidateInputs();
+repeat while (not valid?) is (error)
+
+:Suppliers.addSupplier(data);
+:frame.dispose();
+:EntitiesPanel.setEntitiesPanelDetails();
+:new JPanel panel;
+
+stop
+
+@enduml
