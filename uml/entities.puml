@@ -45,7 +45,7 @@ ISupplier <|.. Supplier
 '
 'EntityManager <|-- CustomerManager
 'EntityManager <|-- SupplierManager
-'EntityManager "1" --> "0..*" Entity
-'CustomerManager "1" --> "0..*" Customer
-'SupplierManager "1" --> "0..*" Supplier
+'EntityManager "1" o-- "0..*" Entity
+'CustomerManager "1" o-- "0..*" Customer
+'SupplierManager "1" o-- "0..*" Supplier
 @enduml
