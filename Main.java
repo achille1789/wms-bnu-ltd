@@ -9,7 +9,6 @@ import ui.MainUI;
 public class Main {
     /**
      * The main method that will launch the project.
-     * @param args the command line arguments
      */
     public static void main() {
         
