@@ -5,8 +5,8 @@ import java.util.List;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import backend.*;
-import backend.entities.*;
+import src.backend.*;
+import src.backend.entities.*;
 
 /**
  * Test class for SupplierManager.

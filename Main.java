@@ -1,4 +1,4 @@
-import ui.MainUI;
+import src.ui.MainUI;
 
 /**
  * Main is the starting class that will launch that whole project.
@@ -8,10 +8,16 @@ import ui.MainUI;
  */
 public class Main {
     /**
-     * The main method that will launch the project.
+     * The main method that will launch the project from BlueJ.
      */
-    public static void main() {
-        
+    public static void main() {       
+        new MainUI();
+    }
+    
+    /**
+     * The main method that will launch the project from CLI.
+     */
+    public static void main(String[] args) {        
         new MainUI();
     }
 }

@@ -3,8 +3,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
-import utils.Logger;
-import utils.LogType;
+import src.utils.Logger;
+import src.utils.LogType;
 
 /**
  * Test class for Logger.
