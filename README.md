@@ -11,7 +11,7 @@ The system includes both a backend and a graphical user interface (GUI).
 
 ## Technical aspects
 The whole system has been developed using Java on a Macbook Pro with M1 chip.
-These is the Java version used:
+These are the versions used:
 ```text
 openjdk version "23.0.2" 2025-01-21
 OpenJDK Runtime Environment Homebrew (build 23.0.2)
@@ -43,11 +43,11 @@ java Main
 1. Launch the application.<br>
 <img src="/readme-images/main.png" width="400" />
 2. The user interface is divided into five main sections:
-   - **Nav Bar**: Positioned at the top of the window, it includes the "Menu" and "About" tabs.
-   - **Customers panel**: Located on the left side, it displays a list of all existing customers.
-   - **Warehouse items panel**: Centred in the window, it shows all available items for purchase.
-   - **Suppliers panel**: Found on the right side, it lists all current suppliers.
-   - **Financial report panel**: Situated at the bottom, it features a button to generate a financial report.
+   - Nav Bar: Positioned at the top of the window, it includes the "Menu" and "About" tabs.
+   - Customers panel: Located on the left side, it displays a list of all existing customers.
+   - Warehouse items panel: Centred in the window, it shows all available items for purchase.
+   - Suppliers panel: Found on the right side, it lists all current suppliers.
+   - Financial report panel: Situated at the bottom, it features a button to generate a financial report.
 3. Add one or more suppliers:
    - Click on the "Add Supplier" button.
    - Enter the required information, then click "Add Supplier" again to confirm.
