@@ -8,6 +8,7 @@ It is designed to streamline the management of warehouse inventory and operation
 - Warehouse process optimization
 - Report generation
 The system includes both a backend and a graphical user interface (GUI).
+The application has been designed as an eCommerce platform where both customers and suppliers need to have an account and provide basic information.
 
 ## Technical aspects
 The whole system has been developed using Java on a Macbook Pro with M1 chip.
