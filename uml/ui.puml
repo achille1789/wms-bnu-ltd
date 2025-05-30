@@ -49,15 +49,15 @@ class MainUI
 SuppliersPanel --|> EntitiesPanel
 CustomersPanel --|> EntitiesPanel
 
-NavBar "1" o-- "1" MainUI
-CustomersPanel "1" o-- "1" MainUI
-ItemsPanel "1" o-- "1" MainUI
-SuppliersPanel "1" o-- "1" MainUI
-FinancesPanel "1" o-- "1" MainUI
-MainUI "1" *-- "1" CustomerManager
-MainUI "1" *-- "1" SupplierManager
-MainUI "1" *-- "1" InventoryManager
-MainUI "2" *-- "1" OrderManager
-MainUI "2" *-- "1" FinancialReporting
+NavBar "1" *-- "1" MainUI
+CustomersPanel "1" *-- "1" MainUI
+ItemsPanel "1" *-- "1" MainUI
+SuppliersPanel "1" *-- "1" MainUI
+FinancesPanel "1" *-- "1" MainUI
+MainUI "1" o-- "1" CustomerManager
+MainUI "1" o-- "1" SupplierManager
+MainUI "1" o-- "1" InventoryManager
+MainUI "1" o-- "2" OrderManager
+MainUI "1" o-- "2" FinancialReporting
 
 @enduml

@@ -67,7 +67,7 @@ import src.utils.Logger;
         int index = getItemIndex(id);
         if (index > -1) {
             int quantity = this.itemsList.get(index).getQuantity();
-            Logger.info("Current Item quantity: " + quantity);
+            Logger.info(this.itemsList.get(index).getName() + " currently on stock: " + quantity + " units");
             return quantity;
         }
         Logger.error("Item not found");
@@ -83,12 +83,13 @@ import src.utils.Logger;
         int index = getItemIndex(id);
         if (index > -1) {
             this.itemsList.get(index).setQuantity(quantity);
+            String itemName = this.itemsList.get(index).getName();
             if (quantity == 0) {
-                Logger.error("ALERT: new item quantity is 0");
+                Logger.error("ALERT: new " + itemName + " quantity is 0");
             } else if (quantity < 10) {
-                Logger.warn("ALERT: new item quantity is " + quantity);
+                Logger.warn("ALERT: new " + itemName + " quantity is " + quantity);
             } else {
-                Logger.info("Item quantity updated: " + this.itemsList.get(index).getQuantity());
+                Logger.info(itemName + " quantity updated: " + this.itemsList.get(index).getQuantity());
             }
         } else {
             Logger.error("Item not found, quantity not updated");

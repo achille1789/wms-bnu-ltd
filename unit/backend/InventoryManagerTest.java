@@ -76,9 +76,9 @@ public class InventoryManagerTest {
         System.setOut(originalOut);
         
         // assert
-        assertEquals(true, outContent.toString().contains("[ERROR] - ALERT: new item quantity is 0"));
-        assertEquals(true, outContent.toString().contains("[WARN] - ALERT: new item quantity is 5"));
-        assertEquals(true, outContent.toString().contains("[INFO] - Item quantity updated: 25"));
+        assertEquals(true, outContent.toString().contains("[ERROR] - ALERT: new item2 quantity is 0"));
+        assertEquals(true, outContent.toString().contains("[WARN] - ALERT: new item1 quantity is 5"));
+        assertEquals(true, outContent.toString().contains("[INFO] - item3 quantity updated: 25"));
         assertEquals(5, inventoryManager.getItemQuantity(itemId1));
         assertEquals(0, inventoryManager.getItemQuantity(itemId2));
         assertEquals(25, inventoryManager.getItemQuantity(itemId3));
