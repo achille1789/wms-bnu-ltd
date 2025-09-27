@@ -1,0 +1,2184 @@
+diff --git a/.DS_Store b/.DS_Store
+index 5fe9ae4..b48ae36 100644
+Binary files a/.DS_Store and b/.DS_Store differ
+diff --git a/Main.java b/Main.java
+new file mode 100644
+index 0000000..0d69668
+--- /dev/null
++++ b/Main.java
+@@ -0,0 +1,24 @@
++import ui.MainUI;
++
++/**
++ * Main is the starting class that will launch that whole project.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class Main {
++    /**
++     * The main method that will launch the project.
++     * @param args the command line arguments
++     */
++    public static void main(String[] args) {
++        boolean prepopulated = false;
++        if (args.length > 0) {
++            if (args[0].equals("prepopulated")) {
++                prepopulated = true;
++            }
++        }
++        
++        new MainUI(prepopulated);
++    }
++}
+\ No newline at end of file
+diff --git a/UI/placeholder.txt b/UI/placeholder.txt
+deleted file mode 100644
+index cb7b660..0000000
+--- a/UI/placeholder.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-placeholder file
+\ No newline at end of file
+diff --git a/backend/Customers.java b/backend/Customers.java
+deleted file mode 100644
+index 56935a0..0000000
+--- a/backend/Customers.java
++++ /dev/null
+@@ -1,147 +0,0 @@
+-import java.util.List;
+-import java.util.LinkedList;
+-import java.util.HashMap;
+-
+-import entities.Customer;
+-import entities.CustomerData;
+-import entities.Data;
+-
+-/**
+- * A class that handles the list of Customers.
+- *
+- * @author Vanni Gallo
+- * @version 1.0.0
+- */
+- class Customers {
+-    // The fields.
+-    private List<Customer> customersList = new LinkedList<>();
+-    
+-    // Constructor should be uncommented only for debugging
+-//     public Customers() {
+-//         CustomerData data1 = new CustomerData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
+-//         CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
+-//         customersList.add(new Customer().add(data1));
+-//         customersList.add(new Customer().add(data2));
+-//         Logger.info("Added 2 customers for debugging");
+-//     }
+-    
+-    /**
+-     * Establish name matching.
+-     * @param name the name to match
+-     * @param surname the surname to match
+-     * @param itemIndex the index of the customer in the list
+-     * @return true if the name and surname match the customer data
+-     */
+-    private boolean areDetailsMatching(String name, String surname, int itemIndex) {
+-        return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
+-            surname.toLowerCase().equals(customersList.get(itemIndex).getSurname().toLowerCase());
+-    }
+-    
+-    // TODO: handle wrong input data
+-    /**
+-     * Set all the customer data to create a new customer.
+-     * If data is invalid print an error message.
+-     * @param name the name of the customer
+-     * @param surname the surname of the customer
+-     * @param email the email of the customer
+-     * @param address the address of the customer
+-     * @param creditCard the credit card of the customer
+-     */
+-    public void addCustomer(String name, String surname, String email, String address, String creditCard) {
+-        CustomerData data = new CustomerData(name, surname, email, address, creditCard);
+-        boolean exists = false;
+-        for (int i = 0; i < customersList.size(); i++) {
+-            if (areDetailsMatching(name, surname, i)) {
+-                Logger.error("Customer already exists, aborted");
+-                exists = true;
+-                break;
+-            }
+-        }
+-        if (!exists) {
+-            customersList.add(new Customer().add(data));
+-            Logger.info("Customer added, data: " + customersList.getLast().getAllData().toString());
+-        }
+-    }
+-    
+-    /**
+-     * Get the number of customers in the list.
+-     * @return the number of customers in the list
+-     */
+-    public int getTotalCustomers() {
+-        return customersList.size();
+-    }
+-    
+-    /**
+-     * Get the name of all customers in the list.
+-     * @return an array of customer names
+-     */
+-    public String[] getCustomerNames() {
+-        String[] names = new String[customersList.size()];
+-        for (int i = 0; i < customersList.size(); i++) {
+-            names[i] = customersList.get(i).getName();
+-        }
+-        return names;
+-    }
+-    
+-    /**
+-     * Get data of the passed Customer.
+-     * @param name the name of the customer
+-     * @param surname the surname of the customer
+-     * @return a HashMap with all the customer data
+-     */
+-    public HashMap<Data, String> getCustomerData(String name, String surname) {
+-        HashMap<Data, String> customerData = null;
+-        for (int i = 0; i < customersList.size(); i++) {
+-            if (areDetailsMatching(name, surname, i)) {
+-                customerData = customersList.get(i).getAllData();
+-                break;
+-            }
+-        }
+-        if (customerData == null) {
+-            Logger.error("Customer not found");
+-        }
+-        return customerData;
+-    }
+-    
+-    /**
+-     * Update data of the passed Customer.
+-     * @param name the name of the customer
+-     * @param surname the surname of the customer
+-     * @param key the key of the data to update
+-     * @param value the new value of the data
+-     */
+-    public void updateCustomerData(String name, String surname, Data key, String value) {
+-        boolean found = false;
+-        for (int i = 0; i < customersList.size(); i++) {
+-            if (areDetailsMatching(name, surname, i)) {
+-                customersList.get(i).update(key, value);
+-                Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
+-                found = true;
+-                break;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("Customer not found, data not updated");
+-        }
+-    }
+-    
+-    /**
+-     * Delete passed Customer.
+-     * @param name the name of the customer
+-     * @param surname the surname of the customer
+-     */
+-    public void deleteCustomer(String name, String surname) {
+-        boolean found = false;
+-        for (int i = 0; i < customersList.size(); i++) {
+-            if (areDetailsMatching(name, surname, i)) {
+-                customersList.remove(i);
+-                Logger.info("Customer deleted");
+-                found = true;
+-                break;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("Customer not found, data not updated");
+-        }
+-    }
+- }
+diff --git a/backend/CustomersList.java b/backend/CustomersList.java
+new file mode 100644
+index 0000000..8349f33
+--- /dev/null
++++ b/backend/CustomersList.java
+@@ -0,0 +1,43 @@
++package backend;
++
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import backend.entities.Customer;
++import backend.entities.Data;
++
++/**
++ * A class that handles the list of Customers.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class CustomersList extends EntitiesList implements ICustomersList {
++    /**
++     * @param prepopulated to instantiate the class with 2 customers for debugging
++     */
++    public CustomersList(boolean prepopulated) {
++        setLogEntityType("Customer");
++        if (prepopulated) {
++            getEntitiesList().add(new Customer().add("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456"));
++            getEntitiesList().add(new Customer().add("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654"));
++            Logger.info("Added 2 customers for debugging");
++        }
++    }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the customer data to create a new customer.
++     * If data is invalid print an error message.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
++     * @param email the email of the customer
++     * @param address the address of the customer
++     * @param creditCard the credit card of the customer
++     */
++    public void addCustomer(String name, String surname, String email, String address, String creditCard) {
++        getEntitiesList().add(new Customer().add(name, surname, email, address, creditCard));
++        Logger.info("Customer added, data: " + getEntitiesList().getLast().getAllData().toString());
++    }
++}
+diff --git a/backend/EntitiesList.java b/backend/EntitiesList.java
+new file mode 100644
+index 0000000..18d4649
+--- /dev/null
++++ b/backend/EntitiesList.java
+@@ -0,0 +1,114 @@
++package backend;
++
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import backend.entities.Entity;
++import backend.entities.Data;
++
++/**
++ * A class that handles the list of Entities.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public abstract class EntitiesList {
++    // The fields.
++    private List<Entity> entitiesList = new LinkedList<>();
++    private String logEntityType = "Entity";
++    
++    /**
++     * Get the list of entities.
++     * @param type of log.
++     * @param message to log.
++     */
++    private void printlog(LogType type, String message) {
++        switch (type) {
++            case LogType.ERROR:
++                Logger.error(message);
++                break;
++            case LogType.WARN:
++                Logger.warn(message);
++                break;
++            case LogType.INFO:
++            default:
++                Logger.info(message);
++        }
++    }
++    
++    
++    /**
++     * Setters.
++     */
++     protected void setLogEntityType(String logEntityType) {
++        this.logEntityType = logEntityType;
++     }
++
++    /**
++     * Getters.
++     */
++     public List<Entity> getEntitiesList() {
++        return this.entitiesList;
++     }
++     
++    /**
++     * Get data of the passed Entities.
++     * @param name the name of the entity
++     * @param surname the surname of the entity
++     * @return a HashMap with all the entity data
++     */
++    public HashMap<Data, String> getEntityData(String id) {
++        HashMap<Data, String> entityData = null;
++        for (int i = 0; i < entitiesList.size(); i++) {
++            if (id.equals(entitiesList.get(i).getId())) {
++                entityData = entitiesList.get(i).getAllData();
++                break;
++            }
++        }
++        if (entityData == null) {
++            printlog(LogType.ERROR, this.logEntityType + " not found");
++        }
++        return entityData;
++    }
++
++    /**
++     * Update data of the passed Entities.
++     * @param id the id of the entity
++     * @param key the key of the data to update
++     * @param value the new value of the data
++     */
++    public void updateEntityData(String id, Data key, String value) {
++        boolean found = false;
++        for (int i = 0; i < entitiesList.size(); i++) {
++            if (id.equals(entitiesList.get(i).getId())) {
++                entitiesList.get(i).update(key, value);
++                printlog(LogType.INFO, this.logEntityType + " data updated: " + entitiesList.get(i).getAllData().toString());
++                found = true;
++                break;
++            }
++        }
++        if (!found) {
++            printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
++        }
++    }
++
++    /**
++     * Delete passed Entities.
++     * @param id the id of the entity
++     */
++    public void deleteEntity(String id) {
++        boolean found = false;
++        for (int i = 0; i < entitiesList.size(); i++) {
++            if (id.equals(entitiesList.get(i).getId())) {
++                entitiesList.remove(i);
++                printlog(LogType.INFO, this.logEntityType + " deleted");
++                found = true;
++                break;
++            }
++        }
++        if (!found) {
++            printlog(LogType.ERROR, this.logEntityType + " not found, data not updated");
++        }
++    }
++ }
+diff --git a/backend/Goods.java b/backend/Goods.java
+index 5dc6669..fb7bebc 100644
+--- a/backend/Goods.java
++++ b/backend/Goods.java
+@@ -1,9 +1,11 @@
++package backend;
++
+ import java.util.List;
+ import java.util.LinkedList;
+ import java.util.HashMap;
+ 
+-import goods.Good;
+-import goods.Data;
++import backend.goods.*;
++import backend.Logger;
+ 
+ /**
+  * A class that handles the list of warehouse Goods.
+@@ -11,27 +13,21 @@ import goods.Data;
+  * @author Vanni Gallo
+  * @version 1.0.0
+  */
+- class Goods {
++ public class Goods {
+     // The fields.
+     private List<Good> goodsList = new LinkedList<>();
+     
+-    // Constructor should be uncommented only for debugging
+-//     public Goods() {
+-//         Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni ltd");
+-//         Good good2 = new Good("Cement", "Construction cement", 50, "Mark ltd");
+-//         goodsList.add(good1);
+-//         goodsList.add(good2);
+-//         Logger.info("Added 2 warehouse goods for debugging");
+-//     }
+-    
+     /**
+-     * Establish name matching.
+-     * @param name the name to match
+-     * @param itemIndex the index of the good in the list
+-     * @return true if the name matches the good data
++     * @param prepopulated to instantiate the class with 2 warehouse goods for debugging
+      */
+-    private boolean isNameMatching(String name, int itemIndex) {
+-        return name.toLowerCase().equals(goodsList.get(itemIndex).getName().toLowerCase());
++    public Goods(boolean prepopulated) {
++        if (prepopulated) {
++            Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni&Sons ltd", 5);
++            Good good2 = new Good("Cement", "Construction cement", 50, "Mark&Friends ltd", 15);
++            goodsList.add(good1);
++            goodsList.add(good2);
++            Logger.info("Added 2 warehouse goods for debugging");
++        }
+     }
+     
+     // TODO: handle wrong input data
+@@ -43,20 +39,10 @@ import goods.Data;
+      * @param quantity the available quantity of the good
+      * @param supplier the name of the supplier
+      */
+-    public void addGood(String name, String description, int quantity, String supplier) {
+-        Good good = new Good(name, description, quantity, supplier);
+-        boolean exists = false;
+-        for (int i = 0; i < goodsList.size(); i++) {
+-            if (isNameMatching(name, i)) {
+-                Logger.error("Good already exists, aborted");
+-                exists = true;
+-                break;
+-            }
+-        }
+-        if (!exists) {
+-            goodsList.add(good);
+-            Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
+-        }
++    public void addGood(String name, String description, int quantity, String supplier, int price) {
++        Good good = new Good(name, description, quantity, supplier, price);
++        goodsList.add(good);
++        Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
+     }
+     
+     /**
+@@ -84,10 +70,10 @@ import goods.Data;
+      * @param name the name of the good
+      * @return a HashMap with all the Good data
+      */
+-    public HashMap<Data, String> getGoodData(String name) {
++    public HashMap<Data, String> getGoodData(String id) {
+         HashMap<Data, String> goodData = null;
+         for (int i = 0; i < goodsList.size(); i++) {
+-            if (isNameMatching(name, i)) {
++            if (id.equals(goodsList.get(i).getId())) {
+                 goodData = goodsList.get(i).getAllData();
+                 break;
+             }
+@@ -103,10 +89,10 @@ import goods.Data;
+      * @param name the name of the good
+      * @return the quantity of the good
+      */
+-    public int getGoodQuantity(String name) {
++    public int getGoodQuantity(String id) {
+         int quantity = -1;
+         for (int i = 0; i < goodsList.size(); i++) {
+-            if (isNameMatching(name, i)) {
++            if (id.equals(goodsList.get(i).getId())) {
+                 quantity = goodsList.get(i).getQuantity();
+                 break;
+             }
+@@ -123,10 +109,10 @@ import goods.Data;
+      * @param name the name of the good
+      * @param quantity the new quantity of the good
+      */
+-    public void updateGoodQuantity(String name, int quantity) {
++    public void updateGoodQuantity(String id, int quantity) {
+         boolean found = false;
+         for (int i = 0; i < goodsList.size(); i++) {
+-            if (isNameMatching(name, i)) {
++            if (id.equals(goodsList.get(i).getId())) {
+                 goodsList.get(i).setQuantity(quantity);
+                 Logger.info("Good quantity updated: " + goodsList.get(i).getQuantity());
+                 found = true;
+diff --git a/backend/ICustomersList.java b/backend/ICustomersList.java
+new file mode 100644
+index 0000000..228fcd4
+--- /dev/null
++++ b/backend/ICustomersList.java
+@@ -0,0 +1,23 @@
++package backend;
++
++import backend.entities.Customer;
++
++ /**
++  * An interface to implement addCustomer() method for CustomersList.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++public interface ICustomersList {
++    /**
++     * Add a new Customer on the list.
++     * Info needed are: name, surname, email, address and credit card.
++     * @param name of the customer
++     * @param surname of the customer
++     * @param email of the customer
++     * @param address of the customer
++     * @param creditCard of the customer
++     */
++    public void addCustomer(String name, String surname, String email, String address, String creditCard);
++}
++ 
+\ No newline at end of file
+diff --git a/backend/ISuppliersList.java b/backend/ISuppliersList.java
+new file mode 100644
+index 0000000..6b69222
+--- /dev/null
++++ b/backend/ISuppliersList.java
+@@ -0,0 +1,24 @@
++package backend;
++
++import backend.entities.Supplier;
++
++ /**
++  * An interface to implement addSupplier() method for SuppliersList.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++public interface ISuppliersList {
++    /**
++     * Add a new entity Supplier.
++     * Info needed are: name, crn, email, address, bank account and sort code.
++     * @param name of the supplier
++     * @param crn of the supplier
++     * @param email of the supplier
++     * @param address of the supplier
++     * @param bankAccount of the supplier
++     * @param sortCode of the supplier
++     */
++    public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode);
++}
++ 
+\ No newline at end of file
+diff --git a/backend/Logger.java b/backend/Logger.java
+index 4f6b42b..76700bd 100644
+--- a/backend/Logger.java
++++ b/backend/Logger.java
+@@ -1,3 +1,15 @@
++package backend;
++
++/**
++ * Enam with all the type of log
++ */
++enum LogType {
++    INFO,
++    WARN,
++    ERROR,
++    DEBUG,
++}
++
+  /**
+  * A class that handles all the logs.
+  *
+@@ -6,11 +18,11 @@
+  */
+ class Logger {
+     // ANSI color codes
+-//     public static final String RESET = "\u001B[0m";
+-//     public static final String RED = "\u001B[31m";
+-//     public static final String GREEN = "\u001B[32m";
+-//     public static final String YELLOW = "\u001B[33m";
+-//     public static final String BLUE = "\u001B[34m";
++    private static final String RESET = "\u001B[0m";
++    private static final String RED = "\u001B[31m";
++    private static final String GREEN = "\u001B[32m";
++    private static final String YELLOW = "\u001B[33m";
++    private static final String BLUE = "\u001B[34m";
+ 
+     /**
+      * Using a private constructor to prevent instantiation of this class.
+@@ -22,7 +34,7 @@ class Logger {
+      * @param message the message to print
+      */
+     public static void info(String message) {
+-        System.out.println("[INFO] " + message);
++        System.out.println(GREEN + "[" + LogType.INFO + "] - "  + message + RESET);
+     }
+ 
+     /**
+@@ -30,8 +42,7 @@ class Logger {
+      * @param message the message to print
+      */
+     public static void warn(String message) {
+-//         System.out.println(YELLOW + "[WARN] " + message + RESET);
+-        System.out.println("[WARN] " + message);
++        System.out.println(YELLOW + "[" + LogType.WARN + "] - "  + message + RESET);
+     }
+ 
+     /**
+@@ -39,8 +50,7 @@ class Logger {
+      * @param message the message to print
+      */
+     public static void error(String message) {
+-//         System.out.println(RED + "[ERROR] " + message + RESET);
+-        System.out.println("[ERROR] " + message);
++        System.out.println(RED + "[" + LogType.ERROR + "] - " + message + RESET);
+     }
+ 
+     /**
+@@ -48,7 +58,6 @@ class Logger {
+      * @param message the message to print
+      */
+     public static void debug(String message) {
+-//         System.out.println(BLUE + "[DEBUG] " + message + RESET);
+-        System.out.println("[DEBUG] " + message);
++        System.out.println(BLUE + "[" + LogType.DEBUG + "] - " + message + RESET);
+     }
+ }
+diff --git a/backend/Suppliers.java b/backend/Suppliers.java
+deleted file mode 100644
+index 11fd52b..0000000
+--- a/backend/Suppliers.java
++++ /dev/null
+@@ -1,143 +0,0 @@
+-import java.util.List;
+-import java.util.LinkedList;
+-import java.util.HashMap;
+-
+-import entities.Supplier;
+-import entities.SupplierData;
+-import entities.Data;
+-
+-/**
+- * A class that handles the list of Suppliers.
+- *
+- * @author Vanni Gallo
+- * @version 1.0.0
+- */
+- class Suppliers {
+-    // The fields.
+-    private List<Supplier> suppliersList = new LinkedList<>();
+-    
+-    // Constructor should be uncommented only for debugging
+-//     public Suppliers() {
+-//         SupplierData data1 = new SupplierData("Vanni ltd", "12345678", "vanni-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
+-//         SupplierData data2 = new SupplierData("Mark ltd", "19283746", "mark-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
+-//         suppliersList.add(new Supplier().add(data1));
+-//         suppliersList.add(new Supplier().add(data2));
+-//         Logger.info("Added 2 suppliers for debugging");
+-//     }
+-    
+-    /**
+-     * Establish name matching.
+-     * @param name the name to match
+-     * @param itemIndex the index of the supplier in the list
+-     * @return true if the name matches the supplier data
+-     */
+-    private boolean isNameMatching(String name, int itemIndex) {
+-        return name.toLowerCase().equals(suppliersList.get(itemIndex).getName().toLowerCase());
+-    }
+-    
+-    // TODO: handle wrong input data
+-    /**
+-     * Set all the supplier data to create a new supplier.
+-     * If data is invalid print an error message.
+-     * @param name the name of the supplier
+-     * @param crn the company registration number of the supplier
+-     * @param email the email of the supplier
+-     * @param address the address of the supplier
+-     * @param bankAccount the bank account of the supplier
+-     * @param sortCode the sort code of the supplier
+-     */
+-    public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
+-        SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
+-        boolean exists = false;
+-        for (int i = 0; i < suppliersList.size(); i++) {
+-            if (isNameMatching(name, i)) {
+-                Logger.error("Supplier already exists, aborted");
+-                exists = true;
+-                break;
+-            }
+-        }
+-        if (!exists) {
+-            suppliersList.add(new Supplier().add(data));
+-            Logger.info("Supplier added, data: " + suppliersList.getLast().getAllData().toString());
+-        }
+-    }
+-    
+-    /**
+-     * Get the number of suppliers in the list.
+-     * @return the number of suppliers in the list
+-     */
+-    public int getTotalSuppliers() {
+-        return suppliersList.size();
+-    }
+-    
+-    /**
+-     * Get the name of all suppliers in the list.
+-     * @return the name of all suppliers in the list
+-     */
+-    public String[] getSupplierNames() {
+-        String[] names = new String[suppliersList.size()];
+-        for (int i = 0; i < suppliersList.size(); i++) {
+-            names[i] = suppliersList.get(i).getName();
+-        }
+-        return names;
+-    }
+-    
+-    /**
+-     * Get data of the passed Supplier.
+-     * @param name the name of the supplier
+-     * @return a HashMap with all the Supplier data
+-     */
+-    public HashMap<Data, String> getSupplierData(String name) {
+-        HashMap<Data, String> supplierData = null;
+-        for (int i = 0; i < suppliersList.size(); i++) {
+-            if (isNameMatching(name, i)) {
+-                supplierData = suppliersList.get(i).getAllData();
+-                break;
+-            }
+-        }
+-        if (supplierData == null) {
+-            Logger.error("Supplier not found");
+-        }
+-        return supplierData;
+-    }
+-    
+-    /**
+-     * Update data of the passed Supplier.
+-     * @param name the name of the supplier
+-     * @param key the key of the data to update
+-     * @param value the new value of the data
+-     */
+-    public void updateSupplierData(String name, Data key, String value) {
+-        boolean found = false;
+-        for (int i = 0; i < suppliersList.size(); i++) {
+-            if (isNameMatching(name, i)) {
+-                suppliersList.get(i).update(key, value);
+-                Logger.info("Supplier data updated: " + suppliersList.get(i).getAllData().toString());
+-                found = true;
+-                break;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("Supplier not found, data not updated");
+-        }
+-    }
+-    
+-    /**
+-     * Delete passed Supplier.
+-     * @param name the name of the supplier
+-     */
+-    public void deleteSupplier(String name) {
+-        boolean found = false;
+-        for (int i = 0; i < suppliersList.size(); i++) {
+-            if (isNameMatching(name, i)) {
+-                suppliersList.remove(i);
+-                Logger.info("Supplier deleted");
+-                found = true;
+-                break;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("Supplier not found, data not updated");
+-        }
+-    }
+- }
+diff --git a/backend/SuppliersList.java b/backend/SuppliersList.java
+new file mode 100644
+index 0000000..4f57cf0
+--- /dev/null
++++ b/backend/SuppliersList.java
+@@ -0,0 +1,44 @@
++package backend;
++
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import backend.entities.Supplier;
++import backend.entities.Data;
++
++/**
++ * A class that handles the list of Suppliers.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class SuppliersList extends EntitiesList implements ISuppliersList {    
++    /**
++     * @param prepopulated to instantiate the class with 2 suppliers for debugging
++     */
++    public SuppliersList(boolean prepopulated) {
++        setLogEntityType("Supplier");
++        if (prepopulated) {
++            getEntitiesList().add(new Supplier().add("Simon&Sons ltd", "12345678", "simon-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30"));
++            getEntitiesList().add(new Supplier().add("Alex&Friends ltd", "19283746", "alex-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60"));
++            Logger.info("Added 2 suppliers for debugging");
++        }
++    }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the supplier data to create a new supplier.
++     * If data is invalid print an error message.
++     * @param name the name of the supplier
++     * @param crn the company registration number of the supplier
++     * @param email the email of the supplier
++     * @param address the address of the supplier
++     * @param bankAccount the bank account of the supplier
++     * @param sortCode the sort code of the supplier
++     */
++    public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
++        getEntitiesList().add(new Supplier().add(name, crn, email, address, bankAccount, sortCode));
++        Logger.info("Supplier added, data: " + getEntitiesList().getLast().getAllData().toString());
++    }
++}
+diff --git a/backend/entities/Customer.java b/backend/entities/Customer.java
+index 61902a0..d6e6e7e 100644
+--- a/backend/entities/Customer.java
++++ b/backend/entities/Customer.java
+@@ -1,4 +1,6 @@
+-package entities;
++package backend.entities;
++
++import java.time.Instant;
+ 
+ /**
+  * A class to create Customer objects.
+@@ -11,20 +13,28 @@ public class Customer extends Entity implements ICustomer {
+     /**
+      * Add a new entity Customer.
+      * Info needed are: name, surname, email, address and credit card.
+-     * @param customer the CustomerData object with all the data
++     * @param name of the customer
++     * @param surname of the customer
++     * @param email of the customer
++     * @param address of the customer
++     * @param creditCard of the customer
+      */
+-    public Customer add(CustomerData customer) {
+-        entityData.put(Data.NAME, customer.getName());
+-        entityData.put(Data.SURNAME, customer.getSurname());
+-        entityData.put(Data.EMAIL, customer.getEmail());
+-        entityData.put(Data.ADDRESS, customer.getAddress());
+-        entityData.put(Data.CREDIT_CARD, customer.getCreditCard());
++    public Customer add(String name, String surname, String email, String address, String creditCard) {
++        String rand = String.valueOf((int)(Math.random() * 1000));
++        String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
++        entityData.put(Data.ID, id);
++        entityData.put(Data.NAME, name);
++        entityData.put(Data.SURNAME, surname);
++        entityData.put(Data.EMAIL, email);
++        entityData.put(Data.ADDRESS, address);
++        entityData.put(Data.CREDIT_CARD, creditCard);
+         return this;
+     }
+     
+     /**
+      * Add a new Customer order.
+      */
++    @Override
+     public void addNewOrder() {
+         System.out.println("new order placed"); // TODO: remove log
+     }
+diff --git a/backend/entities/CustomerData.java b/backend/entities/CustomerData.java
+deleted file mode 100644
+index fa16062..0000000
+--- a/backend/entities/CustomerData.java
++++ /dev/null
+@@ -1,39 +0,0 @@
+-package entities;
+-
+- /**
+-  * A class to specify needed data for a Customer.
+-  *
+-  * @author Vanni Gallo
+-  * @version 1.0.0
+-  */
+-public class CustomerData extends EntityData {
+-    // The fields.
+-    private String surname;
+-    private String creditCard;
+-    
+-    // TODO: implement input validity checks
+-    /**
+-     * Add a new entity Customer data.
+-     * @param name the name of the customer
+-     * @param surname the surname of the customer
+-     * @param email the email of the customer
+-     * @param address the address of the customer
+-     * @param creditCard the credit card of the customer
+-     */
+-    public CustomerData(String name, String surname, String email, String address, String creditCard) {
+-        super(name, email, address);
+-        this.surname = surname;
+-        this.creditCard = creditCard;
+-    }
+-    
+-    /**
+-     * Getters
+-     */
+-    public String getSurname() {
+-        return this.surname;
+-    }
+-    
+-    public String getCreditCard() {
+-        return this.creditCard;
+-    }
+-}
+diff --git a/backend/entities/Data.java b/backend/entities/Data.java
+index 8aeb55c..4b47945 100644
+--- a/backend/entities/Data.java
++++ b/backend/entities/Data.java
+@@ -1,9 +1,10 @@
+-package entities;
++package backend.entities;
+ 
+ /**
+  * Enam with all the possible entity details
+  */
+ public enum Data {
++    ID,
+     NAME,
+     SURNAME,
+     ADDRESS,
+diff --git a/backend/entities/Entity.java b/backend/entities/Entity.java
+index d198ac0..3e2eb60 100644
+--- a/backend/entities/Entity.java
++++ b/backend/entities/Entity.java
+@@ -1,4 +1,4 @@
+-package entities;
++package backend.entities;
+ 
+ import java.util.HashMap;
+ import java.util.ArrayList;
+@@ -10,7 +10,7 @@ import java.util.List;
+  * @author Vanni Gallo
+  * @version 1.0.0
+  */
+-abstract class Entity {
++public abstract class Entity {
+     // The fields.
+     protected HashMap<Data, String> entityData = new HashMap<>();
+     protected List<String> orderHistory = new ArrayList<>(); // TODO: set a proper type
+@@ -45,4 +45,8 @@ abstract class Entity {
+     public String getName() {
+         return entityData.get(Data.NAME);
+     }
++    
++    public String getId() {
++        return entityData.get(Data.ID);
++    }
+ }
+diff --git a/backend/entities/EntityData.java b/backend/entities/EntityData.java
+deleted file mode 100644
+index ddbd1ee..0000000
+--- a/backend/entities/EntityData.java
++++ /dev/null
+@@ -1,42 +0,0 @@
+-package entities;
+-
+- /**
+-  * An abstract class to specify needed data for a generic Entity.
+-  *
+-  * @author Vanni Gallo
+-  * @version 1.0.0
+-  */
+-abstract class EntityData {
+-    // The fields.
+-    protected String name;
+-    protected String email;
+-    protected String address;
+-    
+-    // TODO: implement input validity checks
+-    /**
+-     * Set the default data for all entities.
+-     * @param name the name of the entity
+-     * @param email the email of the entity
+-     * @param address the address of the entity
+-     */
+-    protected EntityData(String name, String email, String address) {
+-        this.name = name;
+-        this.email = email;
+-        this.address = address;
+-    }
+-    
+-    /**
+-     * Getters
+-     */
+-    public String getName() {
+-        return this.name;
+-    }
+-    
+-    public String getEmail() {
+-        return this.email;
+-    }
+-    
+-    public String getAddress() {
+-        return this.address;
+-    }
+-}
+diff --git a/backend/entities/ICustomer.java b/backend/entities/ICustomer.java
+index 61a1888..78a29aa 100644
+--- a/backend/entities/ICustomer.java
++++ b/backend/entities/ICustomer.java
+@@ -1,4 +1,4 @@
+-package entities;
++package backend.entities;
+ 
+  /**
+   * An interface to implement add() method for Customer.
+@@ -10,12 +10,17 @@ package entities;
+     /**
+      * Add a new entity Customer.
+      * Info needed are: name, surname, email, address and credit card.
+-     * @param customer the CustomerData object with all the data
++     * @param name of the customer
++     * @param surname of the customer
++     * @param email of the customer
++     * @param address of the customer
++     * @param creditCard of the customer
+      */
+-    public Customer add(CustomerData customer);
++    public Customer add(String name, String surname, String email, String address, String creditCard);
+     
+     /**
+      * Customer's getters.
++     * @return the surname of the customer
+      */
+      public String getSurname();
+  }
+diff --git a/backend/entities/ISupplier.java b/backend/entities/ISupplier.java
+index 3b06c76..6b08b74 100644
+--- a/backend/entities/ISupplier.java
++++ b/backend/entities/ISupplier.java
+@@ -1,7 +1,7 @@
+-package entities;
++package backend.entities;
+ 
+  /**
+-  * An interface to implement add() method for Customer.
++  * An interface to implement add() method for Supplier.
+   *
+   * @author Vanni Gallo
+   * @version 1.0.0
+@@ -10,7 +10,12 @@ package entities;
+     /**
+      * Add a new entity Supplier.
+      * Info needed are: name, crn, email, address, bank account and sort code.
+-     * @param supplier the SupplierData object with all the data
++     * @param name of the supplier
++     * @param crn of the supplier
++     * @param email of the supplier
++     * @param address of the supplier
++     * @param bankAccount of the supplier
++     * @param sortCode of the supplier
+      */
+-    public Supplier add(SupplierData supplier);
++    public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode);
+  }
+diff --git a/backend/entities/Supplier.java b/backend/entities/Supplier.java
+index a4b31ce..4db55c9 100644
+--- a/backend/entities/Supplier.java
++++ b/backend/entities/Supplier.java
+@@ -1,4 +1,6 @@
+-package entities;
++package backend.entities;
++
++import java.time.Instant;
+ 
+ /**
+  * A class to create Supplier objects.
+@@ -10,22 +12,31 @@ public class Supplier extends Entity implements ISupplier {
+     
+     /**
+      * Add a new entity Supplier.
+-     * @param supplier the SupplierData object containing the supplier's data
+-     * @return the Supplier object
++     * Info needed are: name, crn, email, address, bank account and sort code.
++     * @param name of the supplier
++     * @param crn of the supplier
++     * @param email of the supplier
++     * @param address of the supplier
++     * @param bankAccount of the supplier
++     * @param sortCode of the supplier
+      */
+-    public Supplier add(SupplierData supplier) {
+-        entityData.put(Data.NAME, supplier.getName());
+-        entityData.put(Data.CRN, supplier.getCRN());
+-        entityData.put(Data.EMAIL, supplier.getEmail());
+-        entityData.put(Data.ADDRESS, supplier.getAddress());
+-        entityData.put(Data.BANK_ACCOUNT, supplier.getBankAccount());
+-        entityData.put(Data.SORT_CODE, supplier.getSortCode());
++    public Supplier add(String name, String crn, String email, String address, String bankAccount, String sortCode) {
++        String rand = String.valueOf((int)(Math.random() * 1000));
++        String id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
++        entityData.put(Data.ID, id);
++        entityData.put(Data.NAME, name);
++        entityData.put(Data.CRN, crn);
++        entityData.put(Data.EMAIL, email);
++        entityData.put(Data.ADDRESS, address);
++        entityData.put(Data.BANK_ACCOUNT, bankAccount);
++        entityData.put(Data.SORT_CODE, sortCode);
+         return this;
+     }
+     
+     /**
+      * Add a new Supplier order.
+      */
++    @Override
+     public void addNewOrder() {
+         System.out.println("new order placed"); // TODO: remove log
+     }
+diff --git a/backend/entities/SupplierData.java b/backend/entities/SupplierData.java
+deleted file mode 100644
+index 450932c..0000000
+--- a/backend/entities/SupplierData.java
++++ /dev/null
+@@ -1,46 +0,0 @@
+-package entities;
+-
+- /**
+-  * A class to specify needed data for a Supplier.
+-  *
+-  * @author Vanni Gallo
+-  * @version 1.0.0
+-  */
+-public class SupplierData extends EntityData {
+-    // The fields.
+-    private String crn;
+-    private String bankAccount;
+-    private String sortCode;
+-    
+-    // TODO: implement input validity checks
+-    /**
+-     * Add a new entity Supplier data.
+-     * @param name the name of the supplier
+-     * @param crn the company registration number of the supplier
+-     * @param email the email of the supplier
+-     * @param address the address of the supplier
+-     * @param bankAccount the bank account of the supplier
+-     * @param sortCode the sort code of the supplier
+-     */
+-    public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
+-        super(name, email, address);
+-        this.crn = crn;
+-        this.bankAccount = bankAccount;
+-        this.sortCode = sortCode;
+-    }
+-    
+-    /**
+-     * Getters
+-     */
+-    public String getCRN() {
+-        return this.crn;
+-    }
+-    
+-    public String getBankAccount() {
+-        return this.bankAccount;
+-    }
+-    
+-    public String getSortCode() {
+-        return this.sortCode;
+-    }
+-}
+diff --git a/backend/entities/package.bluej b/backend/entities/package.bluej
+index 51908bf..b3d180c 100644
+--- a/backend/entities/package.bluej
++++ b/backend/entities/package.bluej
+@@ -1,31 +1,22 @@
+ #BlueJ package file
+-dependency1.from=Entity
+-dependency1.to=Data
++dependency1.from=Supplier
++dependency1.to=SupplierData
+ dependency1.type=UsesDependency
+-dependency2.from=Customer
+-dependency2.to=CustomerData
++dependency2.from=Supplier
++dependency2.to=Data
+ dependency2.type=UsesDependency
+-dependency3.from=Customer
+-dependency3.to=Data
++dependency3.from=ISupplier
++dependency3.to=Supplier
+ dependency3.type=UsesDependency
+-dependency4.from=ICustomer
+-dependency4.to=Customer
++dependency4.from=ISupplier
++dependency4.to=SupplierData
+ dependency4.type=UsesDependency
+-dependency5.from=ICustomer
+-dependency5.to=CustomerData
++dependency5.from=Customer
++dependency5.to=Data
+ dependency5.type=UsesDependency
+-dependency6.from=Supplier
+-dependency6.to=SupplierData
++dependency6.from=ICustomer
++dependency6.to=Customer
+ dependency6.type=UsesDependency
+-dependency7.from=Supplier
+-dependency7.to=Data
+-dependency7.type=UsesDependency
+-dependency8.from=ISupplier
+-dependency8.to=Supplier
+-dependency8.type=UsesDependency
+-dependency9.from=ISupplier
+-dependency9.to=SupplierData
+-dependency9.type=UsesDependency
+ objectbench.height=100
+ objectbench.width=642
+ package.divider.horizontal=0.5998151571164511
+@@ -36,7 +27,7 @@ package.editor.x=76
+ package.editor.y=152
+ package.frame.height=834
+ package.frame.width=1102
+-package.numDependencies=9
++package.numDependencies=6
+ package.numTargets=9
+ package.showExtends=true
+ package.showUses=true
+diff --git a/backend/goods/Data.java b/backend/goods/Data.java
+index 43badc4..6727e4a 100644
+--- a/backend/goods/Data.java
++++ b/backend/goods/Data.java
+@@ -1,11 +1,13 @@
+-package goods;
++package backend.goods;
+ 
+ /**
+  * Enam with all the possible entity details
+  */
+ public enum Data {
++    ID,
+     NAME,
+     DESCRIPTION,
+     QUANTITY,
+     SUPPLIER,
+-}
+\ No newline at end of file
++    PRICE,
++}
+diff --git a/backend/goods/Good.java b/backend/goods/Good.java
+index 00af09a..e8fb70b 100644
+--- a/backend/goods/Good.java
++++ b/backend/goods/Good.java
+@@ -1,6 +1,7 @@
+-package goods;
++package backend.goods;
+ 
+ import java.util.HashMap;
++import java.time.Instant;
+ 
+ /**
+  * A class that defines a warehouse Good.
+@@ -14,16 +15,21 @@ public class Good {
+     public String description;
+     public int quantity;
+     public String supplier;
++    public int price;
++    public String id;
+     
+     /**
+      * Add a new warehouse good.
+      * Info needed are: name, description, available quantity and supplier name.
+      */
+-    public Good(String name, String description, int quantity, String supplier) {
++    public Good(String name, String description, int quantity, String supplier, int price) {
+         this.name = name;
+         this.description = description;
+         this.quantity = quantity;
+         this.supplier = supplier;
++        this.price = price;
++        String rand = String.valueOf((int)(Math.random() * 1000));
++        this.id = String.valueOf(Instant.now().toEpochMilli()) + "-" + rand;
+     }
+     
+     /**
+@@ -34,10 +40,12 @@ public class Good {
+      */
+     public HashMap<Data, String> getAllData() {
+         HashMap<Data, String> goodData = new HashMap<>();
++        goodData.put(Data.ID, this.id);
+         goodData.put(Data.NAME, this.name);
+         goodData.put(Data.DESCRIPTION, this.description);
+         goodData.put(Data.QUANTITY, String.valueOf(this.quantity));
+         goodData.put(Data.SUPPLIER, this.supplier);
++        goodData.put(Data.PRICE, String.valueOf(this.price));
+         return goodData;
+     }
+     
+@@ -58,4 +66,12 @@ public class Good {
+     public int getQuantity() {
+         return this.quantity;
+     }
+-}
+\ No newline at end of file
++    
++    public int getPrice() {
++        return this.price;
++    }
++    
++    public String getId() {
++        return this.id;
++    }
++}
+diff --git a/backend/package.bluej b/backend/package.bluej
+index d6ca41c..271ae4a 100644
+--- a/backend/package.bluej
++++ b/backend/package.bluej
+@@ -1,20 +1,16 @@
+ #BlueJ package file
+-dependency1.from=Suppliers
++dependency1.from=Goods
+ dependency1.to=Logger
+ dependency1.type=UsesDependency
+-dependency2.from=Customers
++dependency2.from=Suppliers
+ dependency2.to=Logger
+ dependency2.type=UsesDependency
+-dependency3.from=Goods
++dependency3.from=Customers
+ dependency3.to=Logger
+ dependency3.type=UsesDependency
+-editor.fx.0.height=728
+-editor.fx.0.width=1208
+-editor.fx.0.x=104
+-editor.fx.0.y=50
+ objectbench.height=100
+-objectbench.width=775
+-package.divider.horizontal=0.5553977272727273
++objectbench.width=838
++package.divider.horizontal=0.6001420454545454
+ package.divider.vertical=0.8453757225433526
+ package.editor.height=578
+ package.editor.width=1312
+@@ -26,7 +22,6 @@ package.numDependencies=3
+ package.numTargets=6
+ package.showExtends=true
+ package.showUses=true
+-project.charset=UTF-8
+ readme.height=60
+ readme.name=@README
+ readme.width=48
+diff --git a/package.bluej b/package.bluej
+new file mode 100644
+index 0000000..c65d1c5
+--- /dev/null
++++ b/package.bluej
+@@ -0,0 +1,50 @@
++#BlueJ package file
++editor.fx.0.height=728
++editor.fx.0.width=800
++editor.fx.0.x=698
++editor.fx.0.y=135
++objectbench.height=100
++objectbench.width=468
++package.divider.horizontal=0.6005056890012642
++package.divider.vertical=0.8453757225433526
++package.editor.height=578
++package.editor.width=695
++package.editor.x=55
++package.editor.y=69
++package.frame.height=756
++package.frame.width=811
++package.numDependencies=0
++package.numTargets=4
++package.showExtends=true
++package.showUses=true
++project.charset=UTF-8
++readme.height=60
++readme.name=@README
++readme.width=48
++readme.x=10
++readme.y=10
++target1.height=82
++target1.name=ui
++target1.type=PackageTarget
++target1.width=120
++target1.x=130
++target1.y=10
++target2.height=82
++target2.name=backend
++target2.type=PackageTarget
++target2.width=120
++target2.x=10
++target2.y=110
++target3.height=70
++target3.name=Main
++target3.showInterface=false
++target3.type=ClassTarget
++target3.width=120
++target3.x=140
++target3.y=190
++target4.height=70
++target4.name=README.md
++target4.type=TextTarget
++target4.width=120
++target4.x=140
++target4.y=110
+diff --git a/ui/MainUI.java b/ui/MainUI.java
+new file mode 100644
+index 0000000..d0804d5
+--- /dev/null
++++ b/ui/MainUI.java
+@@ -0,0 +1,66 @@
++package ui; 
++
++import java.awt.*;
++import java.awt.event.*;
++import javax.swing.*;
++import javax.swing.border.EmptyBorder;
++
++import ui.components.*;
++import backend.*;
++
++/**
++ * MainUI is the main class used to build the User Interface. It builds and
++ * displays the application GUI and initialises all other components.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class MainUI {
++    // fields
++    private JFrame frame;
++    private CustomersList customers;
++    private Goods goods;
++    private SuppliersList suppliers;
++    
++    /**
++     * Create an MainUI and display its GUI on screen.
++     *
++     * @param prepopulated If true, the UI will be prepopulated with some data.
++     */
++    public MainUI(boolean prepopulated) {
++        this.customers = new CustomersList(prepopulated);
++        this.goods = new Goods(prepopulated);
++        this.suppliers = new SuppliersList(prepopulated);
++        makeFrame();
++    }
++    
++    /**
++     * Create the Swing frame and its content.
++     */
++    private void makeFrame() {
++        frame = new JFrame("BNU Industry Solutions Ltd.");
++        frame.setSize(800, 700);
++        
++        frame.addWindowListener(new WindowAdapter() {
++            public void windowClosing(WindowEvent windowEvent) {
++                System.exit(0);
++            }
++        });
++        
++        JPanel contentPane = (JPanel)frame.getContentPane();
++        contentPane.setBorder(new EmptyBorder(12, 12, 12, 12));
++        new NavBar(frame);
++        contentPane.setLayout(new BorderLayout(6, 6));        
++        new CustomersPanel(contentPane, this.customers, BorderLayout.WEST);
++        new GoodsPanel(contentPane);
++        new SuppliersPanel(contentPane, this.suppliers, BorderLayout.EAST);
++        
++        String versionText = NavBar.VERSION;
++        contentPane.add(new JLabel(versionText), BorderLayout.SOUTH);
++        
++        // place the frame at the center of the screen and show
++        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
++        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
++        frame.setVisible(true);
++    }
++}
+diff --git a/ui/components/CustomersPanel.java b/ui/components/CustomersPanel.java
+new file mode 100644
+index 0000000..d98e862
+--- /dev/null
++++ b/ui/components/CustomersPanel.java
+@@ -0,0 +1,110 @@
++package ui.components;
++
++import java.awt.*;
++import javax.swing.*;
++import java.util.HashMap;
++
++import backend.CustomersList;
++import backend.entities.*;
++
++/**
++ * CustomersPanel is the class that generates the Customers Panel.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class CustomersPanel extends EntitiesPanel {
++
++    /**
++     * Constructor for the CustomersPanel.
++     * @param mainUIContentPane The contentPane that is created in MainUI.
++     * @param customers The instance of the CustomersList class.
++     * @param region of the UI where display the panel.
++     */
++     public CustomersPanel(JPanel mainUIContentPane, CustomersList customers, String region) {
++         setInputsPadding(3);
++         createEntitiesPanel(mainUIContentPane, customers, region);
++     }
++    
++    /**
++    * Get the Entity type to populate the labels.
++    * @param plural true if the label is plural, false otherwise.
++    * @return the entity type as string.
++    */
++    @Override
++    protected String getEntityType(boolean plural) {
++        return plural ? "Customers" : "Customer";
++    }
++    
++    /**
++     * Create a panel for an Customer.
++     * Override abstract method of EntitiesPanel.
++     *
++     * @param id of the customer.
++     * @return a HashMap of Data and InputPair.
++     */
++    @Override
++    protected HashMap<Data, InputPair> getEntityFields(String id) {
++        HashMap<Data, InputPair> entityFields = new HashMap<>();
++        if (id.equals("")) {
++            entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
++            entityFields.put(Data.SURNAME, new InputPair(new JLabel("Surname:"), new JTextField("", 15)));
++            entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField("", 15)));
++            entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField("", 15)));
++            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card:"), new JTextField("", 15)));
++        } else {
++            HashMap<Data, String> entitiesData = getEntities().getEntityData(id);
++            entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField(entitiesData.get(Data.NAME), 15)));
++            entityFields.put(Data.SURNAME, new InputPair(new JLabel("Surname:"), new JTextField(entitiesData.get(Data.SURNAME), 15)));
++            entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField(entitiesData.get(Data.EMAIL), 15)));
++            entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField(entitiesData.get(Data.ADDRESS), 15)));
++            entityFields.put(Data.CREDIT_CARD, new InputPair(new JLabel("Credit Card:"), new JTextField(entitiesData.get(Data.CREDIT_CARD), 15)));
++        }
++        return entityFields;
++    }
++    
++    /**
++     * Update the panel of the selected Entity.
++     * Override abstract method of EntitiesPanel.
++     *
++     * @param frame the JFrame of the panel.
++     * @param label the JLabel of the panel.
++     * @param id the id of the entity.
++     * @param entityFields the fields of the entity.
++     */
++    @Override
++    protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
++        CustomersList customers = (CustomersList)getEntities();
++        customers.updateEntityData(id, Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
++        customers.updateEntityData(id, Data.SURNAME, entityFields.get(Data.SURNAME).getTextFieldString());
++        customers.updateEntityData(id, Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
++        customers.updateEntityData(id, Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
++        customers.updateEntityData(id, Data.CREDIT_CARD, entityFields.get(Data.CREDIT_CARD).getTextFieldString());
++        HashMap<Data, String> updatedCustomerData = customers.getEntityData(id);
++        label.setText(updatedCustomerData.get(Data.NAME) + " " + updatedCustomerData.get(Data.SURNAME));
++        frame.dispose();
++    }
++
++    /**
++     * Add the panel of the new Entity.
++     * @param frame where to display the add entity panel.
++     * @param entityFields the data needed by the entity.
++     */
++    @Override
++    protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
++        CustomersList customers = (CustomersList)getEntities();
++        String name = entityFields.get(Data.NAME).getTextFieldString();
++        String surname = entityFields.get(Data.SURNAME).getTextFieldString();
++        String email = entityFields.get(Data.EMAIL).getTextFieldString();
++        String address = entityFields.get(Data.ADDRESS).getTextFieldString();
++        String creditCard = entityFields.get(Data.CREDIT_CARD).getTextFieldString();
++        customers.addCustomer(name, surname, email, address, creditCard);
++        getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + customers.getEntitiesList().size());
++        Customer customer = (Customer)customers.getEntitiesList().getLast();
++        String id = customer.getId();
++        String fullName = customer.getName() + " " + customer.getSurname();
++        setEntitiesPanelDetails(id, fullName);
++        getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
++        frame.dispose();
++    }
++}
+\ No newline at end of file
+diff --git a/ui/components/EntitiesPanel.java b/ui/components/EntitiesPanel.java
+new file mode 100644
+index 0000000..50eedd6
+--- /dev/null
++++ b/ui/components/EntitiesPanel.java
+@@ -0,0 +1,274 @@
++package ui.components;
++
++import java.awt.*;
++import javax.swing.*;
++import java.util.HashMap;
++
++import backend.*;
++import backend.entities.*;
++
++/**
++ * Enum to define the labels used in the EntitiesPanel.
++ */
++enum Labels {
++    TOTAL_ENTITIES_LABEL,
++    UPDATE_ENTITY_FRAME_LABEL,
++    ADD_ENTITY_FRAME_LABEL,
++    ADD_ENTITY_BTN,
++    UPDATE_ENTITY_BTN,
++    DELETE_ENTITY_BTN,
++    UPDATE_ENTITY_FRAME_BTN,
++    ADD_ENTITY_FRAME_BTN,
++}
++
++/**
++ * Enum to define the actions of the entity panel.
++ */
++enum Action {
++    ADD,
++    UPDATE,
++}
++
++/**
++ * EntitiesPanel is the class that generates the Entities Panel.
++ * It is an abstract class that is used to create the Customers and Suppliers panel.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++abstract class EntitiesPanel {
++    // fields
++    private EntitiesList entities;
++    private JPanel entitiesPanel;
++    private JLabel totalEntitiesLabel;
++    private int padding = 0;
++    
++    /**
++     * Create the Entities panel.
++     * 
++     * @param mainUIContentPane The contentPane that is created in MainUI.
++     * @param entities The instance of the EntitiesList class.
++     * @param region of the UI where display the panel.
++     */
++    protected void createEntitiesPanel(JPanel mainUIContentPane, EntitiesList entities, String region) {
++        this.entities = entities;
++        this.entitiesPanel = new JPanel();
++        this.entitiesPanel.setBackground(Color.DARK_GRAY);       
++        this.entitiesPanel.setLayout(new BoxLayout(this.entitiesPanel, BoxLayout.Y_AXIS));   
++        this.entitiesPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
++        this.totalEntitiesLabel = new JLabel(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
++        this.totalEntitiesLabel.setPreferredSize(new Dimension(160, 50));
++        this.totalEntitiesLabel.setForeground(Color.WHITE);
++        this.entitiesPanel.add(this.totalEntitiesLabel);
++        JButton add = new JButton(getLabelsText(Labels.ADD_ENTITY_BTN));
++        add.addActionListener(e -> createEntityFieldsFrame(Action.ADD, null, ""));
++        this.entitiesPanel.add(add);
++        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
++        for (int i = 0; i < this.entities.getEntitiesList().size(); i++) {
++            Entity entity = this.entities.getEntitiesList().get(i);
++            createEntityPanel(entity);
++        }
++        
++        // set vertical scrollbars
++        JScrollPane scrollPane = new JScrollPane(this.entitiesPanel);
++        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
++        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
++        
++        mainUIContentPane.add(scrollPane, region);
++    }
++    
++    /**
++     * Get expected text for each label.
++     * 
++     * @param label the label name.
++     * @return the label text.
++     */
++    protected String getLabelsText(Labels label) {
++        switch (label) {
++        case Labels.TOTAL_ENTITIES_LABEL:
++            return "Total " + getEntityType(true) + ": ";
++        case Labels.UPDATE_ENTITY_FRAME_LABEL:
++            return "Update " + getEntityType(false);
++        case Labels.ADD_ENTITY_FRAME_LABEL:
++            return "Add " + getEntityType(false);
++        case Labels.ADD_ENTITY_BTN:
++            return "Add " + getEntityType(false);
++        case Labels.UPDATE_ENTITY_BTN:
++            return "Update " + getEntityType(false);
++        case Labels.DELETE_ENTITY_BTN:
++            return "Delete " + getEntityType(false);
++        case Labels.UPDATE_ENTITY_FRAME_BTN:
++            return "Update " + getEntityType(false);
++        case Labels.ADD_ENTITY_FRAME_BTN:
++            return "Add " + getEntityType(false);
++        default:
++            return "";
++        }
++    }
++    
++    /**
++     * Getters.
++     */
++     protected EntitiesList getEntities() {
++        return this.entities;
++     }     
++     protected JLabel getTotalEntitiesLabel() {
++        return this.totalEntitiesLabel;
++     }     
++     protected JPanel getEntitiesPanel() {
++        return this.entitiesPanel;
++     }
++     
++     /**
++     * Setters.
++     */
++     protected void setInputsPadding(int padding) {
++        this.padding = padding;
++     }
++     
++     /**
++      * Get the Entity type to populate the labels.
++      * @param plural true if the label is plural, false otherwise.
++      * @return the entity type as string.
++      */
++     protected String getEntityType(boolean plural) {
++         return plural ? "Entities" : "Entity";
++     }
++    
++    /**
++     * Set entity details into the panel.
++     * 
++     * @param id The Entity id.
++     * @param name The Entity name and surname chained in one string.
++     */
++    protected void setEntitiesPanelDetails(String id, String name) {
++        JPanel panel = new JPanel();
++        panel.setBackground(Color.LIGHT_GRAY);       
++        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
++        JLabel labelName = new JLabel(name);
++        panel.add(labelName);
++        panel.add(Box.createRigidArea(new Dimension(5, 10)));
++        
++        JButton order = new JButton("Order");
++        order.addActionListener(e -> System.out.println("Button clicked!" + id));
++        panel.add(order);
++        JButton history = new JButton("Order History");
++        history.addActionListener(e -> System.out.println("Button clicked!" + id));
++        panel.add(history);
++        JButton update = new JButton(getLabelsText(Labels.UPDATE_ENTITY_BTN));
++        update.addActionListener(e -> createEntityFieldsFrame(Action.UPDATE,labelName, id));
++        panel.add(update);
++        JButton delete = new JButton(getLabelsText(Labels.DELETE_ENTITY_BTN));
++        delete.addActionListener(e -> deleteEntityPanel(panel, id));
++        panel.add(delete);
++        
++        this.entitiesPanel.add(panel);
++    }
++    
++    /**
++     * Create a panel for an Entity.
++     */
++    private void createEntityPanel(Entity entity) {
++        String id = entity.getId();
++        String name = getEntityName(entity);
++        setEntitiesPanelDetails(id, name);
++        this.entitiesPanel.add(Box.createRigidArea(new Dimension(0, 10)));
++    }
++        
++    /**
++     * Delete the panel of the selected Entity.
++     */
++    private void deleteEntityPanel(JPanel panel, String id) {
++        this.entities.deleteEntity(id);
++        this.entitiesPanel.remove(panel);
++        this.entitiesPanel.revalidate();
++        this.entitiesPanel.repaint();
++        this.totalEntitiesLabel.setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + this.entities.getEntitiesList().size());
++    }
++    
++    /**
++     * Create a new frame panel to update entity data.
++     * 
++     * @param action type: update or add.
++     * @param label The Label of the Entity panel to update the name showed.
++     * @param id The Entity id.
++     */
++    private void createEntityFieldsFrame(Action action, JLabel label, String id) {
++        JFrame frame = new JFrame(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_LABEL : Labels.ADD_ENTITY_FRAME_LABEL));
++        frame.setSize(700, 200);
++
++        // Create a panel and use GridLayout for label + field pairs
++        JPanel updatePanel = new JPanel(new GridLayout(4, 2, 5, 5)); // 4 rows, 2 cols, spacing
++        updatePanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
++
++        // Input components
++        HashMap<Data, InputPair> entityFields = getEntityFields(id);
++
++        JButton confirmBtn = new JButton(getLabelsText(action == Action.UPDATE ? Labels.UPDATE_ENTITY_FRAME_BTN : Labels.ADD_ENTITY_FRAME_BTN));
++        confirmBtn.setForeground(new Color(0, 153, 0));
++        confirmBtn.addActionListener(e -> {
++            if (label == null) {
++                addEntityPanel(frame, entityFields);
++            } else {
++                updateEntityPanel(frame, label, id, entityFields);
++            }
++        });
++        JButton cancelBtn = new JButton("Cancel");
++        cancelBtn.setForeground(new Color(255, 153, 0));
++        cancelBtn.addActionListener(e -> frame.dispose());
++
++        // Add components to the updatePanel
++        for (InputPair field : entityFields.values()) {
++            updatePanel.add(field.getLabel()); // JLabel
++            updatePanel.add(field.getTextField()); // JTextField
++        }
++        for (int i = 0; i < this.padding; i++) {
++            updatePanel.add(new JLabel("")); // Empty labels for padding
++        }
++        updatePanel.add(confirmBtn);
++        updatePanel.add(cancelBtn);
++
++        // Add updatePanel to frame
++        frame.add(updatePanel);
++
++        Dimension d = Toolkit.getDefaultToolkit().getScreenSize();
++        frame.setLocation(d.width/2 - frame.getWidth()/2, d.height/2 - frame.getHeight()/2);
++        frame.setVisible(true);
++    }
++    
++    /**
++     * Get the Entity name.
++     * @param entity The Entity to get the name from.
++     * @return the name of the Entity.
++     */
++    private String getEntityName(Entity entity) {
++        if (entity instanceof Customer) {
++            Customer customer = (Customer) entity;
++            return customer.getName() + " " + customer.getSurname();
++        }
++        return entity.getName();
++    }
++    
++    /**
++     * Get the Entity fields.
++     * @param id of the Entity.
++     * @return the fields of the Entity.
++     */
++    protected abstract HashMap<Data, InputPair> getEntityFields(String id);
++    
++    /**
++     * Update the panel of the selected Entity.
++     * @param frame where to display the update entity panel.
++     * @param label to give to the update panel.
++     * @param id of the Entity.
++     * @param entityFields the data of the entity.
++     */
++    protected abstract void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields);
++
++    /**
++     * Add the panel of the new Entity.
++     * @param frame where to display the add entity panel.
++     * @param entityFields the data needed by the entity.
++     */
++    protected abstract void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields);
++}
+\ No newline at end of file
+diff --git a/ui/components/GoodsPanel.java b/ui/components/GoodsPanel.java
+new file mode 100644
+index 0000000..a11f6dd
+--- /dev/null
++++ b/ui/components/GoodsPanel.java
+@@ -0,0 +1,31 @@
++package ui.components;
++
++import java.awt.*;
++import javax.swing.*;
++
++/**
++ * GoodsPanel is the class that generates the Goods Panel.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class GoodsPanel {
++    /**
++     * Create the Warehouse Goods panel.
++     * 
++     * @param mainUIContentPane The contentPane that is created in MainUI.
++     */
++    public GoodsPanel(JPanel mainUIContentPane) {        
++        JPanel panel = new JPanel();
++        panel.setBackground(Color.darkGray);
++//         panel.setSize(300,300);
++        FlowLayout layout = new FlowLayout();
++        layout.setHgap(10);
++        layout.setVgap(10);
++        
++        panel.setLayout(layout);   
++        panel.add(new JButton("Good Panel"));
++        
++        mainUIContentPane.add(panel, BorderLayout.CENTER);
++    }
++}
+\ No newline at end of file
+diff --git a/ui/components/InputPair.java b/ui/components/InputPair.java
+new file mode 100644
+index 0000000..e9e3a35
+--- /dev/null
++++ b/ui/components/InputPair.java
+@@ -0,0 +1,41 @@
++package ui.components;
++
++import javax.swing.*;
++
++/**
++ * InputPair is a class to store the pair label and text.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class InputPair {
++    private JLabel label;
++    private JTextField textField;
++
++    /**
++     * Constructor to create a new InputPair.
++     * 
++     * @param label The label of the input.
++     * @param textField The text field of the input.
++     */
++    public InputPair(JLabel label, JTextField textField) {
++        this.label = label;
++        this.textField = textField;
++    }
++    
++    /**
++    * getters
++    */    
++    public JLabel getLabel() {
++        return label;
++    }    
++    public JTextField getTextField() {
++        return textField;
++    }    
++    public String getLabelString() {
++        return label.getText();
++    }        
++    public String getTextFieldString() {
++        return textField.getText();
++    }
++}
+diff --git a/ui/components/NavBar.java b/ui/components/NavBar.java
+new file mode 100644
+index 0000000..f1b3173
+--- /dev/null
++++ b/ui/components/NavBar.java
+@@ -0,0 +1,61 @@
++package ui.components;
++
++import java.awt.*;
++import java.awt.event.KeyEvent;
++import javax.swing.*;
++import javax.swing.border.EmptyBorder;
++
++/**
++ * NavBar is the class that generates the Menu Nav Bar.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class NavBar {
++    // static fields
++    public static final String VERSION = "Version 1.0";
++    
++    /**
++     * Create the main frame's menu bar.
++     * 
++     * @param frame The frame that the menu bar should be added to.
++     */
++    public NavBar(JFrame frame) {
++        final int SHORTCUT_MASK = Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx();
++
++        JMenuBar menubar = new JMenuBar();
++        frame.setJMenuBar(menubar);
++        
++        // create the File menu
++        JMenu menu = new JMenu("File");
++        menubar.add(menu);
++        
++        JMenuItem item = new JMenuItem("Quit");
++        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, SHORTCUT_MASK));
++        item.addActionListener(e -> quit());
++        menu.add(item);
++
++        // create the Help menu
++        menu = new JMenu("Help");
++        menubar.add(menu);
++        
++        item = new JMenuItem("About Main UI...");
++        item.addActionListener(e -> showAbout(frame));
++        menu.add(item);
++    }
++    
++    /**
++     * Quit function: quit the application.
++     */
++    private void quit() {
++        System.exit(0);
++    }
++
++    // TODO: add description
++    /**
++     * 'About' function: show the 'about' box.
++     */
++    private void showAbout(JFrame frame) {
++        JOptionPane.showMessageDialog(frame, "MainUI\n" + VERSION, "About Main UI", JOptionPane.INFORMATION_MESSAGE);
++    }
++}
+\ No newline at end of file
+diff --git a/ui/components/SuppliersPanel.java b/ui/components/SuppliersPanel.java
+new file mode 100644
+index 0000000..98e7c2d
+--- /dev/null
++++ b/ui/components/SuppliersPanel.java
+@@ -0,0 +1,112 @@
++package ui.components;
++
++import java.awt.*;
++import javax.swing.*;
++import java.util.HashMap;
++
++import backend.SuppliersList;
++import backend.entities.*;
++
++/**
++ * SuppliersPanel is the class that generates the Suppliers Panel.
++ * 
++ * @author Vanni Gallo
++ * @version 1.0
++ */
++public class SuppliersPanel extends EntitiesPanel {
++
++    /**
++     * Constructor for the SuppliersPanel.
++     * @param mainUIContentPane The contentPane that is created in MainUI.
++     * @param customers The instance of the SuppliersList class.
++     * @param region of the UI where display the panel.
++     */
++     public SuppliersPanel(JPanel mainUIContentPane, SuppliersList suppliers, String region) {
++         setInputsPadding(1);
++         createEntitiesPanel(mainUIContentPane, suppliers, region);
++     }
++    
++    /**
++    * Get the Entity type to populate the labels.
++    * @param plural true if the label is plural, false otherwise.
++    * @return the entity type as string.
++    */
++    @Override
++    protected String getEntityType(boolean plural) {
++        return plural ? "Suppliers" : "Supplier";
++    }
++    
++    /**
++     * Create a panel for an Supplier.
++     * Override abstract method of EntitiesPanel.
++     *
++     * @param id of the supplier.
++     * @return a HashMap of Data and InputPair.
++     */
++    @Override
++    protected HashMap<Data, InputPair> getEntityFields(String id) {
++        HashMap<Data, InputPair> entityFields = new HashMap<>();
++        if (id.equals("")) {
++            entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField("", 15)));
++            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num.:"), new JTextField("", 15)));
++            entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField("", 15)));
++            entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField("", 15)));
++            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account:"), new JTextField("", 15)));
++            entityFields.put(Data.SORT_CODE, new InputPair(new JLabel("Sort Code:"), new JTextField("", 15)));
++        } else {
++            HashMap<Data, String> entitiesData = getEntities().getEntityData(id);
++            entityFields.put(Data.NAME, new InputPair(new JLabel("Name:"), new JTextField(entitiesData.get(Data.NAME), 15)));
++            entityFields.put(Data.CRN, new InputPair(new JLabel("Company Reg. Num.:"), new JTextField(entitiesData.get(Data.CRN), 15)));
++            entityFields.put(Data.EMAIL, new InputPair(new JLabel("Email:"), new JTextField(entitiesData.get(Data.EMAIL), 15)));
++            entityFields.put(Data.ADDRESS, new InputPair(new JLabel("Address:"), new JTextField(entitiesData.get(Data.ADDRESS), 15)));
++            entityFields.put(Data.BANK_ACCOUNT, new InputPair(new JLabel("Bank Account:"), new JTextField(entitiesData.get(Data.BANK_ACCOUNT), 15)));
++            entityFields.put(Data.SORT_CODE, new InputPair(new JLabel("Sort Code:"), new JTextField(entitiesData.get(Data.SORT_CODE), 15)));
++        }
++        return entityFields;
++    }
++    
++    /**
++     * Update the panel of the selected Entity.
++     * Override abstract method of EntitiesPanel.
++     *
++     * @param frame the JFrame of the panel.
++     * @param label the JLabel of the panel.
++     * @param id the id of the entity.
++     * @param entityFields the fields of the entity.
++     */
++    @Override
++    protected void updateEntityPanel(JFrame frame, JLabel label, String id, HashMap<Data, InputPair> entityFields) {
++        SuppliersList suppliers = (SuppliersList)getEntities();
++        suppliers.updateEntityData(id, Data.NAME, entityFields.get(Data.NAME).getTextFieldString());
++        suppliers.updateEntityData(id, Data.CRN, entityFields.get(Data.CRN).getTextFieldString());
++        suppliers.updateEntityData(id, Data.EMAIL, entityFields.get(Data.EMAIL).getTextFieldString());
++        suppliers.updateEntityData(id, Data.ADDRESS, entityFields.get(Data.ADDRESS).getTextFieldString());
++        suppliers.updateEntityData(id, Data.BANK_ACCOUNT, entityFields.get(Data.BANK_ACCOUNT).getTextFieldString());
++        suppliers.updateEntityData(id, Data.SORT_CODE, entityFields.get(Data.SORT_CODE).getTextFieldString());
++        HashMap<Data, String> updatedSupplierData = suppliers.getEntityData(id);
++        label.setText(updatedSupplierData.get(Data.NAME));
++        frame.dispose();
++    }
++
++    /**
++     * Add the panel of the new Entity.
++     * @param frame where to display the add entity panel.
++     * @param entityFields the data needed by the entity.
++     */
++    @Override
++    protected void addEntityPanel(JFrame frame, HashMap<Data, InputPair> entityFields) {
++        SuppliersList suppliers = (SuppliersList)getEntities();
++        String name = entityFields.get(Data.NAME).getTextFieldString();
++        String crn = entityFields.get(Data.CRN).getTextFieldString();
++        String email = entityFields.get(Data.EMAIL).getTextFieldString();
++        String address = entityFields.get(Data.ADDRESS).getTextFieldString();
++        String bankAccount = entityFields.get(Data.BANK_ACCOUNT).getTextFieldString();
++        String sortCode = entityFields.get(Data.SORT_CODE).getTextFieldString();
++        suppliers.addSupplier(name, crn, email, address, bankAccount, sortCode);
++        getTotalEntitiesLabel().setText(getLabelsText(Labels.TOTAL_ENTITIES_LABEL) + suppliers.getEntitiesList().size());
++        Supplier supplier = (Supplier)suppliers.getEntitiesList().getLast();
++        setEntitiesPanelDetails(supplier.getId(), supplier.getName());
++        getEntitiesPanel().add(Box.createRigidArea(new Dimension(0, 10)));
++        frame.dispose();
++    }
++}
+\ No newline at end of file
+diff --git a/ui/package.bluej b/ui/package.bluej
+new file mode 100644
+index 0000000..6f5e7f2
+--- /dev/null
++++ b/ui/package.bluej
+@@ -0,0 +1,32 @@
++#BlueJ package file
++editor.fx.0.height=728
++editor.fx.0.width=1208
++editor.fx.0.x=480
++editor.fx.0.y=44
++objectbench.height=100
++objectbench.width=517
++package.divider.horizontal=0.6849673202614379
++package.divider.vertical=0.850974930362117
++package.editor.height=604
++package.editor.width=669
++package.editor.x=400
++package.editor.y=106
++package.frame.height=782
++package.frame.width=785
++package.numDependencies=0
++package.numTargets=1
++package.showExtends=true
++package.showUses=true
++project.charset=UTF-8
++readme.height=60
++readme.name=@README
++readme.width=48
++readme.x=10
++readme.y=10
++target1.height=70
++target1.name=MainUI
++target1.showInterface=false
++target1.type=ClassTarget
++target1.width=120
++target1.x=70
++target1.y=10

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project provides a backend system for managing customers, users, suppliers, and goods, including logging capabilities. The system is designed to handle data efficiently, offering functionalities for adding, updating, and deleting records.
+This project provides a backend system for managing customers, users, suppliers, and goods, including logging capabilities. The system is designed to handle data efficiently, offering functionalities for adding, updating, and deleting records. Additionally, a user interface is provided to interact with these functionalities.
 
 ## Logger
 
@@ -24,29 +24,25 @@ Logger.debug("This is a debug message.");
 
 ## Customers
 
-The `Customers` class manages a list of customer entities.
+The `CustomersList` class manages a list of customer entities.
 
 ### Public Methods
 
-- **addCustomer(String name, String surname, String email, String address, String creditCard)**: Adds a new customer if they don't already exist.
-- **getTotalCustomers()**: Returns the total number of customers.
-- **getCustomerNames()**: Returns an array of customer names.
-- **getCustomerData(String name, String surname)**: Returns the data of a specified customer.
-- **updateCustomerData(String name, String surname, Data key, String value)**: Updates the data of a specified customer.
-- **deleteCustomer(String name, String surname)**: Deletes a specified customer.
+- **addCustomer(String name, String surname, String email, String address, String creditCard)**: Adds a new customer.
+- **getEntityData(String id)**: Returns the data of a specified customer by ID.
+- **updateEntityData(String id, Data key, String value)**: Updates the data of a specified customer by ID.
+- **deleteEntity(String id)**: Deletes a specified customer by ID.
 
 ## Suppliers
 
-The `Suppliers` class manages a list of supplier entities.
+The `SuppliersList` class manages a list of supplier entities.
 
 ### Public Methods
 
-- **addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode)**: Adds a new supplier if it doesn't already exist.
-- **getTotalSuppliers()**: Returns the total number of suppliers.
-- **getSupplierNames()**: Returns an array of supplier names.
-- **getSupplierData(String name)**: Returns the data of a specified supplier.
-- **updateSupplierData(String name, Data key, String value)**: Updates the data of a specified supplier.
-- **deleteSupplier(String name)**: Deletes a specified supplier.
+- **addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode)**: Adds a new supplier.
+- **getEntityData(String id)**: Returns the data of a specified supplier by ID.
+- **updateEntityData(String id, Data key, String value)**: Updates the data of a specified supplier by ID.
+- **deleteEntity(String id)**: Deletes a specified supplier by ID.
 
 ## Goods
 
@@ -54,12 +50,10 @@ The `Goods` class manages a list of warehouse goods.
 
 ### Public Methods
 
-- **addGood(String name, String description, int quantity, String supplier)**: Adds a new good if it doesn't already exist.
-- **getTotalGoods()**: Returns the total number of goods.
-- **getGoodNames()**: Returns an array of good names.
-- **getGoodData(String name)**: Returns the data of a specified good.
-- **getGoodQuantity(String name)**: Returns the quantity of a specified good.
-- **updateGoodQuantity(String name, int quantity)**: Updates the quantity of a specified good.
+- **addGood(String name, String description, int quantity, String supplier, int price)**: Adds a new good.
+- **getGoodData(String id)**: Returns the data of a specified good by ID.
+- **getGoodQuantity(String id)**: Returns the quantity of a specified good by ID.
+- **updateGoodQuantity(String id, int quantity)**: Updates the quantity of a specified good by ID.
 
 ## Entities
 
@@ -67,6 +61,7 @@ The `Goods` class manages a list of warehouse goods.
 
 The `Data` enum defines the possible data fields for entities:
 
+- ID
 - NAME
 - SURNAME
 - ADDRESS
@@ -75,14 +70,14 @@ The `Data` enum defines the possible data fields for entities:
 - BANK_ACCOUNT
 - CRN
 - SORT_CODE
+- DESCRIPTION
+- QUANTITY
+- SUPPLIER
+- PRICE
 
 ### Entity Class
 
 The `Entity` class is an abstract class providing methods to handle common entity operations.
-
-### EntityData Class
-
-The `EntityData` class is an abstract class that specifies the necessary data for a generic entity.
 
 ## Customer and Supplier Entities
 
@@ -90,17 +85,9 @@ The `EntityData` class is an abstract class that specifies the necessary data fo
 
 Implements the `ICustomer` interface and extends `Entity` to represent customer entities.
 
-### CustomerData Class
-
-Extends `EntityData` to specify the necessary data for a customer.
-
 ### Supplier Class
 
 Implements the `ISupplier` interface and extends `Entity` to represent supplier entities.
-
-### SupplierData Class
-
-Extends `EntityData` to specify the necessary data for a supplier.
 
 ## Interfaces
 
@@ -112,10 +99,40 @@ Defines the method to add a new customer entity.
 
 Defines the method to add a new supplier entity.
 
+## Main Application
+
+### Main Class
+
+The `Main` class is the entry point of the application, launching the user interface.
+
+### MainUI Class
+
+The `MainUI` class builds and displays the application GUI, initializing components for customers, suppliers, and goods.
+
+## User Interface Components
+
+### CustomersPanel
+
+Manages the display and interaction with customer data within the UI.
+
+### SuppliersPanel
+
+Manages the display and interaction with supplier data within the UI.
+
+### GoodsPanel
+
+Manages the display and interaction with goods data within the UI.
+
+### NavBar
+
+Provides navigation and menu options within the application UI.
+
 ## Package Structure
 
 - **backend**: Contains the main classes for managing customers, suppliers, and goods.
 - **backend.entities**: Contains entity-related classes and interfaces.
 - **backend.goods**: Contains classes related to goods management.
+- **ui**: Contains classes for building the user interface.
+- **ui.components**: Contains UI components for managing entities.
 
 This documentation provides an overview of the public APIs and features available in the current codebase. For further details, refer to the source code and comments within each class.

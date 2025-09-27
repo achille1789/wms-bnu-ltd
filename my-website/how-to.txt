@@ -1,0 +1,10 @@
+HOT TO
+- setup repo: https://docusaurus.io/docs/installation
+- update initial docusaurus site accordingly with your needs (landing pages, links, etc...)
+- push a branch named "gh-pages" to your repo
+- generate a git diff file after very commit in main branch
+- run the js script after every commit
+- npm start to test locally the changes
+- npm run deploy to push the changes to gh-pages branch
+- go to https://achille1789.github.io/wms-bnu-ltd/
+- commit and push docs changes
