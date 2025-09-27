@@ -46,7 +46,7 @@ Update the summary file accordingly. Keep existing content intact unless it is n
     const updatedSummary = response.choices[0].message.content;
 
     // Overwrite the file or commit in Git
-    fs.writeFileSync('./docs/my-docs-site/docs/intro2.md', updatedSummary);
+    fs.writeFileSync('./docs/my-docs-site/docs/updates.md', updatedSummary);
     console.log('✅ summary.md updated.');
 }
 
