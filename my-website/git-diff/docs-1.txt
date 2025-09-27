@@ -1,0 +1,823 @@
+diff --git a/.DS_Store b/.DS_Store
+new file mode 100644
+index 0000000..5ad93af
+Binary files /dev/null and b/.DS_Store differ
+diff --git a/.gitignore b/.gitignore
+index 485dee6..d1bc817 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1 +1,3 @@
+ .idea
++*.class
++*.ctxt
+\ No newline at end of file
+diff --git a/README.TXT b/README.TXT
+new file mode 100644
+index 0000000..e69de29
+diff --git a/backend/.DS_Store b/backend/.DS_Store
+new file mode 100644
+index 0000000..885d8b2
+Binary files /dev/null and b/backend/.DS_Store differ
+diff --git a/backend/Logger.java b/backend/Logger.java
+new file mode 100644
+index 0000000..c9d251d
+--- /dev/null
++++ b/backend/Logger.java
+@@ -0,0 +1,50 @@
++ /**
++ * A class that handles all the logs.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++class Logger {
++    // ANSI color codes
++//     public static final String RESET = "\u001B[0m";
++//     public static final String RED = "\u001B[31m";
++//     public static final String GREEN = "\u001B[32m";
++//     public static final String YELLOW = "\u001B[33m";
++//     public static final String BLUE = "\u001B[34m";
++
++    /**
++     * Using a private constructor to prevent instantiation of this class.
++     */
++    private Logger() {}
++
++    /**
++     * Printing "info" messages.
++     */
++    public static void info(String message) {
++        System.out.println("[INFO] " + message);
++    }
++
++    /**
++     * Printing "warning" messages.
++     */
++    public static void warn(String message) {
++//         System.out.println(YELLOW + "[WARN] " + message + RESET);
++        System.out.println("[WARN] " + message);
++    }
++
++    /**
++     * Printing "error" messages.
++     */
++    public static void error(String message) {
++//         System.out.println(RED + "[ERROR] " + message + RESET);
++        System.out.println("[ERROR] " + message);
++    }
++
++    /**
++     * Printing "debug" messages.
++     */
++    public static void debug(String message) {
++//         System.out.println(BLUE + "[DEBUG] " + message + RESET);
++        System.out.println("[DEBUG] " + message);
++    }
++}
+diff --git a/backend/Suppliers.java b/backend/Suppliers.java
+new file mode 100644
+index 0000000..f9c3aab
+--- /dev/null
++++ b/backend/Suppliers.java
+@@ -0,0 +1,113 @@
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import entities.Supplier;
++import entities.SupplierData;
++import entities.Data;
++
++/**
++ * A class that handles the list of Suppliers.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++ class Suppliers {
++    // The fields.
++    private List<Supplier> suppliersList = new LinkedList<>();
++    
++    // Constructor should be uncommented only for debugging
++//     public Suppliers() {
++//         SupplierData data1 = new SupplierData("Vanni ltd", "12345678", "vanni-ltd@gmail.com", "11 Third Road, London", "87654321", "10-20-30");
++//         SupplierData data2 = new SupplierData("Mark ltd", "19283746", "mark-ltd@gmail.com", "1 Fourth Road, Glasgow", "98765432", "40-50-60");
++//         suppliersList.add(new Supplier().add(data1));
++//         suppliersList.add(new Supplier().add(data2));
++//         Logger.info("Added 2 suppliers for debugging");
++//     }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the supplier data to create a new supplier.
++     * If data is invalid print an error message.
++     */
++    public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
++        SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
++        boolean exists = false;
++        for (int i = 0; i < suppliersList.size(); i++) {
++            if (name.equals(suppliersList.get(i).getName())) {
++                Logger.error("Supplier already exists, aborted");
++                exists = true;
++                break;
++            }
++        }
++        if (!exists) {
++            suppliersList.add(new Supplier().add(data));
++            Logger.info("Supplier added, data: " + suppliersList.getLast().getAllData().toString());
++        }
++    }
++    
++    /**
++     * Get the number of suppliers in the list.
++     */
++    public int getTotalSuppliers() {
++        return suppliersList.size();
++    }
++    
++    /**
++     * Get the name of all suppliers in the list.
++     */
++    public String[] getSupplierNames() {
++        String[] names = new String[suppliersList.size()];
++        for (int i = 0; i < suppliersList.size(); i++) {
++            names[i] = suppliersList.get(i).getName();
++        }
++        return names;
++    }
++    
++    /**
++     * Get data of the passed Supplier.
++     */
++    public HashMap<Data, String> getSupplierData(String name) {
++        HashMap<Data, String> supplierData = null;
++        for (int i = 0; i < suppliersList.size(); i++) {
++            if (name.equals(suppliersList.get(i).getName())) {
++                supplierData = suppliersList.get(i).getAllData();
++            }
++        }
++        return supplierData;
++    }
++    
++    /**
++     * Update data of the passed Supplier.
++     */
++    public void updateSupplierData(String name, Data key, String value) {
++        boolean found = false;
++        for (int i = 0; i < suppliersList.size(); i++) {
++            if (name.equals(suppliersList.get(i).getName())) {
++                suppliersList.get(i).update(key, value);
++                Logger.info("Supplier data updated: " + suppliersList.get(i).getAllData().toString());
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("Supplier not found, data not updated");
++        }
++    }
++    
++    /**
++     * Delete passed Supplier.
++     */
++    public void deleteSupplier(String name) {
++        boolean found = false;
++        for (int i = 0; i < suppliersList.size(); i++) {
++            if (name.equals(suppliersList.get(i).getName())) {
++                suppliersList.remove(i);
++                Logger.info("Supplier deleted");
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("Supplier not found, data not updated");
++        }
++    }
++ }
+diff --git a/backend/Users.java b/backend/Users.java
+new file mode 100644
+index 0000000..ea4ec70
+--- /dev/null
++++ b/backend/Users.java
+@@ -0,0 +1,113 @@
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import entities.User;
++import entities.UserData;
++import entities.Data;
++
++/**
++ * A class that handles the list of Users.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++ class Users {
++    // The fields.
++    private List<User> usersList = new LinkedList<>();
++    
++    // Constructor should be uncommented only for debugging
++//     public Users() {
++//         UserData data1 = new UserData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
++//         UserData data2 = new UserData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
++//         usersList.add(new User().add(data1));
++//         usersList.add(new User().add(data2));
++//         Logger.info("Added 2 users for debugging");
++//     }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the user data to create a new user.
++     * If data is invalid print an error message.
++     */
++    public void addUser(String name, String surname, String email, String address, String creditCard) {
++        UserData data = new UserData(name, surname, email, address, creditCard);
++        boolean exists = false;
++        for (int i = 0; i < usersList.size(); i++) {
++            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
++                Logger.error("User already exists, aborted");
++                exists = true;
++                break;
++            }
++        }
++        if (!exists) {
++            usersList.add(new User().add(data));
++            Logger.info("User added, data: " + usersList.getLast().getAllData().toString());
++        }
++    }
++    
++    /**
++     * Get the number of users in the list.
++     */
++    public int getTotalUsers() {
++        return usersList.size();
++    }
++    
++    /**
++     * Get the name of all users in the list.
++     */
++    public String[] getUserNames() {
++        String[] names = new String[usersList.size()];
++        for (int i = 0; i < usersList.size(); i++) {
++            names[i] = usersList.get(i).getName();
++        }
++        return names;
++    }
++    
++    /**
++     * Get data of the passed User.
++     */
++    public HashMap<Data, String> getUserData(String name) {
++        HashMap<Data, String> userData = null;
++        for (int i = 0; i < usersList.size(); i++) {
++            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
++                userData = usersList.get(i).getAllData();
++            }
++        }
++        return userData;
++    }
++    
++    /**
++     * Update data of the passed User.
++     */
++    public void updateUserData(String name, Data key, String value) {
++        boolean found = false;
++        for (int i = 0; i < usersList.size(); i++) {
++            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
++                usersList.get(i).update(key, value);
++                Logger.info("User data updated: " + usersList.get(i).getAllData().toString());
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("User not found, data not updated");
++        }
++    }
++    
++    /**
++     * Delete passed User.
++     */
++    public void deleteUser(String name) {
++        boolean found = false;
++        for (int i = 0; i < usersList.size(); i++) {
++            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
++                usersList.remove(i);
++                Logger.info("User deleted");
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("User not found, data not updated");
++        }
++    }
++ }
+diff --git a/backend/entities/Data.java b/backend/entities/Data.java
+new file mode 100644
+index 0000000..8aeb55c
+--- /dev/null
++++ b/backend/entities/Data.java
+@@ -0,0 +1,15 @@
++package entities;
++
++/**
++ * Enam with all the possible entity details
++ */
++public enum Data {
++    NAME,
++    SURNAME,
++    ADDRESS,
++    EMAIL,
++    CREDIT_CARD,
++    BANK_ACCOUNT,
++    CRN,
++    SORT_CODE,
++}
+diff --git a/backend/entities/Entity.java b/backend/entities/Entity.java
+new file mode 100644
+index 0000000..f1cdf67
+--- /dev/null
++++ b/backend/entities/Entity.java
+@@ -0,0 +1,43 @@
++package entities;
++
++import java.util.HashMap;
++import java.util.ArrayList;
++import java.util.List;
++
++/**
++ * An abstract class that has some methods to handle Users and Suppliers.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++abstract class Entity {
++    // The fields.
++    protected HashMap<Data, String> entityData = new HashMap<>();
++    protected List<String> orderHistory = new ArrayList<>(); // TODO: set a proper type
++    
++    /**
++     * Add a new order.
++     */
++    public abstract void addNewOrder();
++    
++    /**
++     * Update entity data.
++     */
++    public void update(Data key, String value) {
++        entityData.replace(key, value);
++    }
++    
++    /**
++     * Get all entity data.
++     */
++    public HashMap<Data, String> getAllData() {
++        return entityData;
++    }
++    
++    /**
++     * Getters
++     */
++    public String getName() {
++        return entityData.get(Data.NAME);
++    }
++}
+diff --git a/backend/entities/EntityData.java b/backend/entities/EntityData.java
+new file mode 100644
+index 0000000..7625616
+--- /dev/null
++++ b/backend/entities/EntityData.java
+@@ -0,0 +1,39 @@
++package entities;
++
++ /**
++  * An abstract class to specify needed data for a generic Entity.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++abstract class EntityData {
++    // The fields.
++    protected String name;
++    protected String email;
++    protected String address;
++    
++    // TODO: implement input validity checks
++    /**
++     * Set the default data for all entities.
++     */
++    protected EntityData(String name, String email, String address) {
++        this.name = name;
++        this.email = email;
++        this.address = address;
++    }
++    
++    /**
++     * Getters
++     */
++    public String getName() {
++        return this.name;
++    }
++    
++    public String getEmail() {
++        return this.email;
++    }
++    
++    public String getAddress() {
++        return this.address;
++    }
++}
+diff --git a/backend/entities/ISupplier.java b/backend/entities/ISupplier.java
+new file mode 100644
+index 0000000..620dab8
+--- /dev/null
++++ b/backend/entities/ISupplier.java
+@@ -0,0 +1,14 @@
++package entities;
++
++ /**
++  * An interface to implement add() method for User.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++ interface ISupplier {
++    /**
++     * Add a new entity Supplier.
++     */
++    public Supplier add(SupplierData supplier);
++ }
+diff --git a/backend/entities/IUser.java b/backend/entities/IUser.java
+new file mode 100644
+index 0000000..1b6e16a
+--- /dev/null
++++ b/backend/entities/IUser.java
+@@ -0,0 +1,19 @@
++package entities;
++
++ /**
++  * An interface to implement add() method for User.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++ interface IUser {
++    /**
++     * Add a new entity User.
++     */
++    public User add(UserData user);
++    
++    /**
++     * User's getters.
++     */
++     public String getSurname();
++ }
+diff --git a/backend/entities/Supplier.java b/backend/entities/Supplier.java
+new file mode 100644
+index 0000000..0934289
+--- /dev/null
++++ b/backend/entities/Supplier.java
+@@ -0,0 +1,30 @@
++package entities;
++
++/**
++ * A class to create Supplier objects.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class Supplier extends Entity implements ISupplier {
++    
++    /**
++     * Add a new entity Supplier.
++     */
++    public Supplier add(SupplierData supplier) {
++        entityData.put(Data.NAME, supplier.getName());
++        entityData.put(Data.CRN, supplier.getCRN());
++        entityData.put(Data.EMAIL, supplier.getEmail());
++        entityData.put(Data.ADDRESS, supplier.getAddress());
++        entityData.put(Data.BANK_ACCOUNT, supplier.getBankAccount());
++        entityData.put(Data.SORT_CODE, supplier.getSortCode());
++        return this;
++    }
++    
++    /**
++     * Add a new Supplier order.
++     */
++    public void addNewOrder() {
++        System.out.println("new order placed"); // TODO: remove log
++    }
++}
+diff --git a/backend/entities/SupplierData.java b/backend/entities/SupplierData.java
+new file mode 100644
+index 0000000..0b159cb
+--- /dev/null
++++ b/backend/entities/SupplierData.java
+@@ -0,0 +1,40 @@
++package entities;
++
++ /**
++  * A class to specify needed data for a Supplier.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++public class SupplierData extends EntityData {
++    // The fields.
++    private String crn;
++    private String bankAccount;
++    private String sortCode;
++    
++    // TODO: implement input validity checks
++    /**
++     * Add a new entity Supplier data.
++     */
++    public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
++        super(name, email, address);
++        this.crn = crn;
++        this.bankAccount = bankAccount;
++        this.sortCode = sortCode;
++    }
++    
++    /**
++     * Getters
++     */
++    public String getCRN() {
++        return this.crn;
++    }
++    
++    public String getBankAccount() {
++        return this.bankAccount;
++    }
++    
++    public String getSortCode() {
++        return this.sortCode;
++    }
++}
+diff --git a/backend/entities/User.java b/backend/entities/User.java
+new file mode 100644
+index 0000000..277e39e
+--- /dev/null
++++ b/backend/entities/User.java
+@@ -0,0 +1,36 @@
++package entities;
++
++/**
++ * A class to create User objects.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class User extends Entity implements IUser {
++    
++    /**
++     * Add a new entity User.
++     */
++    public User add(UserData user) {
++        entityData.put(Data.NAME, user.getName());
++        entityData.put(Data.SURNAME, user.getSurname());
++        entityData.put(Data.EMAIL, user.getEmail());
++        entityData.put(Data.ADDRESS, user.getAddress());
++        entityData.put(Data.CREDIT_CARD, user.getCreditCard());
++        return this;
++    }
++    
++    /**
++     * Add a new User order.
++     */
++    public void addNewOrder() {
++        System.out.println("new order placed"); // TODO: remove log
++    }
++    
++    /**
++     * Getters
++     */
++    public String getSurname() {
++        return entityData.get(Data.SURNAME);
++    }
++}
+diff --git a/backend/entities/UserData.java b/backend/entities/UserData.java
+new file mode 100644
+index 0000000..b18e06d
+--- /dev/null
++++ b/backend/entities/UserData.java
+@@ -0,0 +1,34 @@
++package entities;
++
++ /**
++  * A class to specify needed data for a User.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++public class UserData extends EntityData {
++    // The fields.
++    private String surname;
++    private String creditCard;
++    
++    // TODO: implement input validity checks
++    /**
++     * Add a new entity User data.
++     */
++    public UserData(String name, String surname, String email, String address, String creditCard) {
++        super(name, email, address);
++        this.surname = surname;
++        this.creditCard = creditCard;
++    }
++    
++    /**
++     * Getters
++     */
++    public String getSurname() {
++        return this.surname;
++    }
++    
++    public String getCreditCard() {
++        return this.creditCard;
++    }
++}
+diff --git a/backend/entities/package.bluej b/backend/entities/package.bluej
+new file mode 100644
+index 0000000..0c92a1f
+--- /dev/null
++++ b/backend/entities/package.bluej
+@@ -0,0 +1,107 @@
++#BlueJ package file
++dependency1.from=User
++dependency1.to=UserData
++dependency1.type=UsesDependency
++dependency2.from=User
++dependency2.to=Data
++dependency2.type=UsesDependency
++dependency3.from=IUser
++dependency3.to=User
++dependency3.type=UsesDependency
++dependency4.from=IUser
++dependency4.to=UserData
++dependency4.type=UsesDependency
++dependency5.from=Supplier
++dependency5.to=SupplierData
++dependency5.type=UsesDependency
++dependency6.from=Supplier
++dependency6.to=Data
++dependency6.type=UsesDependency
++dependency7.from=ISupplier
++dependency7.to=Supplier
++dependency7.type=UsesDependency
++dependency8.from=ISupplier
++dependency8.to=SupplierData
++dependency8.type=UsesDependency
++objectbench.height=100
++objectbench.width=461
++package.divider.horizontal=0.6
++package.divider.vertical=0.8003731343283582
++package.editor.height=422
++package.editor.width=670
++package.editor.x=253
++package.editor.y=157
++package.frame.height=600
++package.frame.width=800
++package.numDependencies=8
++package.numTargets=9
++package.showExtends=true
++package.showUses=true
++readme.height=60
++readme.name=@README
++readme.width=48
++readme.x=10
++readme.y=10
++target1.height=70
++target1.name=Entity
++target1.showInterface=false
++target1.type=AbstractTarget
++target1.width=120
++target1.x=10
++target1.y=110
++target2.height=70
++target2.name=User
++target2.showInterface=false
++target2.type=ClassTarget
++target2.width=120
++target2.x=140
++target2.y=110
++target3.height=70
++target3.name=UserData
++target3.showInterface=false
++target3.type=ClassTarget
++target3.width=120
++target3.x=10
++target3.y=190
++target4.height=70
++target4.name=EntityData
++target4.showInterface=false
++target4.type=AbstractTarget
++target4.width=120
++target4.x=140
++target4.y=190
++target5.height=70
++target5.name=IUser
++target5.showInterface=false
++target5.type=InterfaceTarget
++target5.width=120
++target5.x=10
++target5.y=270
++target6.height=70
++target6.name=Supplier
++target6.showInterface=false
++target6.type=ClassTarget
++target6.width=120
++target6.x=140
++target6.y=270
++target7.height=70
++target7.name=Data
++target7.showInterface=false
++target7.type=EnumTarget
++target7.width=120
++target7.x=10
++target7.y=350
++target8.height=70
++target8.name=SupplierData
++target8.showInterface=false
++target8.type=ClassTarget
++target8.width=120
++target8.x=140
++target8.y=350
++target9.height=70
++target9.name=ISupplier
++target9.showInterface=false
++target9.type=InterfaceTarget
++target9.width=120
++target9.x=10
++target9.y=210
+diff --git a/backend/package.bluej b/backend/package.bluej
+new file mode 100644
+index 0000000..773f020
+--- /dev/null
++++ b/backend/package.bluej
+@@ -0,0 +1,58 @@
++#BlueJ package file
++dependency1.from=Users
++dependency1.to=Logger
++dependency1.type=UsesDependency
++dependency2.from=Suppliers
++dependency2.to=Logger
++dependency2.type=UsesDependency
++editor.fx.0.height=728
++editor.fx.0.width=800
++editor.fx.0.x=464
++editor.fx.0.y=130
++objectbench.height=100
++objectbench.width=461
++package.divider.horizontal=0.6
++package.divider.vertical=0.8003731343283582
++package.editor.height=422
++package.editor.width=684
++package.editor.x=67
++package.editor.y=278
++package.frame.height=600
++package.frame.width=800
++package.numDependencies=2
++package.numTargets=4
++package.showExtends=true
++package.showUses=true
++project.charset=UTF-8
++readme.height=60
++readme.name=@README
++readme.width=48
++readme.x=10
++readme.y=10
++target1.height=70
++target1.name=Suppliers
++target1.showInterface=false
++target1.type=ClassTarget
++target1.width=120
++target1.x=140
++target1.y=110
++target2.height=82
++target2.name=entities
++target2.type=PackageTarget
++target2.width=120
++target2.x=70
++target2.y=10
++target3.height=70
++target3.name=Users
++target3.showInterface=false
++target3.type=ClassTarget
++target3.width=120
++target3.x=10
++target3.y=110
++target4.height=70
++target4.name=Logger
++target4.showInterface=false
++target4.type=ClassTarget
++target4.width=120
++target4.x=10
++target4.y=190
+diff --git a/backend/placeholder.txt b/backend/placeholder.txt
+deleted file mode 100644
+index cb7b660..0000000
+--- a/backend/placeholder.txt
++++ /dev/null
+@@ -1 +0,0 @@
+-placeholder file
+\ No newline at end of file

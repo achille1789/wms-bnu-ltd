@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # WMS BNU App
 
 The **WMS BNU App** is a warehouse management solution designed to support the provisioning of industrial equipment and supplies.  
