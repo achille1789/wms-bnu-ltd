@@ -6,7 +6,7 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 async function updateSummaryMD() {
     // Load current summary and git diff
     const summaryPath = './docs/updates.md';
-    const diffPath = './git-diff/docs-2.txt'; // You'd generate this from git diff
+    const diffPath = './git-diff/docs-3.txt'; // You'd generate this from git diff
 
     const summary = fs.readFileSync(summaryPath, 'utf8');
     const diff = fs.readFileSync(diffPath, 'utf8');

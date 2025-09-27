@@ -1,0 +1,858 @@
+diff --git a/.DS_Store b/.DS_Store
+index 5ad93af..5fe9ae4 100644
+Binary files a/.DS_Store and b/.DS_Store differ
+diff --git a/backend/Customers.java b/backend/Customers.java
+index 46240cb..56935a0 100644
+--- a/backend/Customers.java
++++ b/backend/Customers.java
+@@ -25,16 +25,33 @@ import entities.Data;
+ //         Logger.info("Added 2 customers for debugging");
+ //     }
+     
++    /**
++     * Establish name matching.
++     * @param name the name to match
++     * @param surname the surname to match
++     * @param itemIndex the index of the customer in the list
++     * @return true if the name and surname match the customer data
++     */
++    private boolean areDetailsMatching(String name, String surname, int itemIndex) {
++        return name.toLowerCase().equals(customersList.get(itemIndex).getName().toLowerCase()) && 
++            surname.toLowerCase().equals(customersList.get(itemIndex).getSurname().toLowerCase());
++    }
++    
+     // TODO: handle wrong input data
+     /**
+      * Set all the customer data to create a new customer.
+      * If data is invalid print an error message.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
++     * @param email the email of the customer
++     * @param address the address of the customer
++     * @param creditCard the credit card of the customer
+      */
+     public void addCustomer(String name, String surname, String email, String address, String creditCard) {
+         CustomerData data = new CustomerData(name, surname, email, address, creditCard);
+         boolean exists = false;
+         for (int i = 0; i < customersList.size(); i++) {
+-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++            if (areDetailsMatching(name, surname, i)) {
+                 Logger.error("Customer already exists, aborted");
+                 exists = true;
+                 break;
+@@ -48,13 +65,15 @@ import entities.Data;
+     
+     /**
+      * Get the number of customers in the list.
++     * @return the number of customers in the list
+      */
+-    public int getTotalcustomers() {
++    public int getTotalCustomers() {
+         return customersList.size();
+     }
+     
+     /**
+      * Get the name of all customers in the list.
++     * @return an array of customer names
+      */
+     public String[] getCustomerNames() {
+         String[] names = new String[customersList.size()];
+@@ -66,27 +85,39 @@ import entities.Data;
+     
+     /**
+      * Get data of the passed Customer.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
++     * @return a HashMap with all the customer data
+      */
+-    public HashMap<Data, String> getCustomerData(String name) {
++    public HashMap<Data, String> getCustomerData(String name, String surname) {
+         HashMap<Data, String> customerData = null;
+         for (int i = 0; i < customersList.size(); i++) {
+-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++            if (areDetailsMatching(name, surname, i)) {
+                 customerData = customersList.get(i).getAllData();
++                break;
+             }
+         }
++        if (customerData == null) {
++            Logger.error("Customer not found");
++        }
+         return customerData;
+     }
+     
+     /**
+      * Update data of the passed Customer.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
++     * @param key the key of the data to update
++     * @param value the new value of the data
+      */
+-    public void updateCustomerData(String name, Data key, String value) {
++    public void updateCustomerData(String name, String surname, Data key, String value) {
+         boolean found = false;
+         for (int i = 0; i < customersList.size(); i++) {
+-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++            if (areDetailsMatching(name, surname, i)) {
+                 customersList.get(i).update(key, value);
+                 Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
+                 found = true;
++                break;
+             }
+         }
+         if (!found) {
+@@ -96,14 +127,17 @@ import entities.Data;
+     
+     /**
+      * Delete passed Customer.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
+      */
+-    public void deleteCustomer(String name) {
++    public void deleteCustomer(String name, String surname) {
+         boolean found = false;
+         for (int i = 0; i < customersList.size(); i++) {
+-            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++            if (areDetailsMatching(name, surname, i)) {
+                 customersList.remove(i);
+                 Logger.info("Customer deleted");
+                 found = true;
++                break;
+             }
+         }
+         if (!found) {
+diff --git a/backend/Goods.java b/backend/Goods.java
+new file mode 100644
+index 0000000..5dc6669
+--- /dev/null
++++ b/backend/Goods.java
+@@ -0,0 +1,140 @@
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import goods.Good;
++import goods.Data;
++
++/**
++ * A class that handles the list of warehouse Goods.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++ class Goods {
++    // The fields.
++    private List<Good> goodsList = new LinkedList<>();
++    
++    // Constructor should be uncommented only for debugging
++//     public Goods() {
++//         Good good1 = new Good("Brick", "Construction bricks", 100, "Vanni ltd");
++//         Good good2 = new Good("Cement", "Construction cement", 50, "Mark ltd");
++//         goodsList.add(good1);
++//         goodsList.add(good2);
++//         Logger.info("Added 2 warehouse goods for debugging");
++//     }
++    
++    /**
++     * Establish name matching.
++     * @param name the name to match
++     * @param itemIndex the index of the good in the list
++     * @return true if the name matches the good data
++     */
++    private boolean isNameMatching(String name, int itemIndex) {
++        return name.toLowerCase().equals(goodsList.get(itemIndex).getName().toLowerCase());
++    }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the good details to create a new Good.
++     * If data is invalid print an error message.
++     * @param name the name of the good
++     * @param description the description of the good
++     * @param quantity the available quantity of the good
++     * @param supplier the name of the supplier
++     */
++    public void addGood(String name, String description, int quantity, String supplier) {
++        Good good = new Good(name, description, quantity, supplier);
++        boolean exists = false;
++        for (int i = 0; i < goodsList.size(); i++) {
++            if (isNameMatching(name, i)) {
++                Logger.error("Good already exists, aborted");
++                exists = true;
++                break;
++            }
++        }
++        if (!exists) {
++            goodsList.add(good);
++            Logger.info("Good added in warehouse, data: " + goodsList.getLast().getAllData().toString());
++        }
++    }
++    
++    /**
++     * Get the number of goods in the list.
++     * @return the number of goods in the list
++     */
++    public int getTotalGoods() {
++        return goodsList.size();
++    }
++    
++    /**
++     * Get the name of all goods in the list.
++     * @return an array of good names
++     */
++    public String[] getGoodNames() {
++        String[] names = new String[goodsList.size()];
++        for (int i = 0; i < goodsList.size(); i++) {
++            names[i] = goodsList.get(i).getName();
++        }
++        return names;
++    }
++    
++    /**
++     * Get data of the passed Good.
++     * @param name the name of the good
++     * @return a HashMap with all the Good data
++     */
++    public HashMap<Data, String> getGoodData(String name) {
++        HashMap<Data, String> goodData = null;
++        for (int i = 0; i < goodsList.size(); i++) {
++            if (isNameMatching(name, i)) {
++                goodData = goodsList.get(i).getAllData();
++                break;
++            }
++        }
++        if (goodData == null) {
++            Logger.error("Good not found");
++        }
++        return goodData;
++    }
++    
++    /**
++     * Get Good quantity
++     * @param name the name of the good
++     * @return the quantity of the good
++     */
++    public int getGoodQuantity(String name) {
++        int quantity = -1;
++        for (int i = 0; i < goodsList.size(); i++) {
++            if (isNameMatching(name, i)) {
++                quantity = goodsList.get(i).getQuantity();
++                break;
++            }
++        }
++        if (quantity == -1) {
++            Logger.error("Good not found, quantity not updated");
++        }
++        Logger.info("Good quantity: " + quantity);
++        return quantity;
++    }
++    
++    /**
++     * Update available quantity of the passed Good.
++     * @param name the name of the good
++     * @param quantity the new quantity of the good
++     */
++    public void updateGoodQuantity(String name, int quantity) {
++        boolean found = false;
++        for (int i = 0; i < goodsList.size(); i++) {
++            if (isNameMatching(name, i)) {
++                goodsList.get(i).setQuantity(quantity);
++                Logger.info("Good quantity updated: " + goodsList.get(i).getQuantity());
++                found = true;
++                break;
++            }
++        }
++        if (!found) {
++            Logger.error("Good not found, quantity not updated");
++        }
++    }
++ }
+diff --git a/backend/Logger.java b/backend/Logger.java
+index c9d251d..4f6b42b 100644
+--- a/backend/Logger.java
++++ b/backend/Logger.java
+@@ -19,6 +19,7 @@ class Logger {
+ 
+     /**
+      * Printing "info" messages.
++     * @param message the message to print
+      */
+     public static void info(String message) {
+         System.out.println("[INFO] " + message);
+@@ -26,6 +27,7 @@ class Logger {
+ 
+     /**
+      * Printing "warning" messages.
++     * @param message the message to print
+      */
+     public static void warn(String message) {
+ //         System.out.println(YELLOW + "[WARN] " + message + RESET);
+@@ -34,6 +36,7 @@ class Logger {
+ 
+     /**
+      * Printing "error" messages.
++     * @param message the message to print
+      */
+     public static void error(String message) {
+ //         System.out.println(RED + "[ERROR] " + message + RESET);
+@@ -42,6 +45,7 @@ class Logger {
+ 
+     /**
+      * Printing "debug" messages.
++     * @param message the message to print
+      */
+     public static void debug(String message) {
+ //         System.out.println(BLUE + "[DEBUG] " + message + RESET);
+diff --git a/backend/Suppliers.java b/backend/Suppliers.java
+index f9c3aab..11fd52b 100644
+--- a/backend/Suppliers.java
++++ b/backend/Suppliers.java
+@@ -25,16 +25,32 @@ import entities.Data;
+ //         Logger.info("Added 2 suppliers for debugging");
+ //     }
+     
++    /**
++     * Establish name matching.
++     * @param name the name to match
++     * @param itemIndex the index of the supplier in the list
++     * @return true if the name matches the supplier data
++     */
++    private boolean isNameMatching(String name, int itemIndex) {
++        return name.toLowerCase().equals(suppliersList.get(itemIndex).getName().toLowerCase());
++    }
++    
+     // TODO: handle wrong input data
+     /**
+      * Set all the supplier data to create a new supplier.
+      * If data is invalid print an error message.
++     * @param name the name of the supplier
++     * @param crn the company registration number of the supplier
++     * @param email the email of the supplier
++     * @param address the address of the supplier
++     * @param bankAccount the bank account of the supplier
++     * @param sortCode the sort code of the supplier
+      */
+     public void addSupplier(String name, String crn, String email, String address, String bankAccount, String sortCode) {
+         SupplierData data = new SupplierData(name, crn, email, address, bankAccount, sortCode);
+         boolean exists = false;
+         for (int i = 0; i < suppliersList.size(); i++) {
+-            if (name.equals(suppliersList.get(i).getName())) {
++            if (isNameMatching(name, i)) {
+                 Logger.error("Supplier already exists, aborted");
+                 exists = true;
+                 break;
+@@ -48,6 +64,7 @@ import entities.Data;
+     
+     /**
+      * Get the number of suppliers in the list.
++     * @return the number of suppliers in the list
+      */
+     public int getTotalSuppliers() {
+         return suppliersList.size();
+@@ -55,6 +72,7 @@ import entities.Data;
+     
+     /**
+      * Get the name of all suppliers in the list.
++     * @return the name of all suppliers in the list
+      */
+     public String[] getSupplierNames() {
+         String[] names = new String[suppliersList.size()];
+@@ -66,27 +84,37 @@ import entities.Data;
+     
+     /**
+      * Get data of the passed Supplier.
++     * @param name the name of the supplier
++     * @return a HashMap with all the Supplier data
+      */
+     public HashMap<Data, String> getSupplierData(String name) {
+         HashMap<Data, String> supplierData = null;
+         for (int i = 0; i < suppliersList.size(); i++) {
+-            if (name.equals(suppliersList.get(i).getName())) {
++            if (isNameMatching(name, i)) {
+                 supplierData = suppliersList.get(i).getAllData();
++                break;
+             }
+         }
++        if (supplierData == null) {
++            Logger.error("Supplier not found");
++        }
+         return supplierData;
+     }
+     
+     /**
+      * Update data of the passed Supplier.
++     * @param name the name of the supplier
++     * @param key the key of the data to update
++     * @param value the new value of the data
+      */
+     public void updateSupplierData(String name, Data key, String value) {
+         boolean found = false;
+         for (int i = 0; i < suppliersList.size(); i++) {
+-            if (name.equals(suppliersList.get(i).getName())) {
++            if (isNameMatching(name, i)) {
+                 suppliersList.get(i).update(key, value);
+                 Logger.info("Supplier data updated: " + suppliersList.get(i).getAllData().toString());
+                 found = true;
++                break;
+             }
+         }
+         if (!found) {
+@@ -96,14 +124,16 @@ import entities.Data;
+     
+     /**
+      * Delete passed Supplier.
++     * @param name the name of the supplier
+      */
+     public void deleteSupplier(String name) {
+         boolean found = false;
+         for (int i = 0; i < suppliersList.size(); i++) {
+-            if (name.equals(suppliersList.get(i).getName())) {
++            if (isNameMatching(name, i)) {
+                 suppliersList.remove(i);
+                 Logger.info("Supplier deleted");
+                 found = true;
++                break;
+             }
+         }
+         if (!found) {
+diff --git a/backend/entities/Customer.java b/backend/entities/Customer.java
+index 80ac8c9..61902a0 100644
+--- a/backend/entities/Customer.java
++++ b/backend/entities/Customer.java
+@@ -10,6 +10,8 @@ public class Customer extends Entity implements ICustomer {
+     
+     /**
+      * Add a new entity Customer.
++     * Info needed are: name, surname, email, address and credit card.
++     * @param customer the CustomerData object with all the data
+      */
+     public Customer add(CustomerData customer) {
+         entityData.put(Data.NAME, customer.getName());
+diff --git a/backend/entities/CustomerData.java b/backend/entities/CustomerData.java
+index e0d7e3c..fa16062 100644
+--- a/backend/entities/CustomerData.java
++++ b/backend/entities/CustomerData.java
+@@ -14,6 +14,11 @@ public class CustomerData extends EntityData {
+     // TODO: implement input validity checks
+     /**
+      * Add a new entity Customer data.
++     * @param name the name of the customer
++     * @param surname the surname of the customer
++     * @param email the email of the customer
++     * @param address the address of the customer
++     * @param creditCard the credit card of the customer
+      */
+     public CustomerData(String name, String surname, String email, String address, String creditCard) {
+         super(name, email, address);
+diff --git a/backend/entities/Entity.java b/backend/entities/Entity.java
+index 93202f6..d198ac0 100644
+--- a/backend/entities/Entity.java
++++ b/backend/entities/Entity.java
+@@ -22,6 +22,8 @@ abstract class Entity {
+     
+     /**
+      * Update entity data.
++     * @param key the key of the data to update
++     * @param value the new value of the data
+      */
+     public void update(Data key, String value) {
+         entityData.replace(key, value);
+@@ -29,6 +31,9 @@ abstract class Entity {
+     
+     /**
+      * Get all entity data.
++     * The keys are the Data enum values.
++     * The values are the entity data.
++     * @return a HashMap with all the entity data.
+      */
+     public HashMap<Data, String> getAllData() {
+         return entityData;
+diff --git a/backend/entities/EntityData.java b/backend/entities/EntityData.java
+index 7625616..ddbd1ee 100644
+--- a/backend/entities/EntityData.java
++++ b/backend/entities/EntityData.java
+@@ -15,6 +15,9 @@ abstract class EntityData {
+     // TODO: implement input validity checks
+     /**
+      * Set the default data for all entities.
++     * @param name the name of the entity
++     * @param email the email of the entity
++     * @param address the address of the entity
+      */
+     protected EntityData(String name, String email, String address) {
+         this.name = name;
+diff --git a/backend/entities/ICustomer.java b/backend/entities/ICustomer.java
+index 27272b6..61a1888 100644
+--- a/backend/entities/ICustomer.java
++++ b/backend/entities/ICustomer.java
+@@ -9,6 +9,8 @@ package entities;
+  interface ICustomer {
+     /**
+      * Add a new entity Customer.
++     * Info needed are: name, surname, email, address and credit card.
++     * @param customer the CustomerData object with all the data
+      */
+     public Customer add(CustomerData customer);
+     
+diff --git a/backend/entities/ISupplier.java b/backend/entities/ISupplier.java
+index 626fb11..3b06c76 100644
+--- a/backend/entities/ISupplier.java
++++ b/backend/entities/ISupplier.java
+@@ -9,6 +9,8 @@ package entities;
+  interface ISupplier {
+     /**
+      * Add a new entity Supplier.
++     * Info needed are: name, crn, email, address, bank account and sort code.
++     * @param supplier the SupplierData object with all the data
+      */
+     public Supplier add(SupplierData supplier);
+  }
+diff --git a/backend/entities/Supplier.java b/backend/entities/Supplier.java
+index 0934289..a4b31ce 100644
+--- a/backend/entities/Supplier.java
++++ b/backend/entities/Supplier.java
+@@ -10,6 +10,8 @@ public class Supplier extends Entity implements ISupplier {
+     
+     /**
+      * Add a new entity Supplier.
++     * @param supplier the SupplierData object containing the supplier's data
++     * @return the Supplier object
+      */
+     public Supplier add(SupplierData supplier) {
+         entityData.put(Data.NAME, supplier.getName());
+diff --git a/backend/entities/SupplierData.java b/backend/entities/SupplierData.java
+index 0b159cb..450932c 100644
+--- a/backend/entities/SupplierData.java
++++ b/backend/entities/SupplierData.java
+@@ -15,6 +15,12 @@ public class SupplierData extends EntityData {
+     // TODO: implement input validity checks
+     /**
+      * Add a new entity Supplier data.
++     * @param name the name of the supplier
++     * @param crn the company registration number of the supplier
++     * @param email the email of the supplier
++     * @param address the address of the supplier
++     * @param bankAccount the bank account of the supplier
++     * @param sortCode the sort code of the supplier
+      */
+     public SupplierData(String name, String crn, String email, String address, String bankAccount, String sortCode) {
+         super(name, email, address);
+diff --git a/backend/entities/package.bluej b/backend/entities/package.bluej
+index c569d80..51908bf 100644
+--- a/backend/entities/package.bluej
++++ b/backend/entities/package.bluej
+@@ -1,39 +1,42 @@
+ #BlueJ package file
+-dependency1.from=User
+-dependency1.to=UserData
++dependency1.from=Entity
++dependency1.to=Data
+ dependency1.type=UsesDependency
+-dependency2.from=User
+-dependency2.to=Data
++dependency2.from=Customer
++dependency2.to=CustomerData
+ dependency2.type=UsesDependency
+-dependency3.from=IUser
+-dependency3.to=User
++dependency3.from=Customer
++dependency3.to=Data
+ dependency3.type=UsesDependency
+-dependency4.from=IUser
+-dependency4.to=UserData
++dependency4.from=ICustomer
++dependency4.to=Customer
+ dependency4.type=UsesDependency
+-dependency5.from=Supplier
+-dependency5.to=SupplierData
++dependency5.from=ICustomer
++dependency5.to=CustomerData
+ dependency5.type=UsesDependency
+ dependency6.from=Supplier
+-dependency6.to=Data
++dependency6.to=SupplierData
+ dependency6.type=UsesDependency
+-dependency7.from=ISupplier
+-dependency7.to=Supplier
++dependency7.from=Supplier
++dependency7.to=Data
+ dependency7.type=UsesDependency
+ dependency8.from=ISupplier
+-dependency8.to=SupplierData
++dependency8.to=Supplier
+ dependency8.type=UsesDependency
++dependency9.from=ISupplier
++dependency9.to=SupplierData
++dependency9.type=UsesDependency
+ objectbench.height=100
+-objectbench.width=612
+-package.divider.horizontal=0.5720887245841035
++objectbench.width=642
++package.divider.horizontal=0.5998151571164511
+ package.divider.vertical=0.861038961038961
+ package.editor.height=656
+ package.editor.width=986
+-package.editor.x=253
+-package.editor.y=157
++package.editor.x=76
++package.editor.y=152
+ package.frame.height=834
+ package.frame.width=1102
+-package.numDependencies=8
++package.numDependencies=9
+ package.numTargets=9
+ package.showExtends=true
+ package.showUses=true
+@@ -50,19 +53,19 @@ target1.width=120
+ target1.x=10
+ target1.y=110
+ target2.height=70
+-target2.name=User
++target2.name=Customer
+ target2.showInterface=false
+ target2.type=ClassTarget
+ target2.width=120
+ target2.x=140
+ target2.y=110
+ target3.height=70
+-target3.name=UserData
++target3.name=CustomerData
+ target3.showInterface=false
+ target3.type=ClassTarget
+ target3.width=120
+ target3.x=10
+-target3.y=190
++target3.y=210
+ target4.height=70
+ target4.name=EntityData
+ target4.showInterface=false
+@@ -71,12 +74,12 @@ target4.width=120
+ target4.x=140
+ target4.y=190
+ target5.height=70
+-target5.name=IUser
++target5.name=ICustomer
+ target5.showInterface=false
+ target5.type=InterfaceTarget
+ target5.width=120
+ target5.x=10
+-target5.y=270
++target5.y=210
+ target6.height=70
+ target6.name=Supplier
+ target6.showInterface=false
+diff --git a/backend/goods/Data.java b/backend/goods/Data.java
+new file mode 100644
+index 0000000..43badc4
+--- /dev/null
++++ b/backend/goods/Data.java
+@@ -0,0 +1,11 @@
++package goods;
++
++/**
++ * Enam with all the possible entity details
++ */
++public enum Data {
++    NAME,
++    DESCRIPTION,
++    QUANTITY,
++    SUPPLIER,
++}
+\ No newline at end of file
+diff --git a/backend/goods/Good.java b/backend/goods/Good.java
+new file mode 100644
+index 0000000..00af09a
+--- /dev/null
++++ b/backend/goods/Good.java
+@@ -0,0 +1,61 @@
++package goods;
++
++import java.util.HashMap;
++
++/**
++ * A class that defines a warehouse Good.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class Good {
++    // The fields.
++    public String name;
++    public String description;
++    public int quantity;
++    public String supplier;
++    
++    /**
++     * Add a new warehouse good.
++     * Info needed are: name, description, available quantity and supplier name.
++     */
++    public Good(String name, String description, int quantity, String supplier) {
++        this.name = name;
++        this.description = description;
++        this.quantity = quantity;
++        this.supplier = supplier;
++    }
++    
++    /**
++     * Get a HashMap with all the good data.
++     * The keys are the Data enum values.
++     * The values are the good data.
++     * @return a HashMap with all the Good data.
++     */
++    public HashMap<Data, String> getAllData() {
++        HashMap<Data, String> goodData = new HashMap<>();
++        goodData.put(Data.NAME, this.name);
++        goodData.put(Data.DESCRIPTION, this.description);
++        goodData.put(Data.QUANTITY, String.valueOf(this.quantity));
++        goodData.put(Data.SUPPLIER, this.supplier);
++        return goodData;
++    }
++    
++    /**
++     * Setters
++     */
++    public void setQuantity(int quantity) {
++        this.quantity = quantity;
++    }
++    
++    /**
++     * Getters
++     */
++    public String getName() {
++        return this.name;
++    }
++    
++    public int getQuantity() {
++        return this.quantity;
++    }
++}
+\ No newline at end of file
+diff --git a/backend/goods/package.bluej b/backend/goods/package.bluej
+new file mode 100644
+index 0000000..c7db2b3
+--- /dev/null
++++ b/backend/goods/package.bluej
+@@ -0,0 +1,37 @@
++#BlueJ package file
++dependency1.from=Good
++dependency1.to=Data
++dependency1.type=UsesDependency
++objectbench.height=100
++objectbench.width=461
++package.divider.horizontal=0.6
++package.divider.vertical=0.8003731343283582
++package.editor.height=422
++package.editor.width=684
++package.editor.x=67
++package.editor.y=278
++package.frame.height=600
++package.frame.width=800
++package.numDependencies=1
++package.numTargets=2
++package.showExtends=true
++package.showUses=true
++readme.height=60
++readme.name=@README
++readme.width=48
++readme.x=10
++readme.y=10
++target1.height=70
++target1.name=Data
++target1.showInterface=false
++target1.type=EnumTarget
++target1.width=120
++target1.x=10
++target1.y=110
++target2.height=70
++target2.name=Good
++target2.showInterface=false
++target2.type=ClassTarget
++target2.width=120
++target2.x=140
++target2.y=110
+diff --git a/backend/package.bluej b/backend/package.bluej
+index 773f020..d6ca41c 100644
+--- a/backend/package.bluej
++++ b/backend/package.bluej
+@@ -1,26 +1,29 @@
+ #BlueJ package file
+-dependency1.from=Users
++dependency1.from=Suppliers
+ dependency1.to=Logger
+ dependency1.type=UsesDependency
+-dependency2.from=Suppliers
++dependency2.from=Customers
+ dependency2.to=Logger
+ dependency2.type=UsesDependency
++dependency3.from=Goods
++dependency3.to=Logger
++dependency3.type=UsesDependency
+ editor.fx.0.height=728
+-editor.fx.0.width=800
+-editor.fx.0.x=464
+-editor.fx.0.y=130
++editor.fx.0.width=1208
++editor.fx.0.x=104
++editor.fx.0.y=50
+ objectbench.height=100
+-objectbench.width=461
+-package.divider.horizontal=0.6
+-package.divider.vertical=0.8003731343283582
+-package.editor.height=422
+-package.editor.width=684
+-package.editor.x=67
+-package.editor.y=278
+-package.frame.height=600
+-package.frame.width=800
+-package.numDependencies=2
+-package.numTargets=4
++objectbench.width=775
++package.divider.horizontal=0.5553977272727273
++package.divider.vertical=0.8453757225433526
++package.editor.height=578
++package.editor.width=1312
++package.editor.x=85
++package.editor.y=124
++package.frame.height=756
++package.frame.width=1428
++package.numDependencies=3
++package.numTargets=6
+ package.showExtends=true
+ package.showUses=true
+ project.charset=UTF-8
+@@ -43,16 +46,29 @@ target2.width=120
+ target2.x=70
+ target2.y=10
+ target3.height=70
+-target3.name=Users
++target3.name=Customers
+ target3.showInterface=false
+ target3.type=ClassTarget
+ target3.width=120
+ target3.x=10
+ target3.y=110
+-target4.height=70
+-target4.name=Logger
+-target4.showInterface=false
+-target4.type=ClassTarget
++target4.height=82
++target4.name=goods
++target4.type=PackageTarget
+ target4.width=120
+-target4.x=10
++target4.x=140
+ target4.y=190
++target5.height=70
++target5.name=Goods
++target5.showInterface=false
++target5.type=ClassTarget
++target5.width=120
++target5.x=10
++target5.y=270
++target6.height=70
++target6.name=Logger
++target6.showInterface=false
++target6.type=ClassTarget
++target6.width=120
++target6.x=10
++target6.y=190

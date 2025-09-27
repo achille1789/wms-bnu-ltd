@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project provides a backend system for managing customers, users, and suppliers, including logging capabilities. The system is designed to handle data efficiently, offering functionalities for adding, updating, and deleting records.
+This project provides a backend system for managing customers, users, suppliers, and goods, including logging capabilities. The system is designed to handle data efficiently, offering functionalities for adding, updating, and deleting records.
 
 ## Logger
 
@@ -31,9 +31,9 @@ The `Customers` class manages a list of customer entities.
 - **addCustomer(String name, String surname, String email, String address, String creditCard)**: Adds a new customer if they don't already exist.
 - **getTotalCustomers()**: Returns the total number of customers.
 - **getCustomerNames()**: Returns an array of customer names.
-- **getCustomerData(String name)**: Returns the data of a specified customer.
-- **updateCustomerData(String name, Data key, String value)**: Updates the data of a specified customer.
-- **deleteCustomer(String name)**: Deletes a specified customer.
+- **getCustomerData(String name, String surname)**: Returns the data of a specified customer.
+- **updateCustomerData(String name, String surname, Data key, String value)**: Updates the data of a specified customer.
+- **deleteCustomer(String name, String surname)**: Deletes a specified customer.
 
 ## Suppliers
 
@@ -47,6 +47,19 @@ The `Suppliers` class manages a list of supplier entities.
 - **getSupplierData(String name)**: Returns the data of a specified supplier.
 - **updateSupplierData(String name, Data key, String value)**: Updates the data of a specified supplier.
 - **deleteSupplier(String name)**: Deletes a specified supplier.
+
+## Goods
+
+The `Goods` class manages a list of warehouse goods.
+
+### Public Methods
+
+- **addGood(String name, String description, int quantity, String supplier)**: Adds a new good if it doesn't already exist.
+- **getTotalGoods()**: Returns the total number of goods.
+- **getGoodNames()**: Returns an array of good names.
+- **getGoodData(String name)**: Returns the data of a specified good.
+- **getGoodQuantity(String name)**: Returns the quantity of a specified good.
+- **updateGoodQuantity(String name, int quantity)**: Updates the quantity of a specified good.
 
 ## Entities
 
@@ -101,7 +114,8 @@ Defines the method to add a new supplier entity.
 
 ## Package Structure
 
-- **backend**: Contains the main classes for managing customers and suppliers.
+- **backend**: Contains the main classes for managing customers, suppliers, and goods.
 - **backend.entities**: Contains entity-related classes and interfaces.
+- **backend.goods**: Contains classes related to goods management.
 
 This documentation provides an overview of the public APIs and features available in the current codebase. For further details, refer to the source code and comments within each class.
