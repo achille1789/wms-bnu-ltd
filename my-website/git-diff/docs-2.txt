@@ -1,0 +1,458 @@
+diff --git a/backend/Customers.java b/backend/Customers.java
+new file mode 100644
+index 0000000..46240cb
+--- /dev/null
++++ b/backend/Customers.java
+@@ -0,0 +1,113 @@
++import java.util.List;
++import java.util.LinkedList;
++import java.util.HashMap;
++
++import entities.Customer;
++import entities.CustomerData;
++import entities.Data;
++
++/**
++ * A class that handles the list of Customers.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++ class Customers {
++    // The fields.
++    private List<Customer> customersList = new LinkedList<>();
++    
++    // Constructor should be uncommented only for debugging
++//     public Customers() {
++//         CustomerData data1 = new CustomerData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
++//         CustomerData data2 = new CustomerData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
++//         customersList.add(new Customer().add(data1));
++//         customersList.add(new Customer().add(data2));
++//         Logger.info("Added 2 customers for debugging");
++//     }
++    
++    // TODO: handle wrong input data
++    /**
++     * Set all the customer data to create a new customer.
++     * If data is invalid print an error message.
++     */
++    public void addCustomer(String name, String surname, String email, String address, String creditCard) {
++        CustomerData data = new CustomerData(name, surname, email, address, creditCard);
++        boolean exists = false;
++        for (int i = 0; i < customersList.size(); i++) {
++            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++                Logger.error("Customer already exists, aborted");
++                exists = true;
++                break;
++            }
++        }
++        if (!exists) {
++            customersList.add(new Customer().add(data));
++            Logger.info("Customer added, data: " + customersList.getLast().getAllData().toString());
++        }
++    }
++    
++    /**
++     * Get the number of customers in the list.
++     */
++    public int getTotalcustomers() {
++        return customersList.size();
++    }
++    
++    /**
++     * Get the name of all customers in the list.
++     */
++    public String[] getCustomerNames() {
++        String[] names = new String[customersList.size()];
++        for (int i = 0; i < customersList.size(); i++) {
++            names[i] = customersList.get(i).getName();
++        }
++        return names;
++    }
++    
++    /**
++     * Get data of the passed Customer.
++     */
++    public HashMap<Data, String> getCustomerData(String name) {
++        HashMap<Data, String> customerData = null;
++        for (int i = 0; i < customersList.size(); i++) {
++            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++                customerData = customersList.get(i).getAllData();
++            }
++        }
++        return customerData;
++    }
++    
++    /**
++     * Update data of the passed Customer.
++     */
++    public void updateCustomerData(String name, Data key, String value) {
++        boolean found = false;
++        for (int i = 0; i < customersList.size(); i++) {
++            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++                customersList.get(i).update(key, value);
++                Logger.info("Customer data updated: " + customersList.get(i).getAllData().toString());
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("Customer not found, data not updated");
++        }
++    }
++    
++    /**
++     * Delete passed Customer.
++     */
++    public void deleteCustomer(String name) {
++        boolean found = false;
++        for (int i = 0; i < customersList.size(); i++) {
++            if (name.equals(customersList.get(i).getName()) && name.equals(customersList.get(i).getSurname())) {
++                customersList.remove(i);
++                Logger.info("Customer deleted");
++                found = true;
++            }
++        }
++        if (!found) {
++            Logger.error("Customer not found, data not updated");
++        }
++    }
++ }
+diff --git a/backend/Users.java b/backend/Users.java
+deleted file mode 100644
+index ea4ec70..0000000
+--- a/backend/Users.java
++++ /dev/null
+@@ -1,113 +0,0 @@
+-import java.util.List;
+-import java.util.LinkedList;
+-import java.util.HashMap;
+-
+-import entities.User;
+-import entities.UserData;
+-import entities.Data;
+-
+-/**
+- * A class that handles the list of Users.
+- *
+- * @author Vanni Gallo
+- * @version 1.0.0
+- */
+- class Users {
+-    // The fields.
+-    private List<User> usersList = new LinkedList<>();
+-    
+-    // Constructor should be uncommented only for debugging
+-//     public Users() {
+-//         UserData data1 = new UserData("Vanni", "Gallo", "vanni@gmail.com", "12 First Road, London", "1234-5678-9012-3456");
+-//         UserData data2 = new UserData("Mark", "Luton", "mark@gmail.com", "2 Second Road, Glasgow", "9876-5432-1098-7654");
+-//         usersList.add(new User().add(data1));
+-//         usersList.add(new User().add(data2));
+-//         Logger.info("Added 2 users for debugging");
+-//     }
+-    
+-    // TODO: handle wrong input data
+-    /**
+-     * Set all the user data to create a new user.
+-     * If data is invalid print an error message.
+-     */
+-    public void addUser(String name, String surname, String email, String address, String creditCard) {
+-        UserData data = new UserData(name, surname, email, address, creditCard);
+-        boolean exists = false;
+-        for (int i = 0; i < usersList.size(); i++) {
+-            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
+-                Logger.error("User already exists, aborted");
+-                exists = true;
+-                break;
+-            }
+-        }
+-        if (!exists) {
+-            usersList.add(new User().add(data));
+-            Logger.info("User added, data: " + usersList.getLast().getAllData().toString());
+-        }
+-    }
+-    
+-    /**
+-     * Get the number of users in the list.
+-     */
+-    public int getTotalUsers() {
+-        return usersList.size();
+-    }
+-    
+-    /**
+-     * Get the name of all users in the list.
+-     */
+-    public String[] getUserNames() {
+-        String[] names = new String[usersList.size()];
+-        for (int i = 0; i < usersList.size(); i++) {
+-            names[i] = usersList.get(i).getName();
+-        }
+-        return names;
+-    }
+-    
+-    /**
+-     * Get data of the passed User.
+-     */
+-    public HashMap<Data, String> getUserData(String name) {
+-        HashMap<Data, String> userData = null;
+-        for (int i = 0; i < usersList.size(); i++) {
+-            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
+-                userData = usersList.get(i).getAllData();
+-            }
+-        }
+-        return userData;
+-    }
+-    
+-    /**
+-     * Update data of the passed User.
+-     */
+-    public void updateUserData(String name, Data key, String value) {
+-        boolean found = false;
+-        for (int i = 0; i < usersList.size(); i++) {
+-            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
+-                usersList.get(i).update(key, value);
+-                Logger.info("User data updated: " + usersList.get(i).getAllData().toString());
+-                found = true;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("User not found, data not updated");
+-        }
+-    }
+-    
+-    /**
+-     * Delete passed User.
+-     */
+-    public void deleteUser(String name) {
+-        boolean found = false;
+-        for (int i = 0; i < usersList.size(); i++) {
+-            if (name.equals(usersList.get(i).getName()) && name.equals(usersList.get(i).getSurname())) {
+-                usersList.remove(i);
+-                Logger.info("User deleted");
+-                found = true;
+-            }
+-        }
+-        if (!found) {
+-            Logger.error("User not found, data not updated");
+-        }
+-    }
+- }
+diff --git a/backend/entities/Customer.java b/backend/entities/Customer.java
+new file mode 100644
+index 0000000..80ac8c9
+--- /dev/null
++++ b/backend/entities/Customer.java
+@@ -0,0 +1,36 @@
++package entities;
++
++/**
++ * A class to create Customer objects.
++ *
++ * @author Vanni Gallo
++ * @version 1.0.0
++ */
++public class Customer extends Entity implements ICustomer {
++    
++    /**
++     * Add a new entity Customer.
++     */
++    public Customer add(CustomerData customer) {
++        entityData.put(Data.NAME, customer.getName());
++        entityData.put(Data.SURNAME, customer.getSurname());
++        entityData.put(Data.EMAIL, customer.getEmail());
++        entityData.put(Data.ADDRESS, customer.getAddress());
++        entityData.put(Data.CREDIT_CARD, customer.getCreditCard());
++        return this;
++    }
++    
++    /**
++     * Add a new Customer order.
++     */
++    public void addNewOrder() {
++        System.out.println("new order placed"); // TODO: remove log
++    }
++    
++    /**
++     * Getters
++     */
++    public String getSurname() {
++        return entityData.get(Data.SURNAME);
++    }
++}
+diff --git a/backend/entities/UserData.java b/backend/entities/CustomerData.java
+similarity index 68%
+rename from backend/entities/UserData.java
+rename to backend/entities/CustomerData.java
+index b18e06d..e0d7e3c 100644
+--- a/backend/entities/UserData.java
++++ b/backend/entities/CustomerData.java
+@@ -1,21 +1,21 @@
+ package entities;
+ 
+  /**
+-  * A class to specify needed data for a User.
++  * A class to specify needed data for a Customer.
+   *
+   * @author Vanni Gallo
+   * @version 1.0.0
+   */
+-public class UserData extends EntityData {
++public class CustomerData extends EntityData {
+     // The fields.
+     private String surname;
+     private String creditCard;
+     
+     // TODO: implement input validity checks
+     /**
+-     * Add a new entity User data.
++     * Add a new entity Customer data.
+      */
+-    public UserData(String name, String surname, String email, String address, String creditCard) {
++    public CustomerData(String name, String surname, String email, String address, String creditCard) {
+         super(name, email, address);
+         this.surname = surname;
+         this.creditCard = creditCard;
+diff --git a/backend/entities/Entity.java b/backend/entities/Entity.java
+index f1cdf67..93202f6 100644
+--- a/backend/entities/Entity.java
++++ b/backend/entities/Entity.java
+@@ -5,7 +5,7 @@ import java.util.ArrayList;
+ import java.util.List;
+ 
+ /**
+- * An abstract class that has some methods to handle Users and Suppliers.
++ * An abstract class that has some methods to handle Customers and Suppliers.
+  *
+  * @author Vanni Gallo
+  * @version 1.0.0
+diff --git a/backend/entities/ICustomer.java b/backend/entities/ICustomer.java
+new file mode 100644
+index 0000000..27272b6
+--- /dev/null
++++ b/backend/entities/ICustomer.java
+@@ -0,0 +1,19 @@
++package entities;
++
++ /**
++  * An interface to implement add() method for Customer.
++  *
++  * @author Vanni Gallo
++  * @version 1.0.0
++  */
++ interface ICustomer {
++    /**
++     * Add a new entity Customer.
++     */
++    public Customer add(CustomerData customer);
++    
++    /**
++     * Customer's getters.
++     */
++     public String getSurname();
++ }
+diff --git a/backend/entities/ISupplier.java b/backend/entities/ISupplier.java
+index 620dab8..626fb11 100644
+--- a/backend/entities/ISupplier.java
++++ b/backend/entities/ISupplier.java
+@@ -1,7 +1,7 @@
+ package entities;
+ 
+  /**
+-  * An interface to implement add() method for User.
++  * An interface to implement add() method for Customer.
+   *
+   * @author Vanni Gallo
+   * @version 1.0.0
+diff --git a/backend/entities/IUser.java b/backend/entities/IUser.java
+deleted file mode 100644
+index 1b6e16a..0000000
+--- a/backend/entities/IUser.java
++++ /dev/null
+@@ -1,19 +0,0 @@
+-package entities;
+-
+- /**
+-  * An interface to implement add() method for User.
+-  *
+-  * @author Vanni Gallo
+-  * @version 1.0.0
+-  */
+- interface IUser {
+-    /**
+-     * Add a new entity User.
+-     */
+-    public User add(UserData user);
+-    
+-    /**
+-     * User's getters.
+-     */
+-     public String getSurname();
+- }
+diff --git a/backend/entities/User.java b/backend/entities/User.java
+deleted file mode 100644
+index 277e39e..0000000
+--- a/backend/entities/User.java
++++ /dev/null
+@@ -1,36 +0,0 @@
+-package entities;
+-
+-/**
+- * A class to create User objects.
+- *
+- * @author Vanni Gallo
+- * @version 1.0.0
+- */
+-public class User extends Entity implements IUser {
+-    
+-    /**
+-     * Add a new entity User.
+-     */
+-    public User add(UserData user) {
+-        entityData.put(Data.NAME, user.getName());
+-        entityData.put(Data.SURNAME, user.getSurname());
+-        entityData.put(Data.EMAIL, user.getEmail());
+-        entityData.put(Data.ADDRESS, user.getAddress());
+-        entityData.put(Data.CREDIT_CARD, user.getCreditCard());
+-        return this;
+-    }
+-    
+-    /**
+-     * Add a new User order.
+-     */
+-    public void addNewOrder() {
+-        System.out.println("new order placed"); // TODO: remove log
+-    }
+-    
+-    /**
+-     * Getters
+-     */
+-    public String getSurname() {
+-        return entityData.get(Data.SURNAME);
+-    }
+-}
+diff --git a/backend/entities/package.bluej b/backend/entities/package.bluej
+index 0c92a1f..c569d80 100644
+--- a/backend/entities/package.bluej
++++ b/backend/entities/package.bluej
+@@ -24,15 +24,15 @@ dependency8.from=ISupplier
+ dependency8.to=SupplierData
+ dependency8.type=UsesDependency
+ objectbench.height=100
+-objectbench.width=461
+-package.divider.horizontal=0.6
+-package.divider.vertical=0.8003731343283582
+-package.editor.height=422
+-package.editor.width=670
++objectbench.width=612
++package.divider.horizontal=0.5720887245841035
++package.divider.vertical=0.861038961038961
++package.editor.height=656
++package.editor.width=986
+ package.editor.x=253
+ package.editor.y=157
+-package.frame.height=600
+-package.frame.width=800
++package.frame.height=834
++package.frame.width=1102
+ package.numDependencies=8
+ package.numTargets=9
+ package.showExtends=true

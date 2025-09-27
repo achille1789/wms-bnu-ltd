@@ -2,7 +2,7 @@
 
 ## Overview
 
-This project provides a backend system for managing users and suppliers, including logging capabilities. The system is designed to handle user and supplier data efficiently, offering functionalities for adding, updating, and deleting records.
+This project provides a backend system for managing customers, users, and suppliers, including logging capabilities. The system is designed to handle data efficiently, offering functionalities for adding, updating, and deleting records.
 
 ## Logger
 
@@ -22,6 +22,19 @@ Logger.error("This is an error message.");
 Logger.debug("This is a debug message.");
 ```
 
+## Customers
+
+The `Customers` class manages a list of customer entities.
+
+### Public Methods
+
+- **addCustomer(String name, String surname, String email, String address, String creditCard)**: Adds a new customer if they don't already exist.
+- **getTotalCustomers()**: Returns the total number of customers.
+- **getCustomerNames()**: Returns an array of customer names.
+- **getCustomerData(String name)**: Returns the data of a specified customer.
+- **updateCustomerData(String name, Data key, String value)**: Updates the data of a specified customer.
+- **deleteCustomer(String name)**: Deletes a specified customer.
+
 ## Suppliers
 
 The `Suppliers` class manages a list of supplier entities.
@@ -34,19 +47,6 @@ The `Suppliers` class manages a list of supplier entities.
 - **getSupplierData(String name)**: Returns the data of a specified supplier.
 - **updateSupplierData(String name, Data key, String value)**: Updates the data of a specified supplier.
 - **deleteSupplier(String name)**: Deletes a specified supplier.
-
-## Users
-
-The `Users` class manages a list of user entities.
-
-### Public Methods
-
-- **addUser(String name, String surname, String email, String address, String creditCard)**: Adds a new user if they don't already exist.
-- **getTotalUsers()**: Returns the total number of users.
-- **getUserNames()**: Returns an array of user names.
-- **getUserData(String name)**: Returns the data of a specified user.
-- **updateUserData(String name, Data key, String value)**: Updates the data of a specified user.
-- **deleteUser(String name)**: Deletes a specified user.
 
 ## Entities
 
@@ -71,7 +71,15 @@ The `Entity` class is an abstract class providing methods to handle common entit
 
 The `EntityData` class is an abstract class that specifies the necessary data for a generic entity.
 
-## Supplier and User Entities
+## Customer and Supplier Entities
+
+### Customer Class
+
+Implements the `ICustomer` interface and extends `Entity` to represent customer entities.
+
+### CustomerData Class
+
+Extends `EntityData` to specify the necessary data for a customer.
 
 ### Supplier Class
 
@@ -81,27 +89,19 @@ Implements the `ISupplier` interface and extends `Entity` to represent supplier 
 
 Extends `EntityData` to specify the necessary data for a supplier.
 
-### User Class
-
-Implements the `IUser` interface and extends `Entity` to represent user entities.
-
-### UserData Class
-
-Extends `EntityData` to specify the necessary data for a user.
-
 ## Interfaces
+
+### ICustomer Interface
+
+Defines the method to add a new customer entity.
 
 ### ISupplier Interface
 
 Defines the method to add a new supplier entity.
 
-### IUser Interface
-
-Defines methods to add a new user entity and retrieve user-specific data.
-
 ## Package Structure
 
-- **backend**: Contains the main classes for managing users and suppliers.
+- **backend**: Contains the main classes for managing customers and suppliers.
 - **backend.entities**: Contains entity-related classes and interfaces.
 
 This documentation provides an overview of the public APIs and features available in the current codebase. For further details, refer to the source code and comments within each class.

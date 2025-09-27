@@ -5,8 +5,8 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_KEY });
 
 async function updateSummaryMD() {
     // Load current summary and git diff
-    const summaryPath = './docs/my-docs-site/docs/intro.md';
-    const diffPath = './git-diff/docs-1.txt'; // You'd generate this from git diff
+    const summaryPath = './docs/updates.md';
+    const diffPath = './git-diff/docs-2.txt'; // You'd generate this from git diff
 
     const summary = fs.readFileSync(summaryPath, 'utf8');
     const diff = fs.readFileSync(diffPath, 'utf8');
@@ -46,7 +46,7 @@ Update the summary file accordingly. Keep existing content intact unless it is n
     const updatedSummary = response.choices[0].message.content;
 
     // Overwrite the file or commit in Git
-    fs.writeFileSync('./docs/my-docs-site/docs/updates.md', updatedSummary);
+    fs.writeFileSync('./docs/updates.md', updatedSummary);
     console.log('✅ summary.md updated.');
 }
 
