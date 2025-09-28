@@ -11,7 +11,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: 'WMS BNU Ltd. Documentation',
-  tagline: 'Powered by Docusaurus and GPT-5',
+  tagline: 'Powered by Docusaurus and GPT-4o',
   favicon: 'img/favicon.ico',
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
